@@ -53,6 +53,12 @@ export default new Router({
       path: '/my-events',
       name: 'my-events',
       component: () => import('./pages/Events/EventList.vue')
+    },
+    {
+      path: '/socialwall',
+      name: 'socialwall',
+      //todo route this through the selected event, /socialwall endpoint is just for development!
+      component: () => import('./pages/SocialWall/SocialWall.vue')
     }
 
   ]
