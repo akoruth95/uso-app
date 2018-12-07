@@ -76,60 +76,14 @@ const router = new Router({
       beforeEnter: alwaysDirect
     },
     {
-      path: "/login",
-      name: "login",
-      component: () => import("./pages/Account/Login.vue"),
-      beforeEnter: noAuth
+      path: "/my-events",
+      name: "my-events",
+      component: () => import("./pages/Events/EventList.vue")
     },
     {
-      path: "/notification",
-      name: "notification",
-      component: () => import("./pages/Notification.vue")
-    },
-    {
-      path: "/profile",
-      name: "profile",
-      component: () => import("./pages/Account/Profile.vue")
-    },
-    {
-      path: "/register",
-      name: "register",
-      component: () => import("./pages/Account/Register.vue"),
-      beforeEnter: noAuth
-    },
-    {
-      path: "/session-info",
-      name: "session-info",
-      component: () => import("./pages/Session/SessionInfo/SessionInfo.vue")
-    },
-    {
-      path: "/take-notes",
-      name: "take-notes",
-      component: () => import("./pages/Session/Notes/TakeNotes.vue")
-    },
-    {
-      path: "/setup",
-      name: "setup",
-      component: () => import("./pages/Account/Setup.vue"),
-      beforeEnter: function(to, from, next) {
-        if (account.state.status.registered) {
-          next();
-        } else {
-          next("/register");
-        }
-      }
-    },
-    {
-      path: "/startup",
-      name: "startup",
-      component: () => import("./pages/Startup.vue"),
-      beforeEnter: noAuth
-    },
-
-    {
-      path: "/info",
-      name: "info",
-      component: () => import("./pages/Info/Info.vue")
+      path: "/faq",
+      name: "faq",
+      component: () => import("./pages/Info/Faq.vue")
     }
   ]
 });
