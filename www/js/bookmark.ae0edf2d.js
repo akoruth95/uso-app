@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["bookmark"],{"406f":function(e,n,t){"use strict";t.r(n);var o=function(){var e=this,n=e.$createElement;e._self._c;return e._m(0)},r=[function(){var e=this,n=e.$createElement,t=e._self._c||n;return t("div",[t("h1",[e._v("This is bookmarks page")])])}],s=t("2877"),a={},i=Object(s["a"])(a,o,r,!1,null,null,null);i.options.__file="Bookmark.vue";n["default"]=i.exports}}]);
-//# sourceMappingURL=bookmark.ae0edf2d.js.map
