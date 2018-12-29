@@ -18,6 +18,7 @@ export default {
   name: "App",
   data() {
     return {
+      // fab: "home",
       bottomNav: 0
     };
   },
