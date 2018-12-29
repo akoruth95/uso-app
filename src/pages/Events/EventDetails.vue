@@ -1,105 +1,92 @@
 <template>
-    <div>
-    <v-toolbar
-      color="secondary"
-      height="70px"
-      app
-    >
-      <v-icon color="white">fa-home</v-icon>
-      <v-spacer></v-spacer>
-      <span style="color:white"> <h1> {{selectedEvent.name}} </h1> </span>
-      <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
-      <v-spacer></v-spacer>
-        <v-icon color="white">fa-search</v-icon>
-        <v-spacer></v-spacer>
-        <v-icon color="white">fa-info</v-icon>
-    
-     
-    </v-toolbar>
-    <div class="row" style="background:#4441f4; background-size:cover">
-    <div class="column left">
-      <p style="color:white">{{eventLocationString}} <br>
-      {{eventTimeString}}</p>
-    </div>
-    <div class="column right">
-      <v-icon color="white">fa-map-marker-alt</v-icon>
-    </div>
-	</div>
-	
-  <v-container fluid grid-list-xl >
-    <v-layout row align-center justify-center fill-height>
-      <v-flex d-flex xs6 sm6 md4>
-       <v-card>
-        <v-flex text-xs-center>
-          <v-icon x-large color="red darken-2" right>fa-book</v-icon>
-          <div style="color:#f44242	">Materials</div>
-        </v-flex>
-       </v-card>
+  <div>
+    <top-bar :heading="selectedEvent.name.toUpperCase()" backlink></top-bar>
+    <v-layout class="primary white--text" row>
+      <v-flex xs10>
+        <v-card-text>
+          <span>{{eventLocationString}}</span>
+          <br>
+          {{eventTimeString}}
+        </v-card-text>
       </v-flex>
-      <v-flex d-flex xs6 sm6 md4>
-       <v-card to="/agenda">
-         <v-flex text-xs-center>
-            <v-icon x-large color="red darken-2" right>fa-calendar-minus</v-icon>
-            <div style="color:#f44242	">Agenda</div>
-          </v-flex>
-       </v-card>	
-      </v-flex>
-    </v-layout >
-      <v-layout row align-center justify-center fill-height>
-      <v-flex d-flex xs6 sm6 md4>
-       <v-card >
-        <v-flex text-xs-center>
-          <v-icon x-large color="red darken-2" right>fa-flag</v-icon>
-          <div style="color:#f44242	">My Progress</div>
-        </v-flex>
-       </v-card>
-      </v-flex>
-      <v-flex d-flex xs6 sm6 md4>
-       <v-card height="50%" to="/events/feedback">
-         <v-flex text-xs-center>
-          <v-icon x-large color="red darken-2" right>fa-comment-alt</v-icon>
-          <div style="color:#f44242	">Feedback</div>
-          </v-flex>
-       </v-card>	
+      <v-flex xs2>
+        <v-card-text>
+          <v-btn class="ma-0 pa-0" dark small fab flat>
+            <v-icon>fa-map-marker-alt</v-icon>
+          </v-btn>
+        </v-card-text>
       </v-flex>
     </v-layout>
-    <v-layout row align-center justify-center fill-height>
-      <v-flex d-flex xs6 sm6 md4>
-       <v-card>
-        <v-flex text-xs-center>
-          <v-icon x-large color="red darken-2" right>fa-share-alt</v-icon>
-          <div style="color:#f44242	">Event Wall</div>
+
+    <v-container grid-list-xl>
+      <v-layout row wrap>
+        <v-flex xs6>
+          <v-card class="elevation-5">
+            <v-flex text-xs-center>
+              <v-icon x-large color="primary" right>fa-book</v-icon>
+              <div>Materials</div>
+            </v-flex>
+          </v-card>
         </v-flex>
-       </v-card>
-      </v-flex>
-      <v-flex d-flex xs6 sm6 md4>
-       <v-card>
-         <v-flex text-xs-center>
-          <v-icon x-large color="red darken-2" right>fa-users</v-icon>
-          <div style="color:#f44242	">Attendees</div>
+        <v-flex xs6>
+          <v-card class="elevation-5" to="/agenda">
+            <v-flex text-xs-center>
+              <v-icon x-large color="primary" right>fa-calendar-minus</v-icon>
+              <div>Agenda</div>
+            </v-flex>
+          </v-card>
         </v-flex>
-       </v-card>	
-      </v-flex>
-    </v-layout>
-  </v-container>
-   </div>
-   
+        <v-flex xs6>
+          <v-card class="elevation-5">
+            <v-flex text-xs-center>
+              <v-icon x-large color="primary" right>fa-flag</v-icon>
+              <div>My Progress</div>
+            </v-flex>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs6>
+          <v-card class="elevation-5" to="/events/feedback">
+            <v-flex text-xs-center>
+              <v-icon x-large color="primary" right>fa-comment-alt</v-icon>
+              <div>Feedback</div>
+            </v-flex>
+          </v-card>
+        </v-flex>
+        <v-flex xs6>
+          <v-card class="elevation-5">
+            <v-flex text-xs-center>
+              <v-icon x-large color="primary" right>fa-share-alt</v-icon>
+              <div>Event Wall</div>
+            </v-flex>
+          </v-card>
+        </v-flex>
+        <v-flex xs6>
+          <v-card class="elevation-5">
+            <v-flex text-xs-center>
+              <v-icon x-large color="primary" right>fa-users</v-icon>
+              <div>Attendees</div>
+            </v-flex>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import topBar from "../../components/TopBar";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
-      eventLocationString: '',
-      eventTimeString: ''
-    }
+      eventLocationString: "",
+      eventTimeString: ""
+    };
   },
 
   computed: {
-    ...mapState('events', [('selectedEvent')])
+    ...mapState("events", ["selectedEvent"])
   },
 
   created() {
@@ -108,11 +95,17 @@ export default {
 
   methods: {
     setEventDetails() {
-      this.eventLocationString = `${this.selectedEvent.venueName}, ${this.selectedEvent.venueAddress1}`;
-      this.eventTimeString = `${this.selectedEvent.startDate} . ${this.selectedEvent.startTime} to ${this.selectedEvent.endTime}`
+      this.eventLocationString = `${this.selectedEvent.venueName}, ${
+        this.selectedEvent.venueAddress1
+      }`;
+      this.eventTimeString = `${this.selectedEvent.startDate} . ${
+        this.selectedEvent.startTime
+      } to ${this.selectedEvent.endTime}`;
     }
+  },
+  components: {
+    topBar
   }
-
 };
 </script>
 

@@ -1,10 +1,11 @@
 <template>
   <div>
-    <v-toolbar flat dense>
+    <top-bar heading="MY BOOKMARKS" backlink></top-bar>
+    <!-- <v-toolbar flat dense>
       <v-spacer></v-spacer>
       <v-toolbar-title class="pt-2 secondary--text">Saved Bookmarks</v-toolbar-title>
       <v-spacer></v-spacer>
-    </v-toolbar>
+    </v-toolbar>-->
     <v-list two-line>
       <v-list-tile
         class="elevation-5 primary white--text mb-2"
@@ -29,6 +30,7 @@
   </div>
 </template>
 <script>
+import topBar from "../components/TopBar";
 export default {
   data() {
     return {
@@ -43,6 +45,9 @@ export default {
         }
       ]
     };
+  },
+  components: {
+    topBar
   }
 };
 </script>
