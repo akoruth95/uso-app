@@ -45,6 +45,21 @@ const router = new Router({
       component: () => import("./pages/Events/EventDetails.vue")
     },
     {
+      path: '/speakerbio',
+      name: 'speakerbio',
+      component: () => import('./pages/Speakerbio.vue')
+    },
+    {
+      path: '/attendeelist',
+      name: 'attendeelist',
+      component: () => import('./pages/AttendeeList.vue')
+    },
+    {
+      path: '/eventMaterialHome',
+      name: 'eventMaterialHome',
+      component: () => import('./pages/EventMaterialHome.vue')
+    },
+    {
       path: "/events/feedback",
       name: "feedback",
       component: () => import("./pages/Events/Feedback.vue")
