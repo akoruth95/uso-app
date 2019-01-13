@@ -24,12 +24,8 @@
          </v-flex>
         </v-layout>
         <v-layout class="session-info-actions">
-            <v-flex xs4 offset-xs1>
-              Speaker image
-              <!-- TODO: need to get speaker name, just getting speaker id now -->
-            </v-flex>
-            <v-flex xs8>
-              <h3>Speaker: Robert O'Neill</h3>
+           <v-flex xs8>
+              <h3><router-link to="/speakerbio">Speaker: Robert O'Neill</router-link></h3>
               <!-- TODO: need to get speaker name, just getting speaker id now -->
             </v-flex>
         </v-layout>
