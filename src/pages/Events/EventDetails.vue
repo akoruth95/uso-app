@@ -2,14 +2,14 @@
   <div>
     <v-layout class="header ma-0 py-2 white--text location-bar" row>
       <v-flex xs10>
-        <v-card-text class="my-0 pa-0 px-2">
-          <span>{{ eventLocationString }}</span>
+        <v-card-text>
+          <span>{{eventLocationString}}</span>
           <br>
           {{eventTimeString}}
         </v-card-text>
       </v-flex>
       <v-flex xs2>
-        <v-card-text class="my-0 pa-0">
+        <v-card-text>
           <v-btn class="ma-0 pa-0" dark small fab flat>
             <v-icon>fa-map-marker-alt</v-icon>
           </v-btn>
