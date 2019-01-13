@@ -2,14 +2,18 @@
   <div>
     <v-layout class="primary white--text location-bar" row>
       <v-flex xs10>
-        <v-card-text class="event-location">
+        <v-card-text>
           <span>{{eventLocationString}}</span>
           <br>
           {{eventTimeString}}
         </v-card-text>
       </v-flex>
-      <v-flex align-self-center xs2>
-        <v-icon medium>fa-map-marker-alt</v-icon>
+      <v-flex xs2>
+        <v-card-text>
+          <v-btn class="ma-0 pa-0" dark small fab flat>
+            <v-icon>fa-map-marker-alt</v-icon>
+          </v-btn>
+        </v-card-text>
       </v-flex>
     </v-layout>
 
@@ -32,7 +36,6 @@
 import { mapActions, mapState } from "vuex";
 import { eventOptions } from "../../utils/constants";
 export default {
-  // TODO: clean up html
   data() {
     return {
       eventLocationString: "",
@@ -63,7 +66,6 @@ export default {
       } to ${this.selectedEvent.endTime}`;
     }
   }
-
 };
 </script>
 
