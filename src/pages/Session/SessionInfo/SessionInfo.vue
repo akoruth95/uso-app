@@ -1,60 +1,66 @@
 <template>
-  <v-container class="session-info-container" fluid grid-list-md text-xs-center>
-    <v-layout class="session-info-img" row wrap>
-      <v-flex class="session-info-img-container" xs12>
-        <v-img
-          class="white--text"
-          height="200px"
-          src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-        ></v-img>
-      </v-flex>
-    </v-layout>
-    <br>
-    <v-layout class="session-info-title" row wrap>
-      <v-flex xs12>
-        <h1>
-          <strong>{{sessionInfo.name}}</strong>
-        </h1>
-      </v-flex>
-    </v-layout>
-    <!-- <v-layout class="session-info-description" row wrap>
-      <v-flex style="heigth:auto"></v-flex>
-    </v-layout>-->
-    <div class="primary text-xs-left">{{sessionInfo.description}}</div>
-    <v-layout class="session-info-actions">
-      <v-flex xs8>
-        <a href="#/speakerbio" class="subheading white--text">Speaker: Robert O'Neill</a>
-        <!-- TODO: need to get speaker name, just getting speaker id now -->
-      </v-flex>
-    </v-layout>
-    <br>
-    <v-layout class="session-info-speaker" row wrap>
-      <v-flex xs4 offset-xs4>
-        <v-btn class="elevation-5" v-on:click="callActivity('like')" icon>
-          <v-icon small color="white">fas fa-thumbs-up</v-icon>
-        </v-btn>
-        {{likeCount}}
-      </v-flex>
-      <v-flex xs4>
-        <v-btn class="elevation-5" v-on:click="callActivity('bookmark')" icon>
-          <v-icon small color="white">fas fa-bookmark</v-icon>
-        </v-btn>
-        {{bookmarkCount}}
-      </v-flex>
-    </v-layout>
-    <br>
-    <v-layout class="session-info-buttons pb-4" row wrap>
-      <v-flex xs4>
-        <v-btn class="session-info-btn secondary" small>Resources</v-btn>
-      </v-flex>
-      <v-flex xs4>
-        <v-btn class="session-info-btn secondary" small to="/take-notes">Take Notes</v-btn>
-      </v-flex>
-      <v-flex xs4>
-        <v-btn class="session-info-btn secondary" small to="/ask-questions">Questions</v-btn>
-      </v-flex>
-    </v-layout>
-  </v-container>
+      <v-container class="session-info-container" fluid grid-list-md text-xs-center>
+        <v-layout class="session-info-img" row wrap>
+          <v-flex class="session-info-img-container" xs12>
+            <v-img
+              class="white--text"
+              height="200px"
+              src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+            >
+            </v-img>
+          </v-flex>
+        </v-layout>
+        <br>
+        <v-layout class="session-info-title" row wrap>
+          <v-flex xs12>
+            <h1><strong>{{sessionInfo.name}}</strong></h1>
+        </v-flex>
+        </v-layout>
+        <v-layout class="session-info-description" row wrap>
+          <v-flex xs12>
+            <p>
+              {{sessionInfo.description}}
+            </p>
+         </v-flex>
+        </v-layout>
+        <v-layout class="session-info-actions">
+            <v-flex xs4 offset-xs1>
+              Speaker image
+              <!-- TODO: need to get speaker name, just getting speaker id now -->
+            </v-flex>
+            <v-flex xs8>
+              <h3>Speaker: Robert O'Neill</h3>
+              <!-- TODO: need to get speaker name, just getting speaker id now -->
+            </v-flex>
+        </v-layout>
+        <br>
+        <v-layout class="session-info-speaker" row wrap>
+            <v-flex xs4 offset-xs4>
+                <v-btn class="primary elevation-5" v-on:click="callActivity('like')" icon>
+                    <v-icon small color="white">fas fa-thumbs-up</v-icon>
+                </v-btn>
+                {{likeCount}}
+            </v-flex>
+            <v-flex xs4>
+                <v-btn class="primary elevation-5" v-on:click="callActivity('bookmark')" icon>
+                    <v-icon small color="white">fas fa-bookmark</v-icon>
+                </v-btn>
+                {{bookmarkCount}}
+            </v-flex>
+        </v-layout>
+        <br>
+        <v-layout class="session-info-buttons" row wrap>
+            <v-flex xs4>
+              <v-btn class="session-info-btn primary" small>Resources</v-btn>
+            </v-flex>
+            <v-flex xs4>
+              <v-btn class="session-info-btn primary" small to="/take-notes">Take Notes</v-btn>
+            </v-flex>
+            <v-flex xs4> 
+              <v-btn class="session-info-btn primary" small>Questions</v-btn>
+            </v-flex>
+        </v-layout>
+      </v-container>
 </template>
 
 <script>
