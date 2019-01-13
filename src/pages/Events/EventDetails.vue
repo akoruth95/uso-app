@@ -16,15 +16,14 @@
         </v-card-text>
       </v-flex>
     </v-layout>
-    <br>
-    <br>
-    <v-container grid-list-xl>
+
+<v-container grid-list-xl>
       <v-layout row wrap>
         <v-flex xs6 v-for="(option, index) in options" :key="index">
-          <v-card flat color="primary" :to="option.route">
-            <v-flex text-xs-center class="primaryLight elevation-10">
-              <v-icon x-large>{{ option.icon }}</v-icon>
-              <div>{{ option.name}}</div>
+          <v-card class="elevation-5 primary" :to="option.route">
+            <v-flex text-xs-center>
+              <v-icon x-large white right>{{option.icon}}</v-icon>
+              <div>{{option.name}}</div>
             </v-flex>
           </v-card>
         </v-flex>
