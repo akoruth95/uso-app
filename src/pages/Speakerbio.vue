@@ -1,12 +1,51 @@
 <template>
-  <v-container fluid grid-list-sm>
-    <h1>Robert O'Neill</h1>
-      <v-img :aspect-ratio="16/9" src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2018/02/09/12/robert-o-neil.jpg">
-      </v-img>
+  <v-container class="text-xs-center" fluid grid-list-lg>
+    <h1>{{speakerInfo.firstName}} {{speakerInfo.lastName}}</h1>
+      <!-- <v-img :aspect-ratio="16/9" src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2018/02/09/12/robert-o-neil.jpg">
+      </v-img> -->
+
+      <v-avatar size="200px"><v-img :aspect-ratio="16/9" src="https://static.independent.co.uk/s3fs-public/thumbnails/image/2018/02/09/12/robert-o-neil.jpg">
+      </v-img></v-avatar>
+
       <h2>
-          Former seal team Six leader, Naval Special warfare Development Group, and New york times best selling Author. 
-          One of the nation's most decorated veterans who lives by mantra never quit
+           {{ speakerInfo.speakerBio }}
       </h2>
-      <span>Message: {{ msg }}</span>
+      <!-- <span>Message: {{ speakerInfo.speakerBio }}</span> -->
   </v-container>
 </template>
+
+
+<script>
+        import { mapActions, mapState } from 'vuex';
+        import { attendeesService } from '../services';
+
+        export default {
+            data () {
+                return {
+                    speakerInfo:{},
+                }
+            },
+            created() {
+              this.getSpeakerInfo();
+              this.setNewHeading('Speaker Bio');
+              this.setShowBackButton(true);
+              this.setNewBacklink('/session-info');
+            },
+            computed: {
+                ...mapState({
+                    session: state => state.sessions.selectedSession,
+                }),
+            },
+            methods: {
+                ...mapActions('common', ['setNewHeading', 'setShowBackButton', 'setNewBacklink']),
+
+                getSpeakerInfo(){
+                  attendeesService.getAttendeeInfo(this.session.speakerId).then(result => {
+                    this.speakerInfo = result.data;
+                    console.log(result.data);
+                    });
+                }
+            }
+        }
+
+</script>
