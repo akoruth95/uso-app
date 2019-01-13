@@ -15,6 +15,6 @@ function getAttendees(eventId) {
 
 
 //get attendee info
-function getAttendeeInfo(eventId, attendeeId) {
-    return request.get(CONFIG.api.events + `/events/${eventId}/attendees/${attendeeId}/`)
+function getAttendeeInfo(attendeeId) {
+    return request.get(CONFIG.api.users + `/users/${attendeeId}/`)
 }
