@@ -59,7 +59,6 @@
 <script>
 import topBar from "../../components/TopBar";
 import { mapActions, mapState } from "vuex";
-
 export default {
   data() {
     return {
@@ -72,7 +71,6 @@ export default {
       ],
     };
   },
-
   computed: {
     ...mapState("events", ["selectedEvent"]),
     ...mapState({
@@ -88,14 +86,12 @@ export default {
             return this.userInfo.lastName;
         }
   },
-
   created() {
     this.setEventDetails();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
     this.getUserInfo();
   },
-
   methods: {
     ...mapActions('common', ['setNewHeading', 'setShowBackButton', ]),
     ...mapActions('account', ['getUserInfo']),
@@ -119,11 +115,9 @@ export default {
   float: left;
   padding: 10px;
 }
-
 .left {
   width: 80%;
 }
-
 .right {
   width: 20%;
 }

@@ -23,17 +23,14 @@ export default {
       usernotes: ''
     };
   },
-
   computed: {
     ...mapState("events", ["selectedEvent"])
   },
-
   created() {
     this.setEventDetails();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
   },
-
   methods: {
     ...mapActions('common', ['setNewHeading', 'setShowBackButton']),
     setEventDetails() {
@@ -60,11 +57,9 @@ export default {
   float: left;
   padding: 10px;
 }
-
 .left {
   width: 80%;
 }
-
 .right {
   width: 20%;
 }
