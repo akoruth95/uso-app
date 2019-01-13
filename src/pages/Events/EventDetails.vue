@@ -33,7 +33,7 @@
           </v-card>
         </v-flex>
         <v-flex xs6>
-          <v-card class="elevation-5 primary">
+          <v-card class="elevation-5 primary" to="/events/progress">
             <v-flex text-xs-center>
               <v-icon x-large white right>fa-flag</v-icon>
               <div>My Progress</div>

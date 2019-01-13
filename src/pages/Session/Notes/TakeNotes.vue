@@ -1,43 +1,36 @@
 <template>
-  <div>
-    
-
+  <div style="margin:10px">
     <v-container fluid grid-list-xl >
     <div>
-        <h1>Take Notes about the session</h1>
-        <p style="color:#f80750"> Use the Space below to write your own notes about the session </p>
-        <textarea id="ip3"/>
-    </div>
-    <div align="center">
+        <h2 class="whitetext">Take Notes about the session</h2>
+        <p class="whitetext"> Use the Space below to write your own notes about the session </p>
+        <VueTrix color="white" v-model="usernotes"/>
+      <div align="center">
         <v-btn style="background-color: #f80750" @click="submit">save</v-btn>
+      </div>
     </div>
   </v-container>
-  </div>
+ </div>
 </template>
 
 <script>
 import topBar from "../../../components/TopBar";
 import { mapActions, mapState } from "vuex";
+import VueTrix from 'vue-trix';
 export default {
   data() {
     return {
-      satisfactionRating: 0,
-      objectivesRating: 0,
-      suggestionRating: 0,
-      comments: ''
+      usernotes: ''
     };
   },
-
   computed: {
     ...mapState("events", ["selectedEvent"])
   },
-
   created() {
     this.setEventDetails();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
   },
-
   methods: {
     ...mapActions('common', ['setNewHeading', 'setShowBackButton']),
     setEventDetails() {
@@ -48,26 +41,13 @@ export default {
         this.selectedEvent.startTime
       } to ${this.selectedEvent.endTime}`;
     },
-    setSatisfactionRating: function(rating) {
-        this.satisfactionRating = rating;
-    },
-    setObjectivesRating: function(rating) {
-        this.objectivesRating = rating;
-    },
-    setSuggestionRating: function(rating) {
-        this.suggestionRating = rating;
-    },
     submit: function() {
-        console.log("satisfactionRating = " + this.satisfactionRating);
-        console.log("objectivesRating = " + this.objectivesRating);
-        console.log("suggestionRating = " + this.suggestionRating);
-        console.log("comments = " + this.comments);
+        console.log("Notes = " + this.usernotes);
     }
   },
   components: {
     topBar,
-    StarRating,
-    Rating
+    VueTrix
   }
 };
 </script>
@@ -77,11 +57,9 @@ export default {
   float: left;
   padding: 10px;
 }
-
 .left {
   width: 80%;
 }
-
 .right {
   width: 20%;
 }
@@ -93,22 +71,31 @@ export default {
 body {
   font-family: 'Raleway', sans-serif;
 }
-h3,h1 {
-  color: #f80750;
+.whitetext {
+  color: white;
   font-family: 'Raleway', sans-serif;
-}
-#ip2 {
-    border-radius: 25px;
-    border: 2px solid #f80750;
-    padding: 10px; 
-    width: 95%;
-    height: 50px;    
 }
 #ip3 {
     border-radius: 25px;
-    border: 2px solid #f80750;
+    border: 2px solid white;
     padding: 10px; 
     width: 95%;
     height: 350px;    
+}
+trix-toolbar .trix-button-group button {
+  background-color: white;
+}
+trix-editor {
+    position:relative;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    margin: 0;
+    padding: 0.4em 0.6em;
+    min-height: calc(100vh * .5);
+    outline: none;
+}
+.btn {
+    bottom: 4%;
+    right:10%;
 }
 </style>

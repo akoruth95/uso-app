@@ -54,7 +54,7 @@
               <v-btn class="session-info-btn primary" small>Resources</v-btn>
             </v-flex>
             <v-flex xs4>
-              <v-btn class="session-info-btn primary" small>Take Notes</v-btn>
+              <v-btn class="session-info-btn primary" small to="/take-notes">Take Notes</v-btn>
             </v-flex>
             <v-flex xs4> 
               <v-btn class="session-info-btn primary" small>Questions</v-btn>
