@@ -9,7 +9,7 @@
       <v-layout row wrap>
       
         <v-flex  v-for="attendee in attendeeList" :key="attendee.attendee_id" xs4>
-          <v-img src="attendee.photo_link"><div class="fill-height bottom-gradient">{{attendee.first_name}} {{attendee.last_name}}</div></v-img>
+          <v-img src="https://cdn.vuetifyjs.com/images/parallax/material2.jpg"><div class="fill-height bottom-gradient">{{attendee.first_name}} {{attendee.last_name}}</div></v-img>
         </v-flex>
 
       </v-layout>
@@ -34,6 +34,8 @@
             created() {
               this.getList();
               this.setNewHeading('Attendee List');
+              this.setShowBackButton(true);
+              this.setNewBacklink('/event/details');
             },
             computed: {
                 ...mapState({
@@ -41,8 +43,8 @@
                 }),
             },
             methods: {
-                  ...mapActions('common', ['setNewHeading']),
-                ...mapActions('events', ['getAttendees']),
+                ...mapActions('common', ['setNewHeading', 'setShowBackButton', 'setNewBacklink']),
+                
                 getList(){
                     
                   attendeesService.getAttendees(this.event.event_id).then(result => {
