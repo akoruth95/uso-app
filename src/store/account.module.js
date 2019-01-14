@@ -158,7 +158,9 @@ const mutations = {
     logoutSuccess(state) {
         localStorage.removeItem(USERID);
         localStorage.removeItem(USERINFO);
-        state.status = {}
+        state.status = {
+            loggedIn: false
+        }
         state.userId = null;
         state.userInfo = null;
     },
