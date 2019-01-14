@@ -8,6 +8,7 @@ const USERID = 'userId';
 const USERINFO = 'userInfo';
 
 const state = {
+    notifications: [],
     status: {
         loggedIn: !isNullOrUndefined(localStorage.getItem(USERID)),
         registered: false
@@ -58,13 +59,14 @@ const actions = {
             }
         )
     },
-    getNotifications() {
-        // TODO
+    getNotifications({commit, dispatch}) {
         userService.getNotifications().then(
             response => {
-                return response.data;
+                commit('getNotifications', response.data);
             }, error => {
                 Vue.$log.error(error.message);
+                let message = 'There was a problem retrieving notifications. Please try again later.'
+                dispatch('alert/error', message, {root: true});
             }
         )
     },
@@ -142,6 +144,9 @@ const actions = {
 };
 
 const mutations = {
+    getNotifications(state, data) {
+        state.notifications = data;
+    },
     getUserInfo(state, data) {
         const newUser = createUser(data);
         localStorage.setItem(USERINFO, newUser);
@@ -181,12 +186,13 @@ function createUser(userInfo) {
         userInfo.firstName,
         userInfo.lastName,
         userInfo.nickName,
-        userInfo.phone,
+        userInfo.phoneNumber,
         userInfo.state,
-        userInfo.streetAddress,
+        userInfo.address1,
+        userInfo.address2,
         userInfo.userId,
-        userInfo.profilePublic,
-        userInfo.profileUrl,
+        userInfo.shareProfile,
+        userInfo.photoLink,
         userInfo.zip
     );
     return newUser;
