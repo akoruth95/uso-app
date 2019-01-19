@@ -97,7 +97,6 @@ export default {
       eventId: ''
     };
   },
-
   computed: {
     ...mapState("events", ["selectedEvent"]),
     ...mapState('account', [('userId')]),
@@ -105,14 +104,12 @@ export default {
           userId: state => state.account.userId
     })
   },
-
   created() {
     this.setEventDetails();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
     this.setNewBacklink('/event/details');
   },
-
   methods: {
     ...mapActions('common', ['setNewBacklink', 'setNewHeading', 'setShowBackButton']),
     setEventDetails() {
@@ -150,11 +147,9 @@ export default {
   float: left;
   padding: 10px;
 }
-
 .left {
   width: 80%;
 }
-
 .right {
   width: 20%;
 }
