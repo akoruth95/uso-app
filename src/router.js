@@ -118,9 +118,9 @@ const router = new Router({
       component: () => import("./pages/Session/Questions/AskQuestions.vue")
     },
     {
-      path: "/setup",
-      name: "setup",
-      component: () => import("./pages/Account/Setup.vue"),
+      path: '/setup',
+      name: 'setup',
+      component: () => import('./pages/Account/Setup.vue'),
       beforeEnter: function(to, from, next) {
         if (account.state.status.registered) {
           next();
