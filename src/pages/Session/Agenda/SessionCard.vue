@@ -1,21 +1,21 @@
 <template>
-    <v-list three-line class="primary">
-        <v-list-tile>
-            <v-list-tile-content>
-                <v-list-tile-title>{{session.name}}</v-list-tile-title>
-                <v-list-tile-sub-title>Speaker Name</v-list-tile-sub-title>
-                <v-list-tile-sub-title>{{session.startTime}} - {{session.endTime}} | {{session.location}}</v-list-tile-sub-title>
-            </v-list-tile-content>
-            <v-list-tile-avatar>
-                <v-badge>
-                    <v-btn icon>
-                        <v-icon small color="white">fas fa-thumbs-up</v-icon>
-                        {{likeCount}}
-                    </v-btn>
-                </v-badge>
-            </v-list-tile-avatar>
-        </v-list-tile>
-    </v-list> 
+  <v-list three-line class="agenda-text">
+    <v-list-tile>
+      <v-list-tile-content>
+        <v-list-tile-title>{{ session.name }}</v-list-tile-title>
+        <v-list-tile-sub-title>Speaker Name</v-list-tile-sub-title>
+        <v-list-tile-sub-title>{{session.startTime}} - {{session.endTime}} | {{session.location}}</v-list-tile-sub-title>
+      </v-list-tile-content>
+      <v-list-tile-avatar>
+        <v-badge>
+          <v-btn icon>
+            <v-icon small color="white">fas fa-thumbs-up</v-icon>
+            {{likeCount}}
+          </v-btn>
+        </v-badge>
+      </v-list-tile-avatar>
+    </v-list-tile>
+  </v-list>
 </template>
 
 <script>
@@ -72,5 +72,8 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.agenda-text {
+  background-color: #0077ff3b;
 }
 </style>
