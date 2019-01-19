@@ -20,7 +20,7 @@
 <v-container grid-list-xl>
       <v-layout row wrap>
         <v-flex xs6 v-for="(option, index) in options" :key="index">
-          <v-card class="elevation-5 primary" :to="option.route">
+          <v-card class="elevation-5 primary" to="/eventMaterialHome">
             <v-flex text-xs-center>
               <v-icon x-large right>fa-book</v-icon>
               <div>Materials</div>
