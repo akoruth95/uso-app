@@ -1,8 +1,17 @@
 <template>
   <v-app dark>
-    <top-bar></top-bar>
-    <v-content>
-      <div class="text-xs-center"><v-alert transition="slide-y-transition" style="position: absolute; z-index: 2; width: 100%;" v-if="alert.message" :value="true" :type="alert.type" dismissible>{{alert.message}}</v-alert></div>
+    <top-bar v-if="loggedIn"></top-bar>
+    <v-content class="primary">
+      <div class="text-xs-center">
+        <v-alert
+          transition="slide-y-transition"
+          style="position: absolute; z-index: 2; width: 100%;"
+          v-if="alert.message"
+          :value="true"
+          :type="alert.type"
+          dismissible
+        >{{ alert.message }}</v-alert>
+      </div>
       <transition name="fade">
         <router-view/>
       </transition>
@@ -19,10 +28,7 @@ import { mapState } from "vuex";
 export default {
   name: "App",
   data() {
-    return {
-      // fab: "home",
-      bottomNav: 0
-    };
+    return { bottomNav: 0 };
   },
   computed: {
     ...mapState({
