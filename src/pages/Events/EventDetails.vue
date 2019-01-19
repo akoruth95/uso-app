@@ -2,23 +2,26 @@
   <div>
     <v-layout class="primary white--text location-bar" row>
       <v-flex xs10>
-        <v-card-text class="event-location">
+        <v-card-text>
           <span>{{eventLocationString}}</span>
           <br>
           {{eventTimeString}}
         </v-card-text>
       </v-flex>
-      <v-flex align-self-center xs2>
-        <v-icon medium>fa-map-marker-alt</v-icon>
+      <v-flex xs2>
+        <v-card-text>
+          <v-btn class="ma-0 pa-0" dark small fab flat>
+            <v-icon>fa-map-marker-alt</v-icon>
+          </v-btn>
+        </v-card-text>
       </v-flex>
     </v-layout>
 
-    <v-container grid-list-xl>
+<v-container grid-list-xl>
       <v-layout row wrap>
         <v-flex xs6 v-for="(option, index) in options" :key="index">
           <v-card class="elevation-5 primary" to="/eventMaterialHome">
             <v-flex text-xs-center>
-
               <v-icon x-large right>fa-book</v-icon>
               <div>Materials</div>
             </v-flex>
@@ -33,7 +36,7 @@
           </v-card>
         </v-flex>
         <v-flex xs6>
-          <v-card class="elevation-5 primary">
+          <v-card class="elevation-5 primary" to="/events/progress">
             <v-flex text-xs-center>
               <v-icon x-large white right>fa-flag</v-icon>
               <div>My Progress</div>
@@ -74,7 +77,6 @@
 import { mapActions, mapState } from "vuex";
 import { eventOptions } from "../../utils/constants";
 export default {
-  // TODO: clean up html
   data() {
     return {
       eventLocationString: "",
@@ -105,7 +107,6 @@ export default {
       } to ${this.selectedEvent.endTime}`;
     }
   }
-
 };
 </script>
 
