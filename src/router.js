@@ -40,7 +40,7 @@ const router = new Router({
       component: () => import("./pages/Events/EventList.vue")
     },
     {
-      path: "/events/material-info",
+      path: "/material-info",
       name: "material-info",
       component: () => import("./pages/MaterialInfo.vue")
     },
