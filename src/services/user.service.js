@@ -32,10 +32,7 @@ function getUserInfo() {
 }
 
 function login(data) {
-    if (!isNaN(parseInt(data.userid))) {
-        data.userid = parseInt(data.userid);
-    }
-    return request.put(baseUrl + '/users', data);
+    return request.post(baseUrl + '/users/login', data);
 }
 
 function register(data) {
