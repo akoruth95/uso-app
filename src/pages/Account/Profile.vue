@@ -32,7 +32,7 @@
                             <v-icon color="white">fa-phone</v-icon>
                         </v-list-tile-action>
                         <v-list-tile-content>
-                            <v-list-tile-title>{{userInfo.phone}}</v-list-tile-title>
+                            <v-list-tile-title>{{phoneString(userInfo.phone)}}</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
                     <v-divider inset></v-divider>
@@ -272,7 +272,7 @@
                 }
             },
         methods: {
-            ...mapActions('account', ['changePassword', 'getUserInfo', 'logout']),
+            ...mapActions('account', ['changePassword', 'getUserInfo', 'logout', 'updateProfile']),
             ...mapActions('alert', ['clear', 'error', 'success']),
             ...mapActions('common', ['setNewHeading']),
             closeDialog() {
@@ -308,6 +308,9 @@
             openFileUpload() {
                 this.$refs.file.click();
             },
+            phoneString(phoneNumber) {
+                return '(' + phoneNumber.slice(0, 3) + ') ' + phoneNumber.slice(3, 6) + '-' + phoneNumber.slice(6, 10);
+            },
             profileStatus(profilePublic) {
                 return profilePublic ? 'public' : 'private';
             },
@@ -323,9 +326,9 @@
                 }
                 if (errorMessage.length > 0) {
                     this.error(errorMessage);
-                } else {
-                    console.log('saveProfile');
-                    console.log(this.profileForm);
+                } else if (this.updateProfile(this.profileForm)) {
+                    this.dialog = false;
+                    this.success('Profile was successfully updated');
                 }
             },
             showChangePassword() {
