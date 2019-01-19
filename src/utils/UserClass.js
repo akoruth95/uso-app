@@ -6,13 +6,14 @@ export class User {
     nickName;
     phone;
     state;
-    streetAddress;
+    streetAddress1;
+    streetAddress2;
     userId;
     profilePublic;
     profileUrl;
     zip;
 
-    constructor(city, email, firstName, lastName, nickName, phone, state, streetAddress, userId, profilePublic, profileUrl, zip) {
+    constructor(city, email, firstName, lastName, nickName, phone, state, streetAddress1, streetAddress2, userId, profilePublic, profileUrl, zip) {
         this.city = city;
         this.email = email;
         this.firstName = firstName;
@@ -20,7 +21,8 @@ export class User {
         this.nickName = nickName;
         this.phone = phone;
         this.state = state;
-        this.streetAddress = streetAddress;
+        this.streetAddress1 = streetAddress1;
+        this.streetAddress2 = streetAddress2;
         this.userId = userId;
         this.profilePublic = profilePublic;
         this.profileUrl = profileUrl;
