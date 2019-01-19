@@ -108,6 +108,11 @@ const router = new Router({
       component: () => import("./pages/Session/Notes/TakeNotes.vue")
     },
     {
+      path: "/ask-questions",
+      name: "ask-questions",
+      component: () => import("./pages/Session/Questions/AskQuestions.vue")
+    },
+    {
       path: '/setup',
       name: 'setup',
       component: () => import('./pages/Account/Setup.vue'),
