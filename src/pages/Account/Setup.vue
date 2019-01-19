@@ -68,10 +68,15 @@
                             </v-text-field>
                             <v-text-field
                                 color="white"
-                                v-model="streetAddress"
+                                v-model="streetAddress1"
                                 :rules="[v => !!v || 'Street address is required']"
-                                label="Street Address"
+                                label="Street Address 1"
                                 required>
+                            </v-text-field>
+                            <v-text-field
+                                color="white"
+                                v-model="streetAddress2"
+                                label="Street Address 2 (optional)">
                             </v-text-field>
                             <v-text-field
                                 color="white"
@@ -208,7 +213,8 @@
                 progress: 0,
                 state: '',
                 stateList: STATELIST,
-                streetAddress: '',
+                streetAddress1: '',
+                streetAddress2: '',
                 zip: ''
             }
         },
