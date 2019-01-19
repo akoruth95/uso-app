@@ -28,7 +28,6 @@
 
 <script>
     import { mapActions, mapState } from 'vuex';
-    import { materialsService } from '../services';
     import store  from '../store';
 
     export default {
