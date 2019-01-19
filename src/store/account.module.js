@@ -73,7 +73,7 @@ const actions = {
     getUserInfo({commit, dispatch}) {
         userService.getUserInfo().then(
             response => {
-                commit('getUserInfo', response.data);
+                commit('saveUserInfo', response.data);
             }, error => {
                 Vue.$log.error(error.message);
                 let message = '';
@@ -140,17 +140,40 @@ const actions = {
                 dispatch('alert/error', 'There was a problem registering. Please try again in a few minutes.', {root: true});
             }
         );
+    },
+    updateProfile({commit, dispatch}, form) {
+        const data = {
+            address1: form.streetAddress1,
+            address2: form.streetAddress2,
+            city: form.city,
+            firstName: form.firstName,
+            lastName: form.lastName,
+            nickName: form.nickName,
+            phoneNumber: form.phone,
+            shareProfile: form.profilePublic,
+            state: form.state,
+            zip: form.zip
+        };
+        userService.updateProfile(data).then(
+            response => {
+                if (response.exit_code) {
+                    Vue.$log.error(response.message);
+                    dispatch('alert/error', response.message, {root: true});
+                } else {
+                    dispatch('getUserInfo');
+                    return true;
+                }
+            }, error => {
+                Vue.$log.error(error.message);
+                dispatch('alert/error', 'There was a problem updating your profile. Please try again in a few minutes.', {root: true});
+            }
+        );
     }
 };
 
 const mutations = {
     getNotifications(state, data) {
         state.notifications = data;
-    },
-    getUserInfo(state, data) {
-        const newUser = createUser(data);
-        localStorage.setItem(USERINFO, newUser);
-        state.userInfo = newUser;
     },
     loginFailure(state) {
         state.status.loggedIn = false;
@@ -176,6 +199,11 @@ const mutations = {
         localStorage.setItem(USERID, userId);
         state.status.registered = true;
         state.userId = userId;
+    },
+    saveUserInfo(state, data) {
+        const newUser = createUser(data);
+        localStorage.setItem(USERINFO, newUser);
+        state.userInfo = newUser;
     }
 };
 
