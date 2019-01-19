@@ -9,7 +9,7 @@
                                 <!-- <v-list-tile-avatar>
                                     <v-icon>fa-{{icons[b.type]}}</v-icon>
                                 </v-list-tile-avatar> -->
-                                <v-list-tile-content @click="$router.push(b.link)">
+                                <v-list-tile-content @click="selectMaterial(b.material_id)">
                                     <v-list-tile-title>{{b.name}}</v-list-tile-title>
                                      <v-list-tile-sub-title>{{b.description}}</v-list-tile-sub-title>
                                 </v-list-tile-content>
@@ -29,37 +29,32 @@
 <script>
     import { mapActions, mapState } from 'vuex';
     import { materialsService } from '../services';
+    import store  from '../store';
 
     export default {
-        data () {
-            return {
-                materialList:[]
-            }
-        },
-
+        
         created() {
             this.setNewHeading('Materials');
-            this.getList();
-            this.setShowBackButton(true);
+            this.getMaterials(this.event.event_id);
+            this.setShowBackButton(true);   
             this.setNewBacklink('/event/details');
         },
 
         computed: {
             ...mapState({
                 event: state => state.events.selectedEvent,
+                materialList : state => state.materials.materialList,
+                selectedMaterial : state => state.materials.selectedMaterial,
+
             }),
         },
 
         methods: {
             ...mapActions('common', ['setNewHeading', 'setShowBackButton', 'setNewBacklink']),
-            
-            getList(){
-                console.log(this.event);
-
-                materialsService.getMaterials(this.event.event_id).then(result => {
-                this.materialList = result.data;
-                console.log(result.data);
-                });
+            ...mapActions('materials', ['getMaterials']),
+            selectMaterial(material_id){
+                store.commit('materials/setSelectedMaterial', material_id);
+                this.$router.push({ path: "material-info" });
             }
         }
         
