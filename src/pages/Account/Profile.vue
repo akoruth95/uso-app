@@ -32,7 +32,7 @@
                             <v-icon color="white">fa-phone</v-icon>
                         </v-list-tile-action>
                         <v-list-tile-content>
-                            <v-list-tile-title>{{phone}}</v-list-tile-title>
+                            <v-list-tile-title>{{userInfo.phone}}</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
                     <v-divider inset></v-divider>
@@ -41,7 +41,7 @@
                             <v-icon color="white">fa-envelope</v-icon>
                         </v-list-tile-action>
                         <v-list-tile-content>
-                            <v-list-tile-title>{{email}}</v-list-tile-title>
+                            <v-list-tile-title>{{userInfo.email}}</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
                     <v-divider inset></v-divider>
@@ -50,8 +50,9 @@
                             <v-icon color="white">fa-map-marker-alt</v-icon>
                         </v-list-tile-action>
                         <v-list-tile-content>
-                            <v-list-tile-title>{{streetAddress}}</v-list-tile-title>
-                            <v-list-tile-sub-title>{{city}}, {{state}} {{zip}}</v-list-tile-sub-title>
+                            <v-list-tile-title>{{userInfo.streetAddress1}}</v-list-tile-title>
+                            <v-list-tile-sub-title>{{userInfo.streetAddress2}}</v-list-tile-sub-title>
+                            <v-list-tile-sub-title>{{userInfo.city}}, {{userInfo.state}} {{userInfo.zip}}</v-list-tile-sub-title>
                         </v-list-tile-content>
                     </v-list-tile>
                     <v-divider inset></v-divider>
@@ -121,10 +122,15 @@
                             </v-text-field>
                             <v-text-field
                                 color="white"
-                                v-model="profileForm.streetAddress"
+                                v-model="profileForm.streetAddress1"
                                 :rules="[v => !!v || 'Street address is required']"
-                                label="Street Address"
+                                label="Street Address 1"
                                 required>
+                            </v-text-field>
+                            <v-text-field
+                                color="white"
+                                v-model="profileForm.streetAddress2"
+                                label="Street Address 2 (optional)">
                             </v-text-field>
                             <v-text-field
                                 color="white"
