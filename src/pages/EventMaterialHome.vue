@@ -36,7 +36,7 @@
         created() {
             this.setNewHeading('Materials');
             this.getMaterials(this.event.event_id);
-            this.setShowBackButton(true);   
+            this.setShowBackButton(true);
             this.setNewBacklink('/event/details');
         },
 
