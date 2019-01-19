@@ -1,13 +1,13 @@
 <template>
     <v-container fluid grid-list-lg>
         <v-layout v-if="notifications.length" row wrap>
-            <v-layout v-for="n in notifications" :key="n.id">
+            <v-layout v-for="n in notifications" :key="n.notificationId">
                 <v-flex xs12>
-                    <v-list three-line class="primary pa-0" :class="notificationClass(n.read)" dark>
+                    <v-list three-line class="primary pa-0" :class="notificationClass(n.notificationRead)" dark>
                         <v-list-tile>
                             <v-list-tile-content>
-                                <v-list-tile-title style="font-size:14px;" class="white--text">{{n.time}}</v-list-tile-title>
-                                <v-list-tile-sub-title style="font-size:16px">{{n.message}}</v-list-tile-sub-title>
+                                <v-list-tile-title style="font-size:14px;" class="white--text">{{n.notifiedTime}}</v-list-tile-title>
+                                <v-list-tile-sub-title style="font-size:16px">{{n.notification}}</v-list-tile-sub-title>
                             </v-list-tile-content>
                             <v-divider></v-divider>
                         </v-list-tile>
@@ -29,31 +29,19 @@
 </style>
 
 <script>
-    import { mapActions } from 'vuex';
+    import { mapActions, mapState } from 'vuex';
     export default {
+        computed: {
+            ...mapState({
+                notifications: state => state.account.notifications
+            })
+        },
         created() {
             this.setNewHeading('My Notifications');
-        },
-        data() {
-            return {
-                notifications: [
-                    {
-                        id: 1,
-                        message: "Just 3 days to go for your Family Reset event. Are you excited? We are!",
-                        read: false,
-                        time: "1 hour ago"
-                        
-                    },
-                    {
-                        id: 2,
-                        message: "The venue for Family Reset has changed. Please check the Events section for details.",
-                        read: true,
-                        time: "1 day ago"
-                    }
-                ]
-            }
+            this.getNotifications();
         },
         methods: {
+            ...mapActions('account', ['getNotifications']),
             ...mapActions('common', ['setNewHeading']),
             notificationClass(readStatus) {
                 if (!readStatus) {

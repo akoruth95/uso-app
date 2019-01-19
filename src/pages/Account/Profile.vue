@@ -59,7 +59,7 @@
                         <v-list-tile-action>
                             <v-icon color="white">fa-user-secret</v-icon>
                         </v-list-tile-action>
-                        <v-list-tile-content>Your profile is {{profileStatus}}</v-list-tile-content>
+                        <v-list-tile-content>Your profile is {{profileStatus(userInfo.profilePublic)}}</v-list-tile-content>
                     </v-list-tile>
                 </v-list>
             </v-flex>
@@ -150,7 +150,7 @@
                             </v-text-field>
                             <v-switch
                                 color="white"
-                                :label="`Your profile is ${profileStatusForm}`" 
+                                :label="`Your profile is ${profileStatus(profileForm.profilePublic)}`" 
                                 v-model="profileForm.profilePublic">
                             </v-switch>
                         </v-form>
@@ -193,7 +193,6 @@
 
 <style scoped>
     .v-divider {
-        /* filter: brightness(100%); */
         border-color: pink;
     }
 </style>
@@ -211,10 +210,11 @@
                 passwordNew: '',
                 passwordNewCopy: '',
                 passwordOld: '',
-                profileForm: {},
+                profileForm: {
+                    profilePublic: false
+                },
                 profileFormValid: false,
                 profileImageFile: null,
-                profilePublic: false,
                 stateList: STATELIST
             }
         },
@@ -254,12 +254,6 @@
                 profileImage() {
                     return (this.userInfo && this.userInfo.profileUrl) ? this.userInfo.profileUrl :
                             require('../../assets/blank-profile.png');
-                },
-                profileStatus() {
-                    return this.userInfo.profilePublic ? 'public' : 'private';
-                },
-                profileStatusForm() {
-                    return this.profileForm.profilePublic ? 'public' : 'private';
                 },
                 state() {
                     return this.userInfo.state;
@@ -307,6 +301,9 @@
             },
             openFileUpload() {
                 this.$refs.file.click();
+            },
+            profileStatus(profilePublic) {
+                return profilePublic ? 'public' : 'private';
             },
             saveProfile() {
                 // TODO
