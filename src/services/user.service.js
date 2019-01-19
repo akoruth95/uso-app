@@ -39,6 +39,10 @@ function register(data) {
     return request.post(baseUrl + '/users', data)
 }
 
+function updateProfile(data) {
+    return request.post(baseUrl + `/users/${store.state.account.userId}/profile`, data);
+}
+
 export const userService = {
     changePassword,
     createProfile,
@@ -47,5 +51,6 @@ export const userService = {
     getNotifications,
     getUserInfo,
     login,
-    register
+    register,
+    updateProfile
 }
