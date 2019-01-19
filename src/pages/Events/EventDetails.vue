@@ -1,29 +1,30 @@
 <template>
   <div>
-    <v-layout class="primary white--text location-bar" row>
+    <v-layout class="header ma-0 py-2 white--text location-bar" row>
       <v-flex xs10>
-        <v-card-text>
-          <span>{{eventLocationString}}</span>
+        <v-card-text class="my-0 pa-0 px-2">
+          <span>{{ eventLocationString }}</span>
           <br>
           {{eventTimeString}}
         </v-card-text>
       </v-flex>
       <v-flex xs2>
-        <v-card-text>
+        <v-card-text class="my-0 pa-0">
           <v-btn class="ma-0 pa-0" dark small fab flat>
             <v-icon>fa-map-marker-alt</v-icon>
           </v-btn>
         </v-card-text>
       </v-flex>
     </v-layout>
-
-<v-container grid-list-xl>
+    <br>
+    <br>
+    <v-container grid-list-xl>
       <v-layout row wrap>
         <v-flex xs6 v-for="(option, index) in options" :key="index">
-          <v-card class="elevation-5 primary" :to="option.route">
-            <v-flex text-xs-center>
-              <v-icon x-large white right>{{option.icon}}</v-icon>
-              <div>{{option.name}}</div>
+          <v-card flat color="primary" :to="option.route">
+            <v-flex text-xs-center class="primaryLight elevation-10">
+              <v-icon x-large>{{ option.icon }}</v-icon>
+              <div>{{ option.name}}</div>
             </v-flex>
           </v-card>
         </v-flex>
@@ -52,11 +53,15 @@ export default {
     this.setEventDetails();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
-    this.setNewBacklink('/events');
+    this.setNewBacklink("/events");
   },
 
   methods: {
-    ...mapActions('common', ['setNewHeading', 'setShowBackButton', 'setNewBacklink']),
+    ...mapActions("common", [
+      "setNewHeading",
+      "setShowBackButton",
+      "setNewBacklink"
+    ]),
     setEventDetails() {
       this.eventLocationString = `${this.selectedEvent.venueName}, ${
         this.selectedEvent.venueAddress1
@@ -70,7 +75,6 @@ export default {
 </script>
 
 <style>
-
 .location-bar {
   margin: 10px 5px 5px 5px;
 }
@@ -98,5 +102,8 @@ p {
   content: "";
   display: table;
   clear: both;
+}
+.header {
+  background-color: #011020;
 }
 </style>

@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from "vue";
 import {
   transitions,
   VAlert,
@@ -29,8 +29,8 @@ import {
   VChip,
   VSubheader,
   Vuetify
-} from 'vuetify'
-import 'vuetify/src/stylus/app.styl'
+} from "vuetify";
+import "vuetify/src/stylus/app.styl";
 Vue.use(Vuetify, {
   components: {
     transitions,
@@ -63,14 +63,15 @@ Vue.use(Vuetify, {
     VToolbar
   },
   theme: {
-    primary: '#bb133e',
-    secondary: '#002147',
-    accent: '#82B1FF',
-    error: '#FF5252',
-    info: '#2196F3',
-    success: '#4CAF50',
-    warning: '#FFC107'
+    primary: "#002147",
+    secondary: "#bb133e",
+    accent: "#82B1FF",
+    error: "#FF5252",
+    info: "#2196F3",
+    success: "#4CAF50",
+    warning: "#FFC107",
+    primaryLight: "#001e42"
   },
   customProperties: true,
-  iconfont: 'fa',
+  iconfont: "fa"
 });
