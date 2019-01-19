@@ -315,7 +315,6 @@
                 return profilePublic ? 'public' : 'private';
             },
             saveProfile() {
-                // TODO
                 this.clear();
                 let errorMessage = '';
                 if (this.profileForm.phone.length !== 10) {
