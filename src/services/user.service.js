@@ -33,7 +33,7 @@ function getUserInfo() {
 
 function login(data) {
     return request.post(baseUrl + '/users/login', data);
- }
+}
 
 function register(data) {
     return request.post(baseUrl + '/users', data)
