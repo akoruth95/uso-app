@@ -141,7 +141,7 @@ const actions = {
             }
         );
     },
-    updateProfile({commit, dispatch}, form) {
+    updateProfile({dispatch}, form) {
         const data = {
             address1: form.streetAddress1,
             address2: form.streetAddress2,
