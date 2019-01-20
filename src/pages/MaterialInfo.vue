@@ -26,7 +26,7 @@
         created() {
             this.setNewHeading('Materials Info');
             this.setShowBackButton(true); 
-            this.setNewBacklink('/eventMaterialHome');
+            this.setNewBacklink('material');
         },
 
         computed: {
