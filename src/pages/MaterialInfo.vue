@@ -35,12 +35,4 @@
             ...mapActions('common', ['setNewHeading', 'setShowBackButton', 'setNewBacklink']),
         }  
     }
-    
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> Kumar (#40)
-=======
->>>>>>> Kumar (#40)
 </script>
