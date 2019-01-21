@@ -16,7 +16,7 @@ export const eventOptions = [
     {
         name: 'My Progress',
         icon: 'fa-flag',
-        route: '/'
+        route: '/events/progress'
     },
     {
         name: 'Feedback',
