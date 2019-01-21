@@ -4,10 +4,18 @@
     <div>
         <h2 class="whitetext">Take Notes about the session</h2>
         <p class="whitetext"> Use the Space below to write your own notes about the session </p>
-        <VueTrix color="white" v-model="usernotes"/>
+        <v-form>
+         <v-text-field id="x" v-model="userNote.note" type="hidden"  name="content"></v-text-field>
+
+          <trix-editor input="x"></trix-editor>
+  
+          <!-- <input id="x" type="hidden" name="content">
+           <VueTrix inputId="x" v-model="userNote.note" /> -->
+          <!-- <trix-editor input="x"></trix-editor> -->
       <div align="center">
-        <v-btn style="background-color: #f80750" @click="submit">save</v-btn>
+        <v-btn style="background-color: #f80750" @click="submit()">save</v-btn>
       </div>
+      </v-form>
     </div>
   </v-container>
  </div>
@@ -20,19 +28,27 @@ import VueTrix from 'vue-trix';
 export default {
   data() {
     return {
-      usernotes: ''
+      userNote: {
+        note : ''
+      }
     };
   },
   computed: {
-    ...mapState("events", ["selectedEvent"])
+    ...mapState("events", ["selectedEvent"]),
+    ...mapState('sessions',['notes'])
   },
   created() {
     this.setEventDetails();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
+    this.getNotes(this.selectedEvent.attendee_id);
+    //Object.assign(this.userNote, this.notes[0]);
+    this.userNote.note=this.notes[0].note.slice(0);
+    //console.log(this.selectedEvent);
   },
   methods: {
     ...mapActions('common', ['setNewHeading', 'setShowBackButton']),
+    ...mapActions('sessions',['getNotes']),
     setEventDetails() {
       this.eventLocationString = `${this.selectedEvent.venueName}, ${
         this.selectedEvent.venueAddress1
@@ -42,8 +58,11 @@ export default {
       } to ${this.selectedEvent.endTime}`;
     },
     submit: function() {
-        console.log("Notes = " + this.usernotes);
-    }
+       // this.clear();
+        
+
+        console.log("Notes = " , this.userNote.note);
+    },
   },
   components: {
     topBar,
