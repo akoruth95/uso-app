@@ -16,16 +16,51 @@
         </v-card-text>
       </v-flex>
     </v-layout>
-    <br>
-    <br>
-    <v-container grid-list-xl>
+    <!-- <br>
+    <br>-->
+    <!-- <v-list>
+      <v-list-tile
+        :style="'height:'+(windowSize.y-200)/6+'px'"
+        v-for="(option, index) in options"
+        :key="index"
+        avatar
+        @click="view"
+      >
+        <v-list-tile-avatar>
+          <v-icon>{{ option.icon }}</v-icon>
+        </v-list-tile-avatar>
+        <v-divider></v-divider>
+      </v-list-tile>
+    </v-list>-->
+    <!-- <v-container grid-list-xl>
       <v-layout row wrap>
-        <v-flex xs6 v-for="(option, index) in options" :key="index">
-          <v-card flat color="primary" :to="option.route">
+        <v-flex v-for="(option, index) in options" :key="index">
+          <v-card xs6 flat color="primary" :to="option.route">
             <v-flex text-xs-center class="primaryLight elevation-10">
               <v-icon x-large>{{ option.icon }}</v-icon>
               <div>{{ option.name}}</div>
             </v-flex>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>-->
+    <v-container grid-list-xl>
+      <v-layout row wrap>
+        <v-flex
+          style="padding: 2px;"
+          class="detail-tiles"
+          xs6
+          v-for="(option, index) in options"
+          :key="index"
+        >
+          <v-card
+            :style="'height:'+(windowSize.y-200)/3+'px'"
+            style="vertical-align:middle;display: table-cell"
+            class="text-xs-center primaryLight grey--text"
+            :to="option.route"
+          >
+            <v-icon color="grey" x-large>{{ option.icon }}</v-icon>
+            <div>{{ option.name}}</div>
           </v-card>
         </v-flex>
       </v-layout>
@@ -41,7 +76,11 @@ export default {
     return {
       eventLocationString: "",
       eventTimeString: "",
-      options: eventOptions
+      options: eventOptions,
+      windowSize: {
+        x: 0,
+        y: 0
+      }
     };
   },
 
@@ -50,6 +89,7 @@ export default {
   },
 
   created() {
+    this.windowSize = { x: window.innerWidth, y: window.innerHeight };
     this.setEventDetails();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
@@ -105,5 +145,9 @@ p {
 }
 .header {
   background-color: #011020;
+}
+.detail-tiles {
+  display: table;
+  background-image: radial-gradient(red, green, blue);
 }
 </style>
