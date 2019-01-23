@@ -33,7 +33,6 @@
   </div>
 </template>
 
-
 <script>
 import { mapActions, mapState } from "vuex";
 import { eventOptions } from "../../utils/constants";
@@ -52,10 +51,14 @@ export default {
     this.setEventDetails();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
-    this.setNewBacklink('/events');
+    this.setNewBacklink("/events");
   },
   methods: {
-    ...mapActions('common', ['setNewHeading', 'setShowBackButton', 'setNewBacklink']),
+    ...mapActions("common", [
+      "setNewHeading",
+      "setShowBackButton",
+      "setNewBacklink"
+    ]),
     setEventDetails() {
       this.eventLocationString = `${this.selectedEvent.venueName}, ${
         this.selectedEvent.venueAddress1
@@ -92,5 +95,8 @@ p {
   content: "";
   display: table;
   clear: both;
+}
+.header {
+  background-color: #011020;
 }
 </style>
