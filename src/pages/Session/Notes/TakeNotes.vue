@@ -4,10 +4,10 @@
     <div>
         <h2 class="whitetext">Take Notes about the session</h2>
         <p class="whitetext"> Use the Space below to write your own notes about the session </p>
-        <v-form>
-         <v-text-field id="x" v-model="userNote.note" type="hidden"  name="content"></v-text-field>
+        <form>
+         <v-text-field id="x" v-model="userNote.note"   name="content"></v-text-field>
 
-          <trix-editor input="x"></trix-editor>
+          <!-- <trix-editor input="x"></trix-editor> -->
   
           <!-- <input id="x" type="hidden" name="content">
            <VueTrix inputId="x" v-model="userNote.note" /> -->
@@ -15,7 +15,7 @@
       <div align="center">
         <v-btn style="background-color: #f80750" @click="submit()">save</v-btn>
       </div>
-      </v-form>
+      </form>
     </div>
   </v-container>
  </div>
@@ -42,8 +42,8 @@ export default {
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
     this.getNotes(this.selectedEvent.attendee_id);
-    //Object.assign(this.userNote, this.notes[0]);
-    this.userNote.note=this.notes[0].note.slice(0);
+    Object.assign(this.userNote, this.notes[0]);
+    //this.userNote.note=this.notes[0].note.slice(0);
     //console.log(this.selectedEvent);
   },
   methods: {
