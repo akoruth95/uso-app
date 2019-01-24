@@ -112,7 +112,7 @@
   </v-container>
 </template>
 
-<style scoped>
+<style >
 .startup-text {
   width: 90%;
   height: 50px;
@@ -128,10 +128,10 @@
 }
 .dialog-bottom-transition-enter-active,
 .dialog-bottom-transition-leave-active {
-  transition-duration: 2s;
+  transition-duration: 1s;
+  transition-timing-function: ease-in-out;
 }
 </style>
-
 <script>
 import { mapActions } from "vuex";
 export default {
