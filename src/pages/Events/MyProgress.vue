@@ -59,6 +59,8 @@
 <script>
 import topBar from "../../components/TopBar";
 import { mapActions, mapState } from "vuex";
+import { eventsService } from "../../services";
+
 export default {
   data() {
     return {
@@ -91,10 +93,16 @@ export default {
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
     this.getUserInfo();
+    this.fetchProgress();
+    console.log("ljfslfkjsdlfkj");
   },
   methods: {
     ...mapActions('common', ['setNewHeading', 'setShowBackButton', ]),
     ...mapActions('account', ['getUserInfo']),
+    ...mapActions('events',['getProgress']),
+    fetchProgress() {
+      console.log("Progress");
+    },
     setEventDetails() {
       this.eventLocationString = `${this.selectedEvent.venueName}, ${
         this.selectedEvent.venueAddress1

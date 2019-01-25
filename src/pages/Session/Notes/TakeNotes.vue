@@ -5,7 +5,7 @@
         <h2 class="whitetext">Take Notes about the session</h2>
         <p class="whitetext"> Use the Space below to write your own notes about the session </p>
         <form>
-         <v-text-field id="x" v-model="userNote.note"   name="content"></v-text-field>
+         <v-text-area id="x" v-model="userNote.note"   name="content"></v-text-area>
 
           <!-- <trix-editor input="x"></trix-editor> -->
   

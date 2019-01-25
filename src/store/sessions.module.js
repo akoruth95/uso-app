@@ -19,10 +19,10 @@ const actions = {
         commit('selectSession', session)
     },
     getNotes({commit}, attendeeId) {
-        console.log("session",state.selectedSession);
-        sessionsService.getNotes(state.selectedSession.eventID, state.selectedSession.sessionId, 4).then(
-            res=>commit('setNotes',res.data)
-        );
+        console.log("sessioneerwrwer",state.selectedSession);
+        // sessionsService.getNotes(state.selectedSession.eventID, state.selectedSession.sessionId, 4).then(
+        //     res=>commit('setNotes',res.data)
+        // );
     }
 }
 
