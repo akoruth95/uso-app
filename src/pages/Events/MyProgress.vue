@@ -59,8 +59,11 @@
 <script>
 import topBar from "../../components/TopBar";
 import { mapActions, mapState } from "vuex";
+<<<<<<< HEAD
 import { eventsService } from "../../services";
 
+=======
+>>>>>>> dd7aa3b94bb935a39006549a62ad472da90ab3b1
 export default {
   data() {
     return {
