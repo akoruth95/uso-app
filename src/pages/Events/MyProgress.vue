@@ -94,6 +94,7 @@ export default {
     this.setShowBackButton(true);
     this.getUserInfo();
     this.fetchProgress();
+    console.log("ljfslfkjsdlfkj");
   },
   methods: {
     ...mapActions('common', ['setNewHeading', 'setShowBackButton', ]),
