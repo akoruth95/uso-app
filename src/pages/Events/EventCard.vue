@@ -10,7 +10,7 @@
         <v-flex class="body-2" xs-6>{{ event.name }}</v-flex>
         <v-flex class="text-xs-right" xs6>{{ new Date(event.startDate).toDateString() }}</v-flex>
       </v-layout>
-      <div>{{event.description}}</div>
+      <div class="event-text">{{event.description}}</div>
     </v-card-text>
   </v-card>
 </template>
@@ -24,5 +24,12 @@ export default {
 <style scoped>
 p {
   margin-bottom: 0px;
+}
+.event-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 </style>
