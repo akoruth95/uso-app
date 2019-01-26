@@ -16,34 +16,6 @@
         </v-card-text>
       </v-flex>
     </v-layout>
-    <!-- <br>
-    <br>-->
-    <!-- <v-list>
-      <v-list-tile
-        :style="'height:'+(windowSize.y-200)/6+'px'"
-        v-for="(option, index) in options"
-        :key="index"
-        avatar
-        @click="view"
-      >
-        <v-list-tile-avatar>
-          <v-icon>{{ option.icon }}</v-icon>
-        </v-list-tile-avatar>
-        <v-divider></v-divider>
-      </v-list-tile>
-    </v-list>-->
-    <!-- <v-container grid-list-xl>
-      <v-layout row wrap>
-        <v-flex v-for="(option, index) in options" :key="index">
-          <v-card xs6 flat color="primary" :to="option.route">
-            <v-flex text-xs-center class="primaryLight elevation-10">
-              <v-icon x-large>{{ option.icon }}</v-icon>
-              <div>{{ option.name}}</div>
-            </v-flex>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-container>-->
     <v-container grid-list-xl>
       <v-layout row wrap>
         <v-flex
@@ -144,7 +116,7 @@ p {
   clear: both;
 }
 .header {
-  background-color: #011020;
+  background-color: #1f4778;
 }
 .detail-tiles {
   display: table;
