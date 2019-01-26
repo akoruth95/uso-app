@@ -5,7 +5,9 @@
         <h2 class="whitetext">Take Notes about the session</h2>
         <p class="whitetext"> Use the Space below to write your own notes about the session </p>
         <form>
-         <v-text-area id="x" v-model="userNote.note"   name="content"></v-text-area>
+          <div>
+            <textarea class="ip3" v-model="note"   name="content"></textarea>
+         </div>
 
           <!-- <trix-editor input="x"></trix-editor> -->
   
@@ -30,12 +32,13 @@ export default {
     return {
       userNote: {
         note : ''
-      }
+      },
+      note: ''
     };
   },
   computed: {
     ...mapState("events", ["selectedEvent"]),
-    ...mapState('sessions',['notes'])
+    ...mapState('sessions',['notes','selectedSession'])
   },
   created() {
     this.setEventDetails();
@@ -48,7 +51,7 @@ export default {
   },
   methods: {
     ...mapActions('common', ['setNewHeading', 'setShowBackButton']),
-    ...mapActions('sessions',['getNotes']),
+    ...mapActions('sessions',['getNotes','submitNotes']),
     setEventDetails() {
       this.eventLocationString = `${this.selectedEvent.venueName}, ${
         this.selectedEvent.venueAddress1
@@ -58,10 +61,15 @@ export default {
       } to ${this.selectedEvent.endTime}`;
     },
     submit: function() {
-       // this.clear();
+      console.log("In vue session = ", this.selectedSession.sessionId);
+      console.log('eventID: ', this.selectedSession.eventID);
+      console.log('attendeeID: ', this.selectedEvent.attendee_id);
+      console.log('note = ', this.note);
+       this.submitNotes(this.selectedSession.eventID,
+                        this.selectedEvent.attendee_id, this.note);
         
-
-        console.log("Notes = " , this.userNote.note);
+      //https://api.v2.sessions.usoncevents.com/events/1/sessions/2/notes?sessionid=1&attendeeid=4&note=great
+        console.log("Notes = " , this.note);
     },
   },
   components: {
@@ -94,12 +102,15 @@ body {
   color: white;
   font-family: 'Raleway', sans-serif;
 }
-#ip3 {
-    border-radius: 25px;
-    border: 2px solid white;
-    padding: 10px; 
-    width: 95%;
-    height: 350px;    
+.ip3{
+  resize: none;
+  outline: none;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  height: 100%;
+  margin: -10px;
+  border: 1px solid silver;
 }
 trix-toolbar .trix-button-group button {
   background-color: white;

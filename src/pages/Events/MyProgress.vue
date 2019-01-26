@@ -94,7 +94,6 @@ export default {
     this.setShowBackButton(true);
     this.getUserInfo();
     this.fetchProgress();
-    console.log("ljfslfkjsdlfkj");
   },
   methods: {
     ...mapActions('common', ['setNewHeading', 'setShowBackButton', ]),
@@ -151,8 +150,4 @@ h3 {
 .fa-coins {
   color: yellow;
 }
-<<<<<<< HEAD
 </style>
-=======
-</style>
->>>>>>> fixed issues on progress
