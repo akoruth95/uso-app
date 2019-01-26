@@ -85,11 +85,12 @@
               </v-btn>
               <v-toolbar-title>Registration</v-toolbar-title>
             </v-toolbar>
-            <div class="mx-3 pt-4">
+            <stepper v-if="resgisterSuccessful"></stepper>
+            <div v-else class="mx-3 pt-4">
               <p class="mt-5">{{ registrationDirections }}</p>
               <br>
               <!-- <p>A temporary password will be sent to the provided email address.</p> -->
-              <v-form ref="form" v-model="valid">
+              <v-form ref="registrationForm" v-model="valid">
                 <input
                   class="startup-text mb-2 elevation-5 pa-2"
                   type="text"
@@ -103,7 +104,7 @@
                   placeholder="Temporary Password"
                 >
               </v-form>
-              <v-btn color="secondary" @click="forgotPassword()" :disabled="!formValid">Register</v-btn>
+              <v-btn color="secondary" @click="registerUser()" :disabled="!formValid">Register</v-btn>
             </div>
           </div>
         </v-dialog>
@@ -112,7 +113,7 @@
   </v-container>
 </template>
 
-<style scoped>
+<style >
 .startup-text {
   width: 90%;
   height: 50px;
@@ -128,12 +129,13 @@
 }
 .dialog-bottom-transition-enter-active,
 .dialog-bottom-transition-leave-active {
-  transition-duration: 2s;
+  transition-duration: 1s;
+  transition-timing-function: ease-in-out;
 }
 </style>
-
 <script>
 import { mapActions } from "vuex";
+import stepper from "../components/Setup.vue";
 export default {
   data() {
     return {
@@ -147,7 +149,8 @@ export default {
       registrationDirections:
         "Enter your email address and the temporary password you " +
         "received from USO after registration. If you have not received a " +
-        "temporary password yet, contact reset@usoofnc.org"
+        "temporary password yet, contact reset@usoofnc.org",
+      resgisterSuccessful: true
     };
   },
   computed: {
@@ -159,7 +162,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("account", ["login"]),
+    ...mapActions("account", ["login", "register"]),
     autoLogin() {
       this.email = "dbvows@gmail.com";
       this.password = "reset2018";
@@ -172,7 +175,16 @@ export default {
     handleSubmit() {
       const { email, password } = this;
       this.login({ email, password });
+    },
+    registerUser() {
+      if (this.$refs.registrationForm.validate()) {
+        const { email, password } = this;
+        this.register({ email, password });
+      }
     }
+  },
+  components: {
+    stepper
   }
 };
 </script>

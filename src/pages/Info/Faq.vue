@@ -3,7 +3,7 @@
     <v-layout row>
       <v-flex>
         <v-card class="elevation-0">
-          <v-list>
+          <v-list class="primary">
             <v-list-group v-for="item in items" v-model="item.active" :key="item.title" no-action>
               <v-list-tile slot="activator">
                 <v-list-tile-content>
@@ -11,6 +11,7 @@
                 </v-list-tile-content>
               </v-list-tile>
               <v-list-tile
+                class="primaryLight"
                 v-if="item.title != 'Contact Us'"
                 v-for="subItem in item.body"
                 :key="subItem.title"
@@ -21,7 +22,7 @@
                 </v-list-tile-content>
               </v-list-tile>
 
-              <v-list v-else two-line>
+              <v-list v-else class="primaryLight" two-line>
                 <v-list-tile @click="select()">
                   <v-list-tile-action>
                     <v-icon color="indigo">fa-phone</v-icon>
@@ -61,16 +62,14 @@
             </v-list-group>
           </v-list>
           <v-flex>
-            <v-card>
+            <v-card class="primaryLight elevation-0">
               <v-list-tile>App Created By</v-list-tile>
 
               <v-container grid-list-sm fluid>
                 <v-layout row wrap>
                   <v-flex>
                     <v-card flat tile class="center">
-                      <v-img
-                        :src="getImage"
-                      >
+                      <v-img :src="getImage">
                         <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
                           <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
                         </v-layout>
@@ -87,7 +86,7 @@
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -140,16 +139,16 @@ export default {
   },
   computed: {
     getImage() {
-      return require('../../assets/DB-Vows-banner.png');
+      return require("../../assets/DB-Vows-banner.png");
     }
   },
   created() {
-    this.setNewHeading('Help & FAQ');
+    this.setNewHeading("Help & FAQ");
   },
   methods: {
-    ...mapActions('common', ['setNewHeading']),
+    ...mapActions("common", ["setNewHeading"]),
     select() {
-      console.log('clicked');
+      console.log("clicked");
     }
   }
 };
