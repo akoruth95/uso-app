@@ -5,11 +5,9 @@
         <h2 class="whitetext">Take Notes about the session</h2>
         <p class="whitetext"> Use the Space below to write your own notes about the session </p>
         <form>
-          <div>
+          
             <textarea class="ip3" v-model="note"   name="content"></textarea>
-         </div>
-
-          <!-- <trix-editor input="x"></trix-editor> -->
+                  <!-- <trix-editor input="x"></trix-editor> -->
   
           <!-- <input id="x" type="hidden" name="content">
            <VueTrix inputId="x" v-model="userNote.note" /> -->
@@ -37,7 +35,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("events", ["selectedEvent"]),
+    ...mapState('events', ['selectedEvent']),
     ...mapState('sessions',['notes','selectedSession'])
   },
   created() {
@@ -45,7 +43,7 @@ export default {
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
     this.getNotes(this.selectedEvent.attendee_id);
-    Object.assign(this.userNote, this.notes[0]);
+    Object.assign(this.note, this.notes[0].note);
     //this.userNote.note=this.notes[0].note.slice(0);
     //console.log(this.selectedEvent);
   },
@@ -65,6 +63,7 @@ export default {
       console.log('eventID: ', this.selectedSession.eventID);
       console.log('attendeeID: ', this.selectedEvent.attendee_id);
       console.log('note = ', this.note);
+      console.log('event details', this.selectedEvent);
        this.submitNotes(this.selectedSession.eventID,
                         this.selectedEvent.attendee_id, this.note);
         

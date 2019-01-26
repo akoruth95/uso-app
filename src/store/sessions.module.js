@@ -1,5 +1,6 @@
 import { sessionsService } from '../services';
 import Vue from 'vue';
+import store from '../store';
 
 const state = {
     selectedSession: {},
@@ -29,13 +30,13 @@ const actions = {
         // );
     },
     submitNotes({commit}, eventId, attendeeId, note) {
-        console.log("event id in session = ", eventId);
-        console.log("attendee id in session = ", attendeeId);
+        console.log("store id in session = ", store);
+        console.log("attendee id in session = ", store.state.events.selectedEvent.attendee_id);
         console.log("note id in session = ", note);
 
         const data = {
                 sessionid : state.selectedSession.sessionId,
-                attendeeid : attendeeId,
+                attendeeid : store.state.events.selectedEvent.attendee_id,
                 note: note
                 };        
         sessionsService.submitNotes(eventId, state.selectedSession.sessionId, data).then(
