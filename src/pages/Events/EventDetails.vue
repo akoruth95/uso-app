@@ -16,57 +16,23 @@
         </v-card-text>
       </v-flex>
     </v-layout>
-    <br>
-    <br>
     <v-container grid-list-xl>
       <v-layout row wrap>
-        <v-flex xs6 v-for="(option, index) in options" :key="index">
-          <v-card class="elevation-5 primary" :to="option.route">
-            <v-flex text-xs-center>
-              <v-icon x-large right>fa-book</v-icon>
-              <div>Materials</div>
-            </v-flex>
-          </v-card>
-        </v-flex>
-        <v-flex xs6>
-          <v-card class="elevation-5 primary" to="/agenda">
-            <v-flex text-xs-center>
-              <v-icon x-large white right>fa-calendar-minus</v-icon>
-              <div>Agenda</div>
-            </v-flex>
-          </v-card>
-        </v-flex>
-        <v-flex xs6>
-          <v-card class="elevation-5 primary" to="/events/progress">
-            <v-flex text-xs-center>
-              <v-icon x-large white right>fa-flag</v-icon>
-              <div>My Progress</div>
-            </v-flex>
-          </v-card>
-        </v-flex>
-
-        <v-flex xs6>
-          <v-card class="elevation-5 primary" to="/events/feedback">
-            <v-flex text-xs-center>
-              <v-icon x-large white right>fa-comment-alt</v-icon>
-              <div>Feedback</div>
-            </v-flex>
-          </v-card>
-        </v-flex>
-        <v-flex xs6>
-          <v-card class="elevation-5 primary">
-            <v-flex text-xs-center>
-              <v-icon x-large white right>fa-share-alt</v-icon>
-              <div>Event Wall</div>
-            </v-flex>
-          </v-card>
-        </v-flex>
-        <v-flex xs6>
-          <v-card class="elevation-5 primary" to="/attendeelist">
-            <v-flex text-xs-center>
-              <v-icon x-large white right>fa-users</v-icon>
-              <div>Attendees</div>
-            </v-flex>
+        <v-flex
+          style="padding: 2px;"
+          class="detail-tiles"
+          xs6
+          v-for="(option, index) in options"
+          :key="index"
+        >
+          <v-card
+            :style="'height:'+(windowSize.y-200)/3+'px'"
+            style="vertical-align:middle;display: table-cell"
+            class="text-xs-center primaryLight grey--text"
+            :to="option.route"
+          >
+            <v-icon color="grey" x-large>{{ option.icon }}</v-icon>
+            <div>{{ option.name}}</div>
           </v-card>
         </v-flex>
       </v-layout>
@@ -83,13 +49,18 @@ export default {
     return {
       eventLocationString: "",
       eventTimeString: "",
-      options: eventOptions
+      options: eventOptions,
+      windowSize: {
+        x: 0,
+        y: 0
+      }
     };
   },
   computed: {
     ...mapState("events", ["selectedEvent"])
   },
   created() {
+    this.windowSize = { x: window.innerWidth, y: window.innerHeight };
     this.setEventDetails();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
@@ -139,6 +110,10 @@ p {
   clear: both;
 }
 .header {
-  background-color: #011020;
+  background-color: #1f4778;
+}
+.detail-tiles {
+  display: table;
+  background-image: radial-gradient(red, green, blue);
 }
 </style>

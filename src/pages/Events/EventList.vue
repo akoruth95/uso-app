@@ -23,11 +23,11 @@ export default {
     };
   },
   computed: {
-      ...mapState('account', [('userId')])
+    ...mapState("account", ["userId"])
   },
   created() {
     this.fetchEvents();
-    this.setNewHeading('My Events');
+    this.setNewHeading("My Events");
   },
 
   components: {
@@ -36,7 +36,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('common', ['setNewHeading']),
+    ...mapActions("common", ["setNewHeading"]),
     ...mapActions("events", ["selectEvent"]),
     fetchEvents() {
       //TODO: change to make service handle parameter object parsing
@@ -46,7 +46,7 @@ export default {
     },
     clickEvent(event) {
       this.selectEvent(event);
-      this.$router.push({ path: '/event/details' });
+      this.$router.push({ path: "/event/details" });
     }
   }
 };

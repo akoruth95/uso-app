@@ -30,15 +30,19 @@ export default {
   },
   created() {
     this.fetchSessions();
-    this.setNewHeading('Agenda');
+    this.setNewHeading("Agenda");
     this.setShowBackButton(true);
-    this.setNewBacklink('/event/details');
+    this.setNewBacklink("/event/details");
   },
   components: {
     SessionCard
   },
   methods: {
-    ...mapActions('common', ['setNewHeading', 'setShowBackButton', 'setNewBacklink']),
+    ...mapActions("common", [
+      "setNewHeading",
+      "setShowBackButton",
+      "setNewBacklink"
+    ]),
     ...mapActions("sessions", ["setSelectedSession"]),
     fetchSessions() {
       sessionsService.getSessions(this.selectedEvent.event_id).then(res => {
