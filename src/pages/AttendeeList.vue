@@ -35,7 +35,7 @@
               this.getList();
               this.setNewHeading('Attendee List');
               this.setShowBackButton(true);
-              this.setNewBacklink('/event/details');
+              this.setNewBacklink(this.event.name);
             },
             computed: {
                 ...mapState({

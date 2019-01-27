@@ -4,8 +4,7 @@
       <v-flex class="session-info-img-container" xs12>
         <v-img
           class="white--text"
-          height="200px"
-          src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+          :src="sessionInfo.photoLink"
         ></v-img>
       </v-flex>
     </v-layout>
@@ -76,10 +75,7 @@ export default {
   computed: {
     ...mapState("sessions", ["selectedSession"]),
     ...mapState("events", ["selectedEvent"]),
-    ...mapState("account", ["userId"]),
-    pageName() {
-      return this.sessionInfo.name;
-    }
+    ...mapState("account", ["userId"])
   },
 
   created() {
@@ -87,7 +83,7 @@ export default {
     this.fetchLikes();
     this.fetchBookmarks();
     this.setActivityDetails();
-    this.setNewHeading(this.pageName);
+    this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
     this.setNewBacklink("/agenda");
   },

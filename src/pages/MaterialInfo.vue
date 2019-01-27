@@ -20,7 +20,7 @@
     export default {
         
         created() {
-            this.setNewHeading('Materials Info');
+            this.setNewHeading(this.event.name);
             this.setShowBackButton(true); 
             this.setNewBacklink('material');
         },
@@ -28,6 +28,7 @@
         computed: {
             ...mapState({
                 selectedMaterial : state => state.materials.selectedMaterial,
+                event: state => state.events.selectedEvent,
             }),
         },
 

@@ -3,7 +3,7 @@
     <v-img
       class="white--text"
       height="100px"
-      src="https://i1.wp.com/raleigh.americaserves.org/wp-content/uploads/2016/08/IMG_1501.jpg?resize=600%2C450"
+      :src="event.photoLink"
     ></v-img>
     <v-card-text class="white">
       <v-layout row>
