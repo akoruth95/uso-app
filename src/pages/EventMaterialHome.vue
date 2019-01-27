@@ -36,15 +36,14 @@
             this.setNewHeading('Materials');
             this.getMaterials(this.event.event_id);
             this.setShowBackButton(true);
-            this.setNewBacklink('/event/details');
+            this.setNewBacklink(this.event.name);
         },
 
         computed: {
             ...mapState({
                 event: state => state.events.selectedEvent,
                 materialList : state => state.materials.materialList,
-                selectedMaterial : state => state.materials.selectedMaterial,
-
+                selectedMaterial : state => state.materials.selectedMaterial
             }),
         },
 
@@ -58,6 +57,5 @@
         }
         
     }
-
 </script>
 

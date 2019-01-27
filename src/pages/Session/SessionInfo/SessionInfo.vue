@@ -13,10 +13,9 @@
         </h1>
       </v-flex>
     </v-layout>
-    <!-- <v-layout class="session-info-description" row wrap>
-      <v-flex style="heigth:auto"></v-flex>
-    </v-layout>-->
-    <div class="primary text-xs-left">{{sessionInfo.description}}</div>
+    <v-layout class="session-info-description" row wrap>
+      <v-flex style="heigth:auto">{{sessionInfo.description}}</v-flex>
+    </v-layout>
     <v-layout class="session-info-actions">
       <v-flex xs8>
         <a href="#/speakerbio" class="subheading white--text">Speaker: Robert O'Neill</a>
@@ -73,10 +72,7 @@ export default {
   computed: {
     ...mapState("sessions", ["selectedSession"]),
     ...mapState("events", ["selectedEvent"]),
-    ...mapState("account", ["userId"]),
-    pageName() {
-      return this.sessionInfo.name;
-    }
+    ...mapState("account", ["userId"])
   },
 
   created() {
@@ -84,9 +80,9 @@ export default {
     this.fetchLikes();
     this.fetchBookmarks();
     this.setActivityDetails();
-    this.setNewHeading(this.pageName);
+    this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
-    this.setNewBacklink("/events");
+    this.setNewBacklink("/agenda");
   },
 
   methods: {
