@@ -2,11 +2,7 @@
   <v-container class="session-info-container" fluid grid-list-md text-xs-center>
     <v-layout class="session-info-img" row wrap>
       <v-flex class="session-info-img-container" xs12>
-        <v-img
-          class="white--text"
-          height="200px"
-          src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-        ></v-img>
+        <v-img class="white--text" height="200px" :src="sessionInfo.photoLink"></v-img>
       </v-flex>
     </v-layout>
     <br>
