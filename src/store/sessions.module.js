@@ -25,20 +25,19 @@ const actions = {
     },
     getNotes({commit}, attendeeId) {
         console.log("sessione",state.selectedSession);
-        // sessionsService.getNotes(state.selectedSession.eventID, state.selectedSession.sessionId, 4).then(
-        //     res=>commit('setNotes',res.data)
-        // );
+        return sessionsService.getNotes(state.selectedSession.eventID, state.selectedSession.sessionId, attendeeId);
     },
-    submitNotes({commit}, eventId, attendeeId, note) {
+    submitNotes({commit}, {eventId, attendeeId, notes}) {
         console.log("store id in session = ", store);
         console.log("attendee id in session = ", store.state.events.selectedEvent.attendee_id);
-        console.log("note id in session = ", note);
+        console.log("note id in session = ", notes);
 
         const data = {
                 sessionid : state.selectedSession.sessionId,
                 attendeeid : store.state.events.selectedEvent.attendee_id,
-                note: note
-                };        
+                note: notes
+                }; 
+                console.log('body: ', data)       
         sessionsService.submitNotes(eventId, state.selectedSession.sessionId, data).then(
             response => {
                 commit('saveNote', response.data);

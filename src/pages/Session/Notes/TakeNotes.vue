@@ -6,7 +6,7 @@
         <p class="whitetext"> Use the Space below to write your own notes about the session </p>
         <form>
           
-            <textarea class="ip3" v-model="note"   name="content"></textarea>
+            <textarea id="text-area" v-model="userNote.note"   name="content"></textarea>
                   <!-- <trix-editor input="x"></trix-editor> -->
   
           <!-- <input id="x" type="hidden" name="content">
@@ -31,6 +31,7 @@ export default {
       userNote: {
         note : ''
       },
+      notes: [],
       note: ''
     };
   },
@@ -42,8 +43,15 @@ export default {
     this.setEventDetails();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
-    this.getNotes(this.selectedEvent.attendee_id);
-    Object.assign(this.note, this.notes[0].note);
+    this.getNotes(this.selectedEvent.attendee_id).then(
+      res => {
+        this.notes = res.data;
+        this.userNote = this.notes[0];
+        console.log(this.notes);
+      }
+    );
+    //Object.assign(
+    // console.log("******", this.notes);
     //this.userNote.note=this.notes[0].note.slice(0);
     //console.log(this.selectedEvent);
   },
@@ -62,13 +70,13 @@ export default {
       console.log("In vue session = ", this.selectedSession.sessionId);
       console.log('eventID: ', this.selectedSession.eventID);
       console.log('attendeeID: ', this.selectedEvent.attendee_id);
-      console.log('note = ', this.note);
+      console.log('note = ', this.userNote.note);
       console.log('event details', this.selectedEvent);
-       this.submitNotes(this.selectedSession.eventID,
-                        this.selectedEvent.attendee_id, this.note);
+       this.submitNotes({eventId: this.selectedSession.eventID,
+                        attendeeId: this.selectedEvent.attendee_id, notes: this.userNote.note});
         
       //https://api.v2.sessions.usoncevents.com/events/1/sessions/2/notes?sessionid=1&attendeeid=4&note=great
-        console.log("Notes = " , this.note);
+        console.log("Notes = " , this.userNote.note);
     },
   },
   components: {
@@ -101,15 +109,15 @@ body {
   color: white;
   font-family: 'Raleway', sans-serif;
 }
-.ip3{
-  resize: none;
-  outline: none;
-  width: 100%;
-  padding: 10px;
-  border: none;
-  height: 100%;
-  margin: -10px;
-  border: 1px solid silver;
+#text-area {
+    position:relative;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    margin: 0;
+    padding: 0.4em 0.6em;
+    min-height: calc(100vh * .5);
+    min-width: calc(100vh * .5);
+    outline: none;
 }
 trix-toolbar .trix-button-group button {
   background-color: white;
