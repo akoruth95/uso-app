@@ -40,7 +40,7 @@
     <br>
     <v-layout class="session-info-buttons pb-4" row wrap>
       <v-flex xs4>
-        <v-btn class="session-info-btn secondary" small>Resources</v-btn>
+        <v-btn class="session-info-btn secondary" to="/resources" small>Resources</v-btn>
       </v-flex>
       <v-flex xs4>
         <v-btn class="session-info-btn secondary" small to="/take-notes">Take Notes</v-btn>

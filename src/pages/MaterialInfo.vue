@@ -1,10 +1,14 @@
 <template>
-  <v-container class="text-xs-center" fluid grid-list-lg>
-    <div class="title">{{selectedMaterial.name}}</div>
-    <v-img class="my-2 mx-3" :src="selectedMaterial.photoLink"></v-img>
-    <div class="body-1">{{selectedMaterial.description}}</div>Download Link:
+  <v-container class="text-xs-left" fluid grid-list-lg>
+    <div class="title text-xs-center">{{selectedMaterial.name}}</div>
+    <v-img class="my-2 mx-3" max-height="300" :src="selectedMaterial.photoLink"></v-img>
+    <div class="body-1">{{selectedMaterial.description}}</div>
     <div>
-      <a class="grey--text" :href="selectedMaterial.downloadLink">Click Here</a>
+      <a
+        target="_blank"
+        class="grey--text"
+        :href="selectedMaterial.downloadLink"
+      >{{ selectedMaterial.downloadLink}}</a>
     </div>
   </v-container>
 </template>
