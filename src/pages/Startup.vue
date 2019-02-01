@@ -150,7 +150,7 @@ export default {
         "Enter your email address and the temporary password you " +
         "received from USO after registration. If you have not received a " +
         "temporary password yet, contact reset@usoofnc.org",
-      resgisterSuccessful: true
+      resgisterSuccessful: false
     };
   },
   computed: {
@@ -180,6 +180,7 @@ export default {
       if (this.$refs.registrationForm.validate()) {
         const { email, password } = this;
         this.register({ email, password });
+        this.resgisterSuccessful = true;
       }
     }
   },

@@ -1,6 +1,15 @@
 <template>
   <div>
     <v-container fluid grid-list-lg>
+      <v-layout row wrap>
+        <v-flex xs12>
+          <v-img
+            class="white--text"
+            max-height="300px"
+            :src="selectedEvent.photoLink"
+          ></v-img>
+        </v-flex>
+      </v-layout>
       <v-layout v-for="session in sessions" :key="session.sessionId" row wrap>
         <v-flex xs12>
           <SessionCard
@@ -30,7 +39,7 @@ export default {
   },
   created() {
     this.fetchSessions();
-    this.setNewHeading("Agenda");
+    this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
     this.setNewBacklink("/event/details");
   },

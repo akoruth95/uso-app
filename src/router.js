@@ -118,6 +118,16 @@ const router = new Router({
       component: () => import("./pages/Session/Questions/AskQuestions.vue")
     },
     {
+      path: "/resources",
+      name: "resources",
+      component: () => import("./pages/Session/Resources/Resources.vue")
+    },
+    {
+      path: "/resource-info",
+      name: "resourceInfo",
+      component: () => import("./pages/Session/Resources/ResourceInfo.vue")
+    },
+    {
       path: "/setup",
       name: "setup",
       component: () => import("./pages/Account/Setup.vue"),
