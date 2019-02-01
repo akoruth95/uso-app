@@ -6,24 +6,47 @@
       </v-flex>
     </v-layout>
     <br>
-    <v-layout class="session-info-title" row wrap>
+    <!-- <v-layout class="session-info-title" row wrap>
       <v-flex xs12>
         <h1>
           <strong>{{sessionInfo.name}}</strong>
         </h1>
       </v-flex>
-    </v-layout>
-    <v-layout class="session-info-description" row wrap>
-      <v-flex style="heigth:auto">{{sessionInfo.description}}</v-flex>
-    </v-layout>
-    <v-layout class="session-info-actions">
-      <v-flex xs8>
-        <a href="#/speakerbio" class="subheading white--text">Speaker: Robert O'Neill</a>
-        <!-- TODO: need to get speaker name, just getting speaker id now -->
+    </v-layout>-->
+    <v-layout row>
+      <v-flex>
+        <div class="title mt-2">
+          <span class="title">{{sessionInfo.name}}</span>
+        </div>
+      </v-flex>
+      <v-flex>
+        <v-btn small color="secondary" class="elevation-5" v-on:click="callActivity('like')" icon>
+          <v-icon small color="white">fas fa-thumbs-up</v-icon>
+        </v-btn>
+        {{likeCount}}
+      </v-flex>
+      <v-flex>
+        <v-btn small class="elevation-5" v-on:click="callActivity('bookmark')" icon>
+          <v-icon small color="white">fas fa-bookmark</v-icon>
+        </v-btn>
+        {{bookmarkCount}}
       </v-flex>
     </v-layout>
+    <!-- <v-layout class="session-info-actions">
+      <v-flex xs8>
+        <a href="#/speakerbio" class="subheading white--text"></a>
+    
+    < </v-flex>
+    </v-layout>-->
+    <!-- TODO: need to get speaker name, just getting speaker id now-->
+    <v-btn flat block to="/speakerbio">Speaker: Robert O'Neill</v-btn>
+    <!-- <div class="title pb-2">{{sessionInfo.name}}</div> -->
+    <v-layout class="session-info-description text-xs-left" row wrap>
+      <v-flex style="heigth:auto">{{sessionInfo.description}}</v-flex>
+    </v-layout>
+
     <br>
-    <v-layout class="session-info-speaker" row wrap>
+    <!-- <v-layout class="session-info-speaker" row wrap>
       <v-flex xs4 offset-xs4>
         <v-btn class="elevation-5" v-on:click="callActivity('like')" icon>
           <v-icon small color="white">fas fa-thumbs-up</v-icon>
@@ -37,8 +60,23 @@
         {{bookmarkCount}}
       </v-flex>
     </v-layout>
-    <br>
-    <v-layout class="session-info-buttons pb-4" row wrap>
+    <br>-->
+    <!-- <v-speed-dial v-model="fab" bottom right direction="left" transition="slide-x">
+      <v-btn slot="activator" v-model="fab" color="secondary" dark fab>
+        <v-icon>fa-circle</v-icon>
+        <v-icon>fa-times</v-icon>
+      </v-btn>
+      <v-btn fab dark small color="secondary">
+        <v-icon>fa-edit</v-icon>
+      </v-btn>
+      <v-btn fab dark small color="secondary">
+        <v-icon>fa-plus</v-icon>
+      </v-btn>
+      <v-btn fab dark small color="secondary">
+        <v-icon>fa-trash</v-icon>
+      </v-btn>
+    </v-speed-dial>-->
+    <v-layout class="session-info-buttons pb-4 mb-4" row wrap>
       <v-flex xs4>
         <v-btn class="session-info-btn secondary" to="/resources" small>Resources</v-btn>
       </v-flex>
@@ -49,6 +87,7 @@
         <v-btn class="session-info-btn secondary" small to="/ask-questions">Questions</v-btn>
       </v-flex>
     </v-layout>
+    <br>
   </v-container>
 </template>
 
@@ -61,6 +100,9 @@ import { CONFIG } from "../../../config/config";
 export default {
   data() {
     return {
+      tabs: null,
+      fab: false,
+      fling: false,
       sessionInfo: {},
       likeCount: 0,
       bookmarkCount: 0,
@@ -72,7 +114,19 @@ export default {
   computed: {
     ...mapState("sessions", ["selectedSession"]),
     ...mapState("events", ["selectedEvent"]),
-    ...mapState("account", ["userId"])
+    ...mapState("account", ["userId"]),
+    activeFab() {
+      switch (this.tabs) {
+        case "one":
+          return { class: "purple", icon: "account_circle" };
+        case "two":
+          return { class: "red", icon: "edit" };
+        case "three":
+          return { class: "green", icon: "keyboard_arrow_up" };
+        default:
+          return {};
+      }
+    }
   },
 
   created() {
