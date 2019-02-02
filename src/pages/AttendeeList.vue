@@ -1,9 +1,11 @@
-
-
-
 <template>
   <div>
     <v-container fluid grid-list-sm>
+      <v-layout row justify-center="true">
+          <v-flex xs8>
+              <h2>Event Participants</h2>
+          </v-flex>
+      </v-layout>
       <v-layout row wrap>
         <v-flex
           class="ma-1 primaryLight text-xs-center"
