@@ -1,68 +1,48 @@
 <template>
     <v-container>
-        <v-card-title class="py-0">
-            <v-spacer></v-spacer>
-            <v-menu offset-y>
-            <v-btn slot="activator" icon>
-                <v-icon large>fa-cog</v-icon>
-            </v-btn>
-            <v-list>
-                <v-list-tile @click="showEditProfile()">
-                    <v-list-tile-title>Edit Profile</v-list-tile-title>
-                </v-list-tile>
-                <v-list-tile @click="showChangePassword()">
-                    <v-list-tile-title>Change Password</v-list-tile-title>
-                </v-list-tile>
-                <v-list-tile @click="logout()">
-                    <v-list-tile-title>Logout</v-list-tile-title>
-                </v-list-tile>
-            </v-list>
-            </v-menu>
-        </v-card-title>
         <v-flex text-xs-center align-center xs12>
-            <v-avatar size="175px"><img v-bind:src="profileImage"></v-avatar>
-            <h1 class="headline pt-1">{{firstName}} <span v-if="nickName">"{{nickName}}"</span> {{lastName}}</h1>
-            <h3 class="py-0">{{city}}, {{state}}</h3>
+            <v-avatar size="125px"><img v-bind:src="profileImage"></v-avatar>
+            <h1 class="title pt-3 pb-2">{{userInfo.firstName}} <span v-if="userInfo.nickName">"{{userInfo.nickName}}"</span> {{userInfo.lastName}}</h1>
+            <h3 class="py-0">{{userInfo.city}}, {{userInfo.state}}</h3>
         </v-flex>
-        <v-layout row>
+        <v-layout clas="py-0" row>
             <v-flex xs12 sm12>
-                <v-list two-line class="primary">
+                <v-list style="height:250px;" two-line class="primary">
                     <v-list-tile class="condense">
-                        <v-list-tile-action>
-                            <v-icon color="white">fa-phone</v-icon>
-                        </v-list-tile-action>
                         <v-list-tile-content>
                             <v-list-tile-title>{{phoneString(userInfo.phone)}}</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
-                    <v-divider inset></v-divider>
+                    <v-divider></v-divider>
                     <v-list-tile class="condense">
-                        <v-list-tile-action>
-                            <v-icon color="white">fa-envelope</v-icon>
-                        </v-list-tile-action>
                         <v-list-tile-content>
                             <v-list-tile-title>{{userInfo.email}}</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
-                    <v-divider inset></v-divider>
+                    <v-divider></v-divider>
                     <v-list-tile v-bind:class="userInfo.streetAddress2 ? '' : 'condense'">
-                        <v-list-tile-action>
-                            <v-icon color="white">fa-map-marker-alt</v-icon>
-                        </v-list-tile-action>
                         <v-list-tile-content>
                             <v-list-tile-title>{{userInfo.streetAddress1}}</v-list-tile-title>
                             <v-list-tile-sub-title>{{userInfo.streetAddress2}}</v-list-tile-sub-title>
                             <v-list-tile-sub-title>{{userInfo.city}}, {{userInfo.state}} {{userInfo.zip}}</v-list-tile-sub-title>
                         </v-list-tile-content>
                     </v-list-tile>
-                    <v-divider inset></v-divider>
+                    <v-divider></v-divider>
                     <v-list-tile class="condense">
-                        <v-list-tile-action>
-                            <v-icon color="white">fa-user-secret</v-icon>
-                        </v-list-tile-action>
                         <v-list-tile-content>Your profile is {{profileStatus(userInfo.profilePublic)}}</v-list-tile-content>
                     </v-list-tile>
                 </v-list>
+                <v-layout style="text-align:center; height:60px;" class="py-0" row wrap>
+                    <v-flex align-center xs4>
+                        <v-btn class="icon-color" @click="showEditProfile()"><v-icon>fas fa-user-edit</v-icon></v-btn>
+                    </v-flex>
+                    <v-flex align-center xs4>
+                        <v-btn class="icon-color" @click="showChangePassword()"><v-icon>fas fa-unlock-alt</v-icon></v-btn>
+                    </v-flex>
+                    <v-flex align-center xs4>
+                        <v-btn class="icon-color" @click="logout()"><v-icon>fas fa-sign-out-alt</v-icon></v-btn>
+                    </v-flex>
+                </v-layout>
             </v-flex>
         </v-layout>
         <v-layout row justify-center>
@@ -202,6 +182,9 @@
     .condense {
         margin: -10px 0px;
     }
+    .icon-color {
+        background-color: #0077ff3b !important;
+    }
 </style>
 
 <script>
@@ -222,10 +205,13 @@
                 },
                 profileFormValid: false,
                 profileImageFile: null,
-                stateList: STATELIST
+                stateList: STATELIST,
+                windowSize: {x: 0, y: 0}
             }
         },
         created() {
+            this.windowSize = {x: window.innerWidth, y: window.innerHeight};
+            console.log(this.windowSize);
             this.getUserInfo();
             this.setNewHeading('My Profile');
         },
@@ -234,26 +220,8 @@
                     alert: state => state.alert,
                     userInfo: state => state.account.userInfo
                 }),
-                city() {
-                    return this.userInfo.city;
-                },
                 dialogHeader() {
                     return this.action === 'editProfile' ? "Edit Profile" : "Change Password";
-                },
-                email() {
-                    return this.userInfo.email;
-                },
-                firstName() {
-                    return this.userInfo.firstName;
-                },
-                lastName() {
-                    return this.userInfo.lastName;
-                },
-                nickName() {
-                    return this.userInfo.nickName;
-                },
-                phone() {
-                    return this.userInfo.phone;
                 },
                 profileFormImage() {
                     return this.profileForm.profileUrl || require('../../assets/blank-profile.png');
@@ -261,15 +229,6 @@
                 profileImage() {
                     return (this.userInfo && this.userInfo.profileUrl) ? this.userInfo.profileUrl :
                             require('../../assets/blank-profile.png');
-                },
-                state() {
-                    return this.userInfo.state;
-                },
-                streetAddress() {
-                    return this.userInfo.streetAddress;
-                },
-                zip() {
-                    return this.userInfo.zip;
                 }
             },
         methods: {
