@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-card-title class="pt-0">
+        <v-card-title class="py-0">
             <v-spacer></v-spacer>
             <v-menu offset-y>
             <v-btn slot="activator" icon>
@@ -20,23 +20,23 @@
             </v-menu>
         </v-card-title>
         <v-flex text-xs-center align-center xs12>
-            <v-avatar size="200px"><img v-bind:src="profileImage"></v-avatar>
-            <h1 class="headline py-3">{{firstName}} <span v-if="nickName">"{{nickName}}"</span> {{lastName}}</h1>
-            <h3 class="py-1">{{city}}, {{state}}</h3>
+            <v-avatar size="175px"><img v-bind:src="profileImage"></v-avatar>
+            <h1 class="headline pt-1">{{firstName}} <span v-if="nickName">"{{nickName}}"</span> {{lastName}}</h1>
+            <h3 class="py-0">{{city}}, {{state}}</h3>
         </v-flex>
         <v-layout row>
             <v-flex xs12 sm12>
                 <v-list two-line class="primary">
-                    <v-list-tile>
+                    <v-list-tile class="condense">
                         <v-list-tile-action>
                             <v-icon color="white">fa-phone</v-icon>
                         </v-list-tile-action>
                         <v-list-tile-content>
-                            <v-list-tile-title>{{userInfo.phone}}</v-list-tile-title>
+                            <v-list-tile-title>{{phoneString(userInfo.phone)}}</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
                     <v-divider inset></v-divider>
-                    <v-list-tile>
+                    <v-list-tile class="condense">
                         <v-list-tile-action>
                             <v-icon color="white">fa-envelope</v-icon>
                         </v-list-tile-action>
@@ -45,7 +45,7 @@
                         </v-list-tile-content>
                     </v-list-tile>
                     <v-divider inset></v-divider>
-                    <v-list-tile>
+                    <v-list-tile v-bind:class="userInfo.streetAddress2 ? '' : 'condense'">
                         <v-list-tile-action>
                             <v-icon color="white">fa-map-marker-alt</v-icon>
                         </v-list-tile-action>
@@ -56,7 +56,7 @@
                         </v-list-tile-content>
                     </v-list-tile>
                     <v-divider inset></v-divider>
-                    <v-list-tile>
+                    <v-list-tile class="condense">
                         <v-list-tile-action>
                             <v-icon color="white">fa-user-secret</v-icon>
                         </v-list-tile-action>
@@ -67,7 +67,7 @@
         </v-layout>
         <v-layout row justify-center>
             <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-                <v-toolbar dark color="primary">
+                <v-toolbar dark color="secondary">
                     <v-btn icon dark @click="closeDialog()">
                         <v-icon>fa-times</v-icon>
                     </v-btn>
@@ -78,8 +78,8 @@
                     </v-toolbar-items>
                 </v-toolbar>
                 <div class="text-xs-center"><v-alert transition="slide-y-transition" style="position: absolute; z-index: 2; width: 100%;" v-if="alert.message" :value="true" :type="alert.type" dismissible>{{alert.message}}</v-alert></div>
-                <v-card v-if="action === 'editProfile'">
-                    <v-card-text>
+                <v-card color="primary">
+                    <v-card-text v-if="action === 'editProfile'">
                         <br />
                         <v-form ref="profileForm" v-model="profileFormValid">
                             <div class="text-xs-center">
@@ -161,9 +161,7 @@
                             </v-switch>
                         </v-form>
                     </v-card-text>
-                </v-card>
-                <v-card v-if="this.action === 'changePassword'">
-                    <v-card-text>
+                    <v-card-text v-if="this.action === 'changePassword'">
                         <v-form ref="passwordForm" v-model="passwordFormValid">
                             <v-text-field
                                 color="white"
@@ -199,7 +197,10 @@
 
 <style scoped>
     .v-divider {
-        border-color: pink;
+        border-color: gray;
+    }
+    .condense {
+        margin: -10px 0px;
     }
 </style>
 
@@ -272,7 +273,7 @@
                 }
             },
         methods: {
-            ...mapActions('account', ['changePassword', 'getUserInfo', 'logout']),
+            ...mapActions('account', ['changePassword', 'getUserInfo', 'logout', 'updateProfile']),
             ...mapActions('alert', ['clear', 'error', 'success']),
             ...mapActions('common', ['setNewHeading']),
             closeDialog() {
@@ -308,11 +309,14 @@
             openFileUpload() {
                 this.$refs.file.click();
             },
+            phoneString(phoneNumber) {
+                if (!phoneNumber) return '';
+                return '(' + phoneNumber.slice(0, 3) + ') ' + phoneNumber.slice(3, 6) + '-' + phoneNumber.slice(6, 10);
+            },
             profileStatus(profilePublic) {
                 return profilePublic ? 'public' : 'private';
             },
             saveProfile() {
-                // TODO
                 this.clear();
                 let errorMessage = '';
                 if (this.profileForm.phone.length !== 10) {
@@ -323,9 +327,9 @@
                 }
                 if (errorMessage.length > 0) {
                     this.error(errorMessage);
-                } else {
-                    console.log('saveProfile');
-                    console.log(this.profileForm);
+                } else if (this.updateProfile(this.profileForm)) {
+                    this.dialog = false;
+                    this.success('Profile was successfully updated');
                 }
             },
             showChangePassword() {

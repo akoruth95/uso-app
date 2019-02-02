@@ -24,7 +24,7 @@
 <script>
 import topBar from "../../../components/TopBar";
 import { mapActions, mapState } from "vuex";
-import VueTrix from 'vue-trix';
+import VueTrix from "vue-trix";
 export default {
   data() {
     return {
@@ -103,11 +103,11 @@ export default {
   clear: both;
 }
 body {
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
 }
 .whitetext {
   color: white;
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
 }
 #text-area {
     position:relative;
@@ -123,16 +123,16 @@ trix-toolbar .trix-button-group button {
   background-color: white;
 }
 trix-editor {
-    position:relative;
-    border: 1px solid #bbb;
-    border-radius: 3px;
-    margin: 0;
-    padding: 0.4em 0.6em;
-    min-height: calc(100vh * .5);
-    outline: none;
+  position: relative;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  margin: 0;
+  padding: 0.4em 0.6em;
+  min-height: calc(100vh * 0.5);
+  outline: none;
 }
 .btn {
-    bottom: 4%;
-    right:10%;
+  bottom: 4%;
+  right: 10%;
 }
 </style>
