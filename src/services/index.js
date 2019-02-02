@@ -5,3 +5,4 @@ export * from "./user.service";
 export * from "./attendees.service";
 export * from "./materials.service";
 export * from "./resources.service";
+export * from "./bookmarks.service";

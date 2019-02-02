@@ -9,6 +9,7 @@ import { events } from "./events.module";
 import { sessions } from "./sessions.module";
 import { materials } from "./materials.module";
 import { resources } from "./resources.module";
+import { bookmarks } from "./bookmarks.module";
 
 Vue.use(Vuex);
 
@@ -20,7 +21,8 @@ export default new Vuex.Store({
     events,
     sessions,
     materials,
-    resources
+    resources,
+    bookmarks
   },
   strict: process.env.NODE_ENV !== "production" // prevents mutation of store directly, turned off in prod for performance
 });
