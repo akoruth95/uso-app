@@ -21,8 +21,8 @@
         </v-card-title>
         <v-flex text-xs-center align-center xs12>
             <v-avatar size="175px"><img v-bind:src="profileImage"></v-avatar>
-            <h1 class="headline pt-1">{{firstName}} <span v-if="nickName">"{{nickName}}"</span> {{lastName}}</h1>
-            <h3 class="py-0">{{city}}, {{state}}</h3>
+            <h1 class="headline pt-1">{{userInfo.firstName}} <span v-if="userInfo.nickName">"{{userInfo.nickName}}"</span> {{userInfo.lastName}}</h1>
+            <h3 class="py-0">{{userInfo.city}}, {{userInfo.state}}</h3>
         </v-flex>
         <v-layout row>
             <v-flex xs12 sm12>
@@ -234,26 +234,8 @@
                     alert: state => state.alert,
                     userInfo: state => state.account.userInfo
                 }),
-                city() {
-                    return this.userInfo.city;
-                },
                 dialogHeader() {
                     return this.action === 'editProfile' ? "Edit Profile" : "Change Password";
-                },
-                email() {
-                    return this.userInfo.email;
-                },
-                firstName() {
-                    return this.userInfo.firstName;
-                },
-                lastName() {
-                    return this.userInfo.lastName;
-                },
-                nickName() {
-                    return this.userInfo.nickName;
-                },
-                phone() {
-                    return this.userInfo.phone;
                 },
                 profileFormImage() {
                     return this.profileForm.profileUrl || require('../../assets/blank-profile.png');
@@ -261,15 +243,6 @@
                 profileImage() {
                     return (this.userInfo && this.userInfo.profileUrl) ? this.userInfo.profileUrl :
                             require('../../assets/blank-profile.png');
-                },
-                state() {
-                    return this.userInfo.state;
-                },
-                streetAddress() {
-                    return this.userInfo.streetAddress;
-                },
-                zip() {
-                    return this.userInfo.zip;
                 }
             },
         methods: {

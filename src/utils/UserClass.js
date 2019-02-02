@@ -24,7 +24,7 @@ export class User {
         this.streetAddress1 = streetAddress1;
         this.streetAddress2 = streetAddress2;
         this.userId = userId;
-        this.profilePublic = profilePublic;
+        this.profilePublic = profilePublic === 'Y' ? true : false;
         this.profileUrl = profileUrl;
         this.zip = zip;
     }
