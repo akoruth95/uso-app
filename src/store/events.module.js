@@ -1,3 +1,4 @@
+import { eventsService } from "../services";
 
 const state = {
     selectedEvent: {},
@@ -18,7 +19,8 @@ const actions = {
         commit('selectEvent', event)
     },
     getProgress({commit}, userId) {
-        console.log("selectedEvent = ", state.selectedEvent);
+        console.log('state' , state);
+        return eventsService.getProgress(state.selectedEvent.event_id, state.selectedEvent.attendee_id);
     }
 }
 
