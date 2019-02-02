@@ -1,58 +1,59 @@
 <template>
   <div>
-    <v-container fluid grid-list-xl >
-    
-    <div>
-        <v-flex text-xs-center align-center xs12>
-            <v-avatar size="250px"><img v-bind:src="profileImage"></v-avatar>
-            <h1 class="headline py-2">"Novice"</h1>
-            <h1 class="headline py-2">{{firstName}} {{lastName}}</h1>
-        </v-flex>
-    <v-layout row wrap>
-      <v-flex xs6>
+    <v-container fluid grid-list-xl>
+      <!-- <img aspect-ratio="1.7" contain max-height="250" src="../../assets/magus.svg"> -->
+      <v-img aspect-ratio="1.7" max-height="250" contain :src="levelImage"></v-img>
+      <!-- {{ levelImage }} -->
+      <!-- <div v-html="require('../../assets/magus.svg')"></div> -->
+      <div>{{}}</div>
+      <div>{{firstName}} {{lastName}}</div>
+      <div>
+        <!-- <v-flex text-xs-center align-center xs12>
+          <v-avatar size="250px"></v-avatar>
+          <h1 class="headline py-2">"Novice"</h1>
+          <h1 class="headline py-2">{{firstName}} {{lastName}}</h1>
+        </v-flex>-->
+        <v-layout row wrap>
+          <v-flex xs6>
             <v-flex text-xs-center>
-                <v-icon large color="yellow darken-2" right>fa-coins</v-icon>
-                <div>600</div>
+              <v-icon large color="yellow darken-2" right>fa-coins</v-icon>
+              <div>600</div>
             </v-flex>
-        </v-flex>
-        <v-flex xs6>
+          </v-flex>
+          <v-flex xs6>
             <v-flex text-xs-center>
-                <v-icon large color="yellow darken-2" right>fa-trophy</v-icon>
-                <div>5/15</div>
+              <v-icon large color="yellow darken-2" right>fa-trophy</v-icon>
+              <div>5/15</div>
             </v-flex>
-        </v-flex>
-    </v-layout>
-    <v-layout row>
-      <v-flex xs12 sm6 offset-sm3>
-        <v-card>
-          <v-toolbar color="teal" dark>
-            <v-toolbar-side-icon></v-toolbar-side-icon>
-  
-            <v-toolbar-title class="text-xs-center">Achievements</v-toolbar-title>
-  
-            <v-spacer></v-spacer>
-          </v-toolbar>
-  
-          <v-list >
-            <v-list-tile
-              v-for="item in items"
-              :key="item.title"
-              avatar
-            > 
-              <v-list-tile-content>
-                <v-list-tile-title v-html="item.title"></v-list-tile-title>
-              </v-list-tile-content>
-  
-              <v-list-tile-action>
-                <v-icon :color="item.active ? 'teal' : 'grey'">fa-check-circle</v-icon>
-              </v-list-tile-action>
-            </v-list-tile>
-          </v-list>
-        </v-card>
-      </v-flex>
-    </v-layout>
-    </div>
-  </v-container>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
+          <v-flex xs12 sm6 offset-sm3>
+            <v-card>
+              <v-toolbar color="teal" dark>
+                <v-toolbar-side-icon></v-toolbar-side-icon>
+
+                <v-toolbar-title class="text-xs-center">Achievements</v-toolbar-title>
+
+                <v-spacer></v-spacer>
+              </v-toolbar>
+
+              <v-list>
+                <v-list-tile v-for="item in items" :key="item.title" avatar>
+                  <v-list-tile-content>
+                    <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                  </v-list-tile-content>
+
+                  <v-list-tile-action>
+                    <v-icon :color="item.active ? 'teal' : 'grey'">fa-check-circle</v-icon>
+                  </v-list-tile-action>
+                </v-list-tile>
+              </v-list>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </div>
+    </v-container>
   </div>
 </template>
 
@@ -62,29 +63,72 @@ import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
-      comments: '',
-      items: [
-        { active: true, title: 'Complete Profile', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
-        { active: true, title: 'Post on Social Wall', avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg' },
-        { title: 'Read Materials', avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg' },
-        { title: 'Take Notes', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' }
+      comments: "",
+      score: 200,
+      maxScore: 600,
+      levels: [
+        {
+          name: "journeyman"
+        },
+        {
+          name: "magus"
+        },
+        {
+          name: "grandmaster"
+        },
+        {
+          name: "archmage"
+        },
+        {
+          name: "promithean"
+        }
       ],
+      items: [
+        {
+          active: true,
+          title: "Complete Profile",
+          avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
+        },
+        {
+          active: true,
+          title: "Post on Social Wall",
+          avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
+        },
+        {
+          title: "Read Materials",
+          avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
+        },
+        {
+          title: "Take Notes",
+          avatar: "https://cdn.vuetifyjs.com/images/lists/4.jpg"
+        }
+      ]
     };
   },
   computed: {
     ...mapState("events", ["selectedEvent"]),
     ...mapState({
-            userInfo: state => state.account.userInfo
-        }),
+      userInfo: state => state.account.userInfo
+    }),
     profileImage: function() {
-            return this.userInfo.profileUrl || require('../../assets/blank-profile.png');
-        },
+      return (
+        this.userInfo.profileUrl || require("../../assets/blank-profile.png")
+      );
+    },
+    levelImage() {
+      let level = this.score / this.maxScore;
+      if (level < 0.2) return require("../../assets/journeyman.png");
+      if (level < 0.4) return require("../../assets/magus.png");
+      if (level < 0.6) return require("../../assets/grandmaster.png");
+      if (level < 0.8) return require("../../assets/archmage.png");
+      return require("../../assets/promithean.png");
+    },
     firstName: function() {
-            return this.userInfo.firstName;
-        },
+      return this.userInfo.firstName;
+    },
     lastName: function() {
-            return this.userInfo.lastName;
-        }
+      return this.userInfo.lastName;
+    }
   },
   created() {
     this.setEventDetails();
@@ -93,8 +137,8 @@ export default {
     this.getUserInfo();
   },
   methods: {
-    ...mapActions('common', ['setNewHeading', 'setShowBackButton', ]),
-    ...mapActions('account', ['getUserInfo']),
+    ...mapActions("common", ["setNewHeading", "setShowBackButton"]),
+    ...mapActions("account", ["getUserInfo"]),
     setEventDetails() {
       this.eventLocationString = `${this.selectedEvent.venueName}, ${
         this.selectedEvent.venueAddress1
@@ -102,7 +146,7 @@ export default {
       this.eventTimeString = `${this.selectedEvent.startDate} . ${
         this.selectedEvent.startTime
       } to ${this.selectedEvent.endTime}`;
-    },
+    }
   },
   components: {
     topBar
@@ -127,18 +171,18 @@ export default {
   clear: both;
 }
 body {
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
 }
 h3 {
   color: #f80750;
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
 }
 #ip2 {
-    border-radius: 25px;
-    border: 2px solid #f80750;
-    padding: 10px; 
-    width: 95%;
-    height: 50px;    
+  border-radius: 25px;
+  border: 2px solid #f80750;
+  padding: 10px;
+  width: 95%;
+  height: 50px;
 }
 .fa-coins {
   color: yellow;

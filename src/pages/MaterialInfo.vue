@@ -1,7 +1,13 @@
 <template>
   <v-container class="text-xs-left" fluid grid-list-lg>
+    <v-img
+      aspect-ratio="1.5"
+      contain
+      class="my-2 mx-3"
+      max-height="300"
+      :src="selectedMaterial.photoLink"
+    ></v-img>
     <div class="title text-xs-center">{{selectedMaterial.name}}</div>
-    <v-img class="my-2 mx-3" max-height="300" :src="selectedMaterial.photoLink"></v-img>
     <div class="body-1">{{selectedMaterial.description}}</div>
     <div>
       <a
