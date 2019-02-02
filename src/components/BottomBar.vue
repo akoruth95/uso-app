@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <div>
     <v-bottom-nav :active.sync="bottomNav" :value="true" color="secondary" app fixed>
       <v-btn dark to="/">
         <span>Events</span>
@@ -24,7 +24,7 @@
         <v-icon>fa-user-cog</v-icon>
       </v-btn>
     </v-bottom-nav>
-  </v-card>
+  </div>
 </template>
 <script>
 import { mapState } from 'vuex';
