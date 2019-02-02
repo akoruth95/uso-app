@@ -150,7 +150,7 @@ const actions = {
             lastName: form.lastName,
             nickName: form.nickName,
             phoneNumber: form.phone,
-            shareProfile: form.profilePublic,
+            shareProfile: form.profilePublic ? 'Y' : 'N',
             state: form.state,
             zip: form.zip
         };
