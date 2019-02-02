@@ -2,15 +2,20 @@
   <div style="margin:10px">
     <v-container fluid grid-list-xl>
       <div>
-        <h2 class="whitetext">Ask a Question</h2>
-        <p class="whitetext">
-          You can ask a question to the speaker either before or during a session.
-          Your questions will be answered at the end of the session
-        </p>
-        <textarea id="text-area" v-model="questions"></textarea>
-        <div align="center">
-          <v-btn style="background-color: #f80750" @click="submit">Ask</v-btn>
-        </div>
+        <p class="whitetext title pb-2">You can ask questions to the speaker</p>
+        <p class="whitetext">Your questions will be answered during or after the session</p>
+        <form>
+          
+            <textarea id="text-area"   name="content"></textarea>
+                  <!-- <trix-editor input="x"></trix-editor> -->
+  
+          <!-- <input id="x" type="hidden" name="content">
+           <VueTrix inputId="x" v-model="userNote.note" /> -->
+          <!-- <trix-editor input="x"></trix-editor> -->
+      <div align="center">
+        <v-btn style="background-color: #f80750" @click="submit()">save</v-btn>
+      </div>
+      </form>
       </div>
     </v-container>
   </div>

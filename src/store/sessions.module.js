@@ -25,7 +25,9 @@ const actions = {
     },
     getNotes({commit}, attendeeId) {
         console.log("sessione",state.selectedSession);
+        console.log("attendee ID", attendeeId);
         return sessionsService.getNotes(state.selectedSession.eventID, state.selectedSession.sessionId, attendeeId);
+
     },
     submitNotes({commit}, {eventId, attendeeId, notes}) {
         console.log("store id in session = ", store);

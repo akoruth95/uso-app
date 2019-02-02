@@ -31,7 +31,8 @@ import { mapState } from 'vuex';
 export default {
   computed: {
     ...mapState({
-      num: state => state.account.notifications.length
+       num: state => state.account.newNotifications
+     // num: state => state.account.notifications.length
     })
   },
   data() {

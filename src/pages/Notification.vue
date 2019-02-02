@@ -11,6 +11,7 @@
           <v-list-tile-content>
             <v-list-tile-title class="body-2 grey--text">{{n.notifiedTime}}</v-list-tile-title>
             <v-list-tile-sub-title class="body grey-text">{{n.notification}}</v-list-tile-sub-title>
+            <v-list-tile-sub-title class="body grey-text">{{n.notificationRead}}</v-list-tile-sub-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -54,6 +55,11 @@
 <script>
 import { mapActions, mapState } from "vuex";
 export default {
+  data() {
+    return {
+      newNotifications : 0
+    }
+  },
   computed: {
     ...mapState({
       notifications: state => state.account.notifications
@@ -62,13 +68,30 @@ export default {
   created() {
     this.setNewHeading("My Notifications");
     this.getNotifications();
+   // this.getNewNotificationCount();
+    
+  },
+  beforeDestroy() {
+   // console.log("In before destroy");
+     this.updateNotifications({data: 'Y'});
+   //  console.log("new notifications = ", this.newNotifications);
+    // this.submitNotes({eventId: this.selectedSession.eventID,
+    //                     attendeeId: this.selectedEvent.attendee_id, notes: this.userNote.note});
+        
   },
   methods: {
-    ...mapActions("account", ["getNotifications"]),
+    ...mapActions("account", ["getNotifications","updateNotifications"]),
     ...mapActions("common", ["setNewHeading"]),
     notificationClass(readStatus) {
       if (!readStatus) {
         return "newNotification";
+      }
+    },
+    getNewNotificationCount() {
+      for(let i=0;i<this.notifications.length;i++) {
+        if(this.notifications[i].notificationRead == 'N')
+            this.newNotifications++;
+          //  console.log(this.newNotifications);
       }
     }
   }

@@ -5,7 +5,7 @@
     <div>
         <v-flex text-xs-center align-center xs12>
             <v-avatar size="250px"><img v-bind:src="profileImage"></v-avatar>
-            <h1 class="headline py-2">"Novice"</h1>
+            <h1 class="headline py-2">Novice</h1>
         </v-flex>
     <v-layout row wrap>
       <v-flex xs6>
@@ -61,8 +61,9 @@ export default {
     return {
       comments: '',
       userProgress: {},
+      //active : userProgress.answer_poll_flag === 'Y' ? true : false
       items: [
-        { active: true, title: 'Answer Poll', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
+        { active : false , title: 'Answer Poll', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
         { active: true, title: 'Ask Question', avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg' },
         { title: 'Bookmarks', avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg' },
         { title: 'Likes', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
@@ -70,27 +71,8 @@ export default {
         { title: 'Provide Feedback', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
         { title: 'Take Notes', avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg' },
         { title: 'Update Profile', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' }
-      ],
-      items: [
-        {
-          active: true,
-          title: "Complete Profile",
-          avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
-        },
-        {
-          active: true,
-          title: "Post on Social Wall",
-          avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
-        },
-        {
-          title: "Read Materials",
-          avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-        },
-        {
-          title: "Take Notes",
-          avatar: "https://cdn.vuetifyjs.com/images/lists/4.jpg"
-        }
       ]
+      
     };
   },
   computed: {
