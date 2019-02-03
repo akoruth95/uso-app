@@ -51,18 +51,12 @@ const actions = {
         )
     },
     postNotes({commit}, {eventId, attendeeId, notes}) {
-        console.log("store id in session = ", store);
-        console.log("attendee id in session = ", store.state.events.selectedEvent.attendee_id);
-        console.log("note id in session = ", noteId);
-
-        const data = {
-                note_id: noteId,
+                const data = {
                 sessionid : state.selectedSession.sessionId,
                 attendeeid : store.state.events.selectedEvent.attendee_id,
                 note: notes
                 }; 
-                console.log('body: ', data)       
-        sessionsService.submitNotes(eventId, state.selectedSession.sessionId, data).then(
+                sessionsService.postNotes(eventId, state.selectedSession.sessionId, data).then(
             response => {
                 commit('saveNote', response.data);
             }, error => {

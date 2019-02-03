@@ -17,7 +17,7 @@
           <span slot="badge">{{num}}</span>
           <v-icon>fa-bell</v-icon>
         </v-badge>
-                <v-badge  v-else fab color="primary">
+        <v-badge  v-else fab color="primary">
           <v-icon>fa-bell</v-icon>
         </v-badge>
       </v-btn>

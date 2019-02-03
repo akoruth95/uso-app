@@ -46,9 +46,14 @@ export default {
     this.setShowBackButton(true);
     this.getNotes(this.selectedEvent.attendee_id).then(
       res => {
-        this.notes = res.data;
-        this.userNote = this.notes;
-        console.log(this.notes);
+        console.log("in get notes", res.data);
+        if (res.data.length == 0)
+          this.userNote.note_id = 0;
+        else {
+          this.notes = res.data[0];
+          this.userNote = this.notes;
+        }
+        //console.log("########" ,res.data.length);
       }
     );
     //Object.assign(
@@ -58,7 +63,7 @@ export default {
   },
   methods: {
     ...mapActions('common', ['setNewHeading', 'setShowBackButton']),
-    ...mapActions('sessions',['getNotes','submitNotes']),
+    ...mapActions('sessions',['getNotes','submitNotes','postNotes']),
     setEventDetails() {
       this.eventLocationString = `${this.selectedEvent.venueName}, ${
         this.selectedEvent.venueAddress1
@@ -68,7 +73,9 @@ export default {
       } to ${this.selectedEvent.endTime}`;
     },
     submit: function() {
-      if(this.userNote.note.length == 0)  {
+      console.log("length => ", this.userNote.note_id);
+      if(this.userNote.note_id != 0)  {
+        console.log("OLD NOTE");
        this.submitNotes({noteId: this.userNote.note_id, eventId: this.selectedSession.eventID,
                         attendeeId: this.selectedEvent.attendee_id, notes: this.userNote.note});
       }
