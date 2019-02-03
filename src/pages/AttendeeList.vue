@@ -2,9 +2,9 @@
   <div>
     <v-container fluid grid-list-sm>
       <v-layout row justify-center="true">
-          <v-flex xs8>
+          <div>
               <h2>Event Participants</h2>
-          </v-flex>
+          </div>
       </v-layout>
       <v-layout row wrap>
         <v-flex
@@ -12,7 +12,7 @@
           v-for="attendee in attendeeList"
           :key="attendee.attendee_id"
         >
-          <v-avatar size="100px" class="attendee-back elevation-5">
+          <v-avatar size="100px" class="attendee-back elevation-5" @click="clickAttendee(attendee)"> 
             <v-img contain :src="attendee.photo_link"></v-img>
           </v-avatar>
           <div class="caption">{{attendee.first_name}} {{attendee.last_name}}</div>
@@ -49,11 +49,16 @@ export default {
       "setShowBackButton",
       "setNewBacklink"
     ]),
+    ...mapActions("attendee", ["selectAttendee"]),
+
+    clickAttendee(attendee) {
+        this.selectAttendee(attendee);
+        this.$router.push({ name: "profileDetails" });
+    },
 
     getList() {
       attendeesService.getAttendees(this.event.event_id).then(result => {
         this.attendeeList = result.data;
-        console.log(result.data);
       });
     }
   }

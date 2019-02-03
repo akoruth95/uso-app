@@ -31,6 +31,10 @@ function getUserInfo() {
     return request.get(baseUrl + `/users/${store.state.account.userId}`);
 }
 
+function getAttendeeProfile(userId) {
+    return request.get(baseUrl + `/users/${userId}`)
+}
+
 function login(data) {
     return request.post(baseUrl + '/users/login', data);
 }
@@ -52,5 +56,6 @@ export const userService = {
     getUserInfo,
     login,
     register,
-    updateProfile
+    updateProfile,
+    getAttendeeProfile
 }
