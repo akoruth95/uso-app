@@ -1,5 +1,6 @@
 <template>
-  <v-container class="ma-0 pa-0">
+  <v-container fluid grid-list-lg>
+    <v-img max-height="150" class="mb-3" src="https://static.usoncevents.com/megaphone.jpg"></v-img>
     <div class="mx-2 my-2" v-for="n in notifications" :key="n.notificationId">
       <v-list
         three-line
@@ -74,9 +75,7 @@ export default {
   beforeDestroy() {
    // console.log("In before destroy");
      this.updateNotifications({data: 'Y'});
-   //  console.log("new notifications = ", this.newNotifications);
-    // this.submitNotes({eventId: this.selectedSession.eventID,
-    //                     attendeeId: this.selectedEvent.attendee_id, notes: this.userNote.note});
+    this.$store.commit('account/resetCount');
         
   },
   methods: {

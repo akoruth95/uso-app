@@ -31,7 +31,8 @@ function getNotes(eventId, sessionId, attendeeId) {
 function submitNotes(eventId, sessionId, data) {
     console.log("path = ", CONFIG.api.sessions);
     console.log("data" , data);
-    return request.post(CONFIG.api.sessions + `/events/${eventId}/sessions/${sessionId}/notes`,data)
+    return request.put(CONFIG.api.sessions + `/events/${eventId}/sessions/${sessionId}/notes`,data)
+    //https://api.v2.sessions.usoncevents.com/events/1/sessions/1/notes
 }
 
 //https://api.v2.sessions.usoncevents.com/events/1/sessions/2/notes?sessionid=1&attendeeid=4&note=great

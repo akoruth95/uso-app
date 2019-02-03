@@ -29,12 +29,34 @@ const actions = {
         return sessionsService.getNotes(state.selectedSession.eventID, state.selectedSession.sessionId, attendeeId);
 
     },
-    submitNotes({commit}, {eventId, attendeeId, notes}) {
+    submitNotes({commit}, {noteId, eventId, attendeeId, notes}) {
         console.log("store id in session = ", store);
         console.log("attendee id in session = ", store.state.events.selectedEvent.attendee_id);
-        console.log("note id in session = ", notes);
+        console.log("note id in session = ", noteId);
 
         const data = {
+                note_id: noteId,
+                sessionid : state.selectedSession.sessionId,
+                attendeeid : store.state.events.selectedEvent.attendee_id,
+                note: notes
+                }; 
+                console.log('body: ', data)       
+        sessionsService.submitNotes(eventId, state.selectedSession.sessionId, data).then(
+            response => {
+                commit('saveNote', response.data);
+            }, error => {
+                Vue.$log.error(error.mesage);
+            }
+
+        )
+    },
+    postNotes({commit}, {eventId, attendeeId, notes}) {
+        console.log("store id in session = ", store);
+        console.log("attendee id in session = ", store.state.events.selectedEvent.attendee_id);
+        console.log("note id in session = ", noteId);
+
+        const data = {
+                note_id: noteId,
                 sessionid : state.selectedSession.sessionId,
                 attendeeid : store.state.events.selectedEvent.attendee_id,
                 note: notes

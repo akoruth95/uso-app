@@ -28,8 +28,10 @@ import VueTrix from "vue-trix";
 export default {
   data() {
     return {
+      isDataPresent : false,
       userNote: {
-        note : ''
+        note : '',
+        note_id : 0
       },
       notes: [],
       note: ''
@@ -46,7 +48,7 @@ export default {
     this.getNotes(this.selectedEvent.attendee_id).then(
       res => {
         this.notes = res.data;
-        this.userNote = this.notes[0];
+        this.userNote = this.notes;
         console.log(this.notes);
       }
     );
@@ -71,9 +73,18 @@ export default {
       console.log('eventID: ', this.selectedSession.eventID);
       console.log('attendeeID: ', this.selectedEvent.attendee_id);
       console.log('note = ', this.userNote.note);
+      console.log('NOTE ID = ', this.userNote.note_id);
       console.log('event details', this.selectedEvent);
-       this.submitNotes({eventId: this.selectedSession.eventID,
+      if(this.userNote.note.length == 0)  {
+       this.submitNotes({noteId: this.userNote.note_id, eventId: this.selectedSession.eventID,
                         attendeeId: this.selectedEvent.attendee_id, notes: this.userNote.note});
+        console.log("OLD NOTE");
+      }
+      else {
+        console.log("ITS A NEW NOTE");
+        this.postNotes({eventId: this.selectedSession.eventID,
+                        attendeeId: this.selectedEvent.attendee_id, notes: this.userNote.note});
+      }
         
       //https://api.v2.sessions.usoncevents.com/events/1/sessions/2/notes?sessionid=1&attendeeid=4&note=great
         console.log("Notes = " , this.userNote.note);

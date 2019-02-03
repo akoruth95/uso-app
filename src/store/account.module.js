@@ -10,6 +10,7 @@ const USERINFO = 'userInfo';
 const state = {
     notifications: [],
     newNotifications : 0,
+    countres : 9,
     status: {
         loggedIn: !isNullOrUndefined(localStorage.getItem(USERID)),
         registered: false
@@ -69,12 +70,6 @@ const actions = {
                     if(response.data[i].notificationRead=='N')
                         commit('incrementCount');
                   }
-                  console.log("new notification count", state.newNotifications);
-                commit('resetCount')
-            }, error => {
-                Vue.$log.error(error.message);
-                let message = 'There was a problem retrieving notifications. Please try again later.'
-                dispatch('alert/error', message, {root: true});
             }
         );
         
