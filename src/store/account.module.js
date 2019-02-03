@@ -10,7 +10,6 @@ const USERINFO = 'userInfo';
 const state = {
     notifications: [],
     newNotifications : 0,
-    countres : 9,
     status: {
         loggedIn: !isNullOrUndefined(localStorage.getItem(USERID)),
         registered: false

@@ -28,7 +28,6 @@ import VueTrix from "vue-trix";
 export default {
   data() {
     return {
-      isDataPresent : false,
       userNote: {
         note : '',
         note_id : 0
@@ -69,16 +68,9 @@ export default {
       } to ${this.selectedEvent.endTime}`;
     },
     submit: function() {
-      console.log("In vue session = ", this.selectedSession.sessionId);
-      console.log('eventID: ', this.selectedSession.eventID);
-      console.log('attendeeID: ', this.selectedEvent.attendee_id);
-      console.log('note = ', this.userNote.note);
-      console.log('NOTE ID = ', this.userNote.note_id);
-      console.log('event details', this.selectedEvent);
       if(this.userNote.note.length == 0)  {
        this.submitNotes({noteId: this.userNote.note_id, eventId: this.selectedSession.eventID,
                         attendeeId: this.selectedEvent.attendee_id, notes: this.userNote.note});
-        console.log("OLD NOTE");
       }
       else {
         console.log("ITS A NEW NOTE");
