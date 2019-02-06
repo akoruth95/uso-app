@@ -24,7 +24,11 @@ function getBookmarks() {
 }
 
 function getNotifications() {
-    return request.get(baseUrl + `/users/${store.state.account.userId}/notifications`);
+     return request.get(baseUrl + `/users/${store.state.account.userId}/notifications`);
+}
+//https://api.v2.users.usoncevents.com/users/2/notifications
+function updateNotifications(data) {
+    return request.put(baseUrl + `/users/${store.state.account.userId}/notifications`,data);
 }
 
 function getUserInfo() {
@@ -52,5 +56,6 @@ export const userService = {
     getUserInfo,
     login,
     register,
-    updateProfile
+    updateProfile,
+    updateNotifications
 }

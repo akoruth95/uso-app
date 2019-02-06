@@ -167,6 +167,7 @@ router.beforeResolve((to, from, next) => {
   store.dispatch("alert/clear").then(() => {
     store.dispatch("common/setShowBackButton", false);
     store.dispatch("common/setNewHeading", "");
+    store.dispatch("account/getNotifications");
     next();
   });
 });

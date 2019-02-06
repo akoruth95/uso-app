@@ -40,6 +40,7 @@
   </div>
 </template>
 
+
 <script>
 import { mapActions, mapState } from "vuex";
 import { eventOptions } from "../../utils/constants";
@@ -55,11 +56,9 @@ export default {
       }
     };
   },
-
   computed: {
     ...mapState("events", ["selectedEvent"])
   },
-
   created() {
     this.windowSize = { x: window.innerWidth, y: window.innerHeight };
     this.setEventDetails();
@@ -67,7 +66,6 @@ export default {
     this.setShowBackButton(true);
     this.setNewBacklink("/events");
   },
-
   methods: {
     ...mapActions("common", [
       "setNewHeading",
@@ -93,20 +91,16 @@ export default {
 p {
   margin-bottom: 0px;
 }
-
 .event-location {
   padding: 8px 16px 8px 16px;
 }
-
 .column {
   float: left;
   padding: 10px;
 }
-
 .left {
   width: 80%;
 }
-
 .right {
   width: 20%;
 }

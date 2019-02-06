@@ -1,16 +1,24 @@
 <template>
   <div style="margin:10px">
-    <v-container fluid grid-list-xl>
-      <div>
-        <p class="whitetext title pb-2">Take Notes about the session</p>
-        <p class="whitetext">Use the Space below to write your own notes about the session</p>
-        <VueTrix color="white" v-model="usernotes"/>
-        <div align="center">
-          <v-btn style="background-color: #f80750" @click="submit">save</v-btn>
-        </div>
+    <v-container fluid grid-list-xl >
+    <div>
+        <h2 class="whitetext">Take Notes about the session</h2>
+        <p class="whitetext"> Use the Space below to write your own notes about the session </p>
+        <form>
+          
+            <textarea id="text-area" v-model="userNote.note"   name="content"></textarea>
+                  <!-- <trix-editor input="x"></trix-editor> -->
+  
+          <!-- <input id="x" type="hidden" name="content">
+           <VueTrix inputId="x" v-model="userNote.note" /> -->
+          <!-- <trix-editor input="x"></trix-editor> -->
+      <div align="center">
+        <v-btn style="background-color: #f80750" @click="submit()">save</v-btn>
       </div>
-    </v-container>
-  </div>
+      </form>
+    </div>
+  </v-container>
+ </div>
 </template>
 
 <script>
@@ -20,25 +28,36 @@ import VueTrix from "vue-trix";
 export default {
   data() {
     return {
-      usernotes:
-        "<ul><li><!--block-->dbfasgkdhk</li><li><!--block-->adsfgjhsg</li><li><!--block-->sdfgajhsgdjhg</li></ul>"
+      userNote: {
+        note : '',
+        note_id : 0
+      },
+      notes: [],
+      note: ''
     };
   },
   computed: {
-    ...mapState("events", ["selectedEvent"])
+    ...mapState('events', ['selectedEvent']),
+    ...mapState('sessions',['notes','selectedSession'])
   },
   created() {
     this.setEventDetails();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
-    this.setNewBacklink("/session-info");
+    this.getNotes(this.selectedEvent.attendee_id).then(
+      res => {
+        if (res.data.length == 0)
+          this.userNote.note_id = 0;
+        else {
+          this.notes = res.data[0];
+          this.userNote = this.notes;
+        }
+         }
+    );
   },
   methods: {
-    ...mapActions("common", [
-      "setNewHeading",
-      "setShowBackButton",
-      "setNewBacklink"
-    ]),
+    ...mapActions('common', ['setNewHeading', 'setShowBackButton']),
+    ...mapActions('sessions',['getNotes','submitNotes','postNotes']),
     setEventDetails() {
       this.eventLocationString = `${this.selectedEvent.venueName}, ${
         this.selectedEvent.venueAddress1
@@ -48,8 +67,16 @@ export default {
       } to ${this.selectedEvent.endTime}`;
     },
     submit: function() {
-      console.log("Notes = " + this.usernotes);
-    }
+      if(this.userNote.note_id != 0)  {
+         this.submitNotes({noteId: this.userNote.note_id, eventId: this.selectedSession.eventID,
+                        attendeeId: this.selectedEvent.attendee_id, notes: this.userNote.note});
+      }
+      else {
+        this.postNotes({eventId: this.selectedSession.eventID,
+                        attendeeId: this.selectedEvent.attendee_id, notes: this.userNote.note});
+      }
+        
+       },
   },
   components: {
     topBar,
@@ -81,12 +108,15 @@ body {
   color: white;
   font-family: "Raleway", sans-serif;
 }
-#ip3 {
-  border-radius: 25px;
-  border: 2px solid white;
-  padding: 10px;
-  width: 95%;
-  height: 350px;
+#text-area {
+    position:relative;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    margin: 0;
+    padding: 0.4em 0.6em;
+    min-height: calc(100vh * .5);
+    min-width: calc(100vh * .5);
+    outline: none;
 }
 trix-toolbar .trix-button-group button {
   background-color: white;
