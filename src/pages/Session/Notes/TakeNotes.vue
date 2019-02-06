@@ -46,20 +46,14 @@ export default {
     this.setShowBackButton(true);
     this.getNotes(this.selectedEvent.attendee_id).then(
       res => {
-        console.log("in get notes", res.data);
         if (res.data.length == 0)
           this.userNote.note_id = 0;
         else {
           this.notes = res.data[0];
           this.userNote = this.notes;
         }
-        //console.log("########" ,res.data.length);
-      }
+         }
     );
-    //Object.assign(
-    // console.log("******", this.notes);
-    //this.userNote.note=this.notes[0].note.slice(0);
-    //console.log(this.selectedEvent);
   },
   methods: {
     ...mapActions('common', ['setNewHeading', 'setShowBackButton']),
@@ -73,21 +67,16 @@ export default {
       } to ${this.selectedEvent.endTime}`;
     },
     submit: function() {
-      console.log("length => ", this.userNote.note_id);
       if(this.userNote.note_id != 0)  {
-        console.log("OLD NOTE");
-       this.submitNotes({noteId: this.userNote.note_id, eventId: this.selectedSession.eventID,
+         this.submitNotes({noteId: this.userNote.note_id, eventId: this.selectedSession.eventID,
                         attendeeId: this.selectedEvent.attendee_id, notes: this.userNote.note});
       }
       else {
-        console.log("ITS A NEW NOTE");
         this.postNotes({eventId: this.selectedSession.eventID,
                         attendeeId: this.selectedEvent.attendee_id, notes: this.userNote.note});
       }
         
-      //https://api.v2.sessions.usoncevents.com/events/1/sessions/2/notes?sessionid=1&attendeeid=4&note=great
-        console.log("Notes = " , this.userNote.note);
-    },
+       },
   },
   components: {
     topBar,

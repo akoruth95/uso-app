@@ -4,7 +4,8 @@ import store from '../store';
 
 const state = {
     selectedSession: {},
-    notes:  []
+    notes:  [],
+    questions: []
 }
 
 const mutations = {
@@ -16,6 +17,9 @@ const mutations = {
     },
     saveNote(state, note)  {
         state.notes.push(note)
+    },
+    saveQuestions(state, question) {
+        state.questions.push(question)
     }
 }
 
@@ -24,24 +28,16 @@ const actions = {
         commit('selectSession', session)
     },
     getNotes({commit}, attendeeId) {
-        console.log("sessione",state.selectedSession);
-        console.log("attendee ID", attendeeId);
         return sessionsService.getNotes(state.selectedSession.eventID, state.selectedSession.sessionId, attendeeId);
-
     },
     submitNotes({commit}, {noteId, eventId, attendeeId, notes}) {
-        console.log("store id in session = ", store);
-        console.log("attendee id in session = ", store.state.events.selectedEvent.attendee_id);
-        console.log("note id in session = ", noteId);
-
         const data = {
                 note_id: noteId,
                 sessionid : state.selectedSession.sessionId,
                 attendeeid : store.state.events.selectedEvent.attendee_id,
                 note: notes
                 }; 
-                console.log('body: ', data)       
-        sessionsService.submitNotes(eventId, state.selectedSession.sessionId, data).then(
+            sessionsService.submitNotes(eventId, state.selectedSession.sessionId, data).then(
             response => {
                 commit('saveNote', response.data);
             }, error => {
@@ -64,7 +60,40 @@ const actions = {
             }
 
         )
+    },
+    getQuestions({commit},attendeeId) {
+        return sessionsService.getQuestions(state.selectedSession.eventID, state.selectedSession.sessionId);
+    },
+    postQuestions({commit}, {eventId, attendeeId, questions}) {
+        const data = {
+        sessionid : state.selectedSession.sessionId,
+        attendeeid : store.state.events.selectedEvent.attendee_id,
+        question: questions
+        }; 
+        sessionsService.postQuestions(eventId, state.selectedSession.sessionId, data).then(
+    response => {
+        commit('saveQuestions', response.data);
+    }, error => {
+        Vue.$log.error(error.mesage);
     }
+)
+},
+submitQuestions({commit}, {questionId, eventId, attendeeId, questions}) {
+    const data = {
+            question_id: questionId,
+            sessionid : state.selectedSession.sessionId,
+            attendeeid : store.state.events.selectedEvent.attendee_id,
+            question: questions
+            }; 
+     sessionsService.submitQuestions(eventId, state.selectedSession.sessionId, data).then(
+        response => {
+            commit('saveQuestion', response.data);
+        }, error => {
+            Vue.$log.error(error.mesage);
+        }
+
+    )
+}
 }
 
 export const sessions = {

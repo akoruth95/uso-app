@@ -6,7 +6,7 @@
         <p class="whitetext">Your questions will be answered during or after the session</p>
         <form>
           
-            <textarea id="text-area"   name="content"></textarea>
+            <textarea id="text-area"  v-model="questions.question" name="content"></textarea>
                   <!-- <trix-editor input="x"></trix-editor> -->
   
           <!-- <input id="x" type="hidden" name="content">
@@ -28,12 +28,16 @@ import VueTrix from "vue-trix";
 export default {
   data() {
     return {
-      questions: ""
+      questions: {
+        question_id : 0,
+        question: ''
+      }
     };
   },
 
   computed: {
-    ...mapState("events", ["selectedEvent"])
+    ...mapState('events', ['selectedEvent']),
+    ...mapState('sessions',['questions','selectedSession'])
   },
 
   created() {
@@ -41,6 +45,15 @@ export default {
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
     this.setNewBacklink("/session-info");
+    this.getQuestions(this.selectedEvent.attendee_id).then(
+      res=> {
+        if(res.data.length == 0)
+          this.questions.question_id = 0;
+        else {
+          this.questions = res.data[0];
+        }
+      }
+    )
   },
 
   methods: {
@@ -49,6 +62,7 @@ export default {
       "setShowBackButton",
       "setNewBacklink"
     ]),
+    ...mapActions('sessions',['getQuestions','submitNotes','postNotes','postQuestions','submitQuestions']),
     setEventDetails() {
       this.eventLocationString = `${this.selectedEvent.venueName}, ${
         this.selectedEvent.venueAddress1
@@ -58,7 +72,15 @@ export default {
       } to ${this.selectedEvent.endTime}`;
     },
     submit: function() {
-      console.log("Questions = " + this.questions);
+      if(this.questions.question_id != 0)  {
+         this.submitQuestions({questionId: this.questions.question_id, eventId: this.selectedSession.eventID,
+                        attendeeId: this.selectedEvent.attendee_id, questions: this.questions.question});
+      }
+      else {
+        this.postQuestions({eventId: this.selectedSession.eventID,
+                            attendeeId: this.selectedEvent.attendee_id,
+                            questions: this.questions.question });
+      }
     }
   },
   components: {
