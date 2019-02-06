@@ -60,3 +60,7 @@ export const eventOptions = [
   { name: "Event Wall", icon: "fa-share-alt", route: "/" },
   { name: "Attendees", icon: "fa-users", route: "/events/attendeelist" }
 ];
+
+export const TEXT = {
+  staticPhotolink: "https://static.usoncevents.com/blank-profile.png"
+}

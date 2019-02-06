@@ -97,6 +97,11 @@ const router = new Router({
       component: () => import("./pages/Account/Profile.vue")
     },
     {
+      path: "/ProfileDetails",
+      name: "profileDetails",
+      component: () => import("./pages/Account/ProfileDetails.vue")
+    },   
+    {
       path: "/register",
       name: "register",
       component: () => import("./pages/Account/Register.vue"),
