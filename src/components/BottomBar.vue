@@ -13,8 +13,11 @@
 
       <v-btn dark to="/notification">
         <span>Notifications</span>
-        <v-badge fab color="primary">
-          <span v-if="num > 0" slot="badge">{{num}}</span>
+        <v-badge  v-if="num > 0" fab color="primary">
+          <span slot="badge">{{num}}</span>
+          <v-icon>fa-bell</v-icon>
+        </v-badge>
+        <v-badge  v-else fab color="primary">
           <v-icon>fa-bell</v-icon>
         </v-badge>
       </v-btn>
@@ -31,7 +34,8 @@ import { mapState } from 'vuex';
 export default {
   computed: {
     ...mapState({
-      num: state => state.account.notifications.length
+       num: state => state.account.newNotifications
+     // num: state => state.account.notifications.length
     })
   },
   data() {

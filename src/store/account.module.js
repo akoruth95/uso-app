@@ -9,6 +9,7 @@ const USERINFO = 'userInfo';
 
 const state = {
     notifications: [],
+    newNotifications : 0,
     status: {
         loggedIn: !isNullOrUndefined(localStorage.getItem(USERID)),
         registered: false
@@ -63,13 +64,61 @@ const actions = {
         userService.getNotifications().then(
             response => {
                 commit('getNotifications', response.data);
-            }, error => {
-                Vue.$log.error(error.message);
-                let message = 'There was a problem retrieving notifications. Please try again later.'
-                dispatch('alert/error', message, {root: true});
+               // console.log("notification" ,response.data);
+                for(let i=0;i<response.data.length;i++) {
+                    if(response.data[i].notificationRead=='N')
+                        commit('incrementCount');
+                  }
+            }
+        );
+        
+    },
+
+    updateNotifications({commit, dispatch} ) {
+      //  console.log("user Id = ", state.USERID);
+        const data = {
+            userId: state.USERID,
+            notificationRead:"Y"
+        }
+        userService.updateNotifications(data). then(
+            response => {
+              //  console.log('notification status updated to read');
+                dispatch('getNotifications');
             }
         )
     },
+
+    // submitNotes({commit}, {eventId, attendeeId, notes}) {
+    //     console.log("store id in session = ", store);
+    //     console.log("attendee id in session = ", store.state.events.selectedEvent.attendee_id);
+    //     console.log("note id in session = ", notes);
+
+    //     const data = {
+    //             sessionid : state.selectedSession.sessionId,
+    //             attendeeid : store.state.events.selectedEvent.attendee_id,
+    //             note: notes
+    //             }; 
+    //             console.log('body: ', data)       
+    //     sessionsService.submitNotes(eventId, state.selectedSession.sessionId, data).then(
+    //         response => {
+    //             commit('saveNote', response.data);
+    //         }, error => {
+    //             Vue.$log.error(error.mesage);
+    //         }
+
+    //     )
+    // }
+
+
+
+
+
+
+
+
+
+
+
     getUserInfo({commit, dispatch}) {
         userService.getUserInfo().then(
             response => {
@@ -204,7 +253,15 @@ const mutations = {
         const newUser = createUser(data);
         localStorage.setItem(USERINFO, newUser);
         state.userInfo = newUser;
+    },
+    resetCount(state) {
+        state.newNotifications = 0;
+       // Object.assign(state, newNotifications);
+    },
+    incrementCount(state) {
+        state.newNotifications++;
     }
+
 };
 
 function createUser(userInfo) {

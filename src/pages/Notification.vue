@@ -1,5 +1,6 @@
 <template>
-  <v-container class="ma-0 pa-0">
+  <v-container fluid grid-list-lg>
+    <v-img max-height="150" class="mb-3" src="https://static.usoncevents.com/megaphone.jpg"></v-img>
     <div class="mx-2 my-2" v-for="n in notifications" :key="n.notificationId">
       <v-list
         three-line
@@ -11,6 +12,7 @@
           <v-list-tile-content>
             <v-list-tile-title class="body-2 grey--text">{{n.notifiedTime}}</v-list-tile-title>
             <v-list-tile-sub-title class="body grey-text">{{n.notification}}</v-list-tile-sub-title>
+            <v-list-tile-sub-title class="body grey-text">{{n.notificationRead}}</v-list-tile-sub-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -54,6 +56,11 @@
 <script>
 import { mapActions, mapState } from "vuex";
 export default {
+  data() {
+    return {
+      newNotifications : 0
+    }
+  },
   computed: {
     ...mapState({
       notifications: state => state.account.notifications
@@ -62,13 +69,28 @@ export default {
   created() {
     this.setNewHeading("My Notifications");
     this.getNotifications();
+   // this.getNewNotificationCount();
+    
+  },
+  beforeDestroy() {
+   // console.log("In before destroy");
+     this.updateNotifications({data: 'Y'});
+    this.$store.commit('account/resetCount');
+        
   },
   methods: {
-    ...mapActions("account", ["getNotifications"]),
+    ...mapActions("account", ["getNotifications","updateNotifications"]),
     ...mapActions("common", ["setNewHeading"]),
     notificationClass(readStatus) {
       if (!readStatus) {
         return "newNotification";
+      }
+    },
+    getNewNotificationCount() {
+      for(let i=0;i<this.notifications.length;i++) {
+        if(this.notifications[i].notificationRead == 'N')
+            this.newNotifications++;
+          //  console.log(this.newNotifications);
       }
     }
   }
