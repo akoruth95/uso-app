@@ -73,10 +73,14 @@ export default {
     },
     submit: function() {
       if(this.questions.question_id != 0)  {
+        console.log('old question');
+        console.log('data',this.questions.question_id,this.selectedSession.eventID ,
+                        this.selectedEvent.attendee_id, this.questions.question);
          this.submitQuestions({questionId: this.questions.question_id, eventId: this.selectedSession.eventID,
                         attendeeId: this.selectedEvent.attendee_id, questions: this.questions.question});
       }
       else {
+        console.log('new question');
         this.postQuestions({eventId: this.selectedSession.eventID,
                             attendeeId: this.selectedEvent.attendee_id,
                             questions: this.questions.question });

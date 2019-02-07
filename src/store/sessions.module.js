@@ -87,7 +87,7 @@ submitQuestions({commit}, {questionId, eventId, attendeeId, questions}) {
             }; 
      sessionsService.submitQuestions(eventId, state.selectedSession.sessionId, data).then(
         response => {
-            commit('saveQuestion', response.data);
+            commit('saveQuestions', response.data);
         }, error => {
             Vue.$log.error(error.mesage);
         }
