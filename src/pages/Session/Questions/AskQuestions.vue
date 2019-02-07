@@ -5,17 +5,15 @@
         <p class="whitetext title pb-2">You can ask questions to the speaker</p>
         <p class="whitetext">Your questions will be answered during or after the session</p>
         <form>
-          
-            <textarea id="text-area"  v-model="questions.question" name="content"></textarea>
-                  <!-- <trix-editor input="x"></trix-editor> -->
-  
-          <!-- <input id="x" type="hidden" name="content">
-           <VueTrix inputId="x" v-model="userNote.note" /> -->
+          <textarea id="text-area" v-model="questions.question" name="content"></textarea>
           <!-- <trix-editor input="x"></trix-editor> -->
-      <div align="center">
-        <v-btn style="background-color: #f80750" @click="submit()">save</v-btn>
-      </div>
-      </form>
+          <!-- <input id="x" type="hidden" name="content">
+          <VueTrix inputId="x" v-model="userNote.note" />-->
+          <!-- <trix-editor input="x"></trix-editor> -->
+          <div align="center">
+            <v-btn style="background-color: #f80750" @click="submit()">save</v-btn>
+          </div>
+        </form>
       </div>
     </v-container>
   </div>
@@ -29,15 +27,15 @@ export default {
   data() {
     return {
       questions: {
-        question_id : 0,
-        question: ''
+        question_id: 0,
+        question: ""
       }
     };
   },
 
   computed: {
-    ...mapState('events', ['selectedEvent']),
-    ...mapState('sessions',['questions','selectedSession'])
+    ...mapState("events", ["selectedEvent"]),
+    ...mapState("sessions", ["questions", "selectedSession"])
   },
 
   created() {
@@ -45,15 +43,12 @@ export default {
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
     this.setNewBacklink("/session-info");
-    this.getQuestions(this.selectedEvent.attendee_id).then(
-      res=> {
-        if(res.data.length == 0)
-          this.questions.question_id = 0;
-        else {
-          this.questions = res.data[0];
-        }
+    this.getQuestions(this.selectedEvent.attendeeId).then(res => {
+      if (res.data.length == 0) this.questions.question_id = 0;
+      else {
+        this.questions = res.data[0];
       }
-    )
+    });
   },
 
   methods: {
@@ -62,7 +57,13 @@ export default {
       "setShowBackButton",
       "setNewBacklink"
     ]),
-    ...mapActions('sessions',['getQuestions','submitNotes','postNotes','postQuestions','submitQuestions']),
+    ...mapActions("sessions", [
+      "getQuestions",
+      "submitNotes",
+      "postNotes",
+      "postQuestions",
+      "submitQuestions"
+    ]),
     setEventDetails() {
       this.eventLocationString = `${this.selectedEvent.venueName}, ${
         this.selectedEvent.venueAddress1
@@ -72,18 +73,28 @@ export default {
       } to ${this.selectedEvent.endTime}`;
     },
     submit: function() {
-      if(this.questions.question_id != 0)  {
-        console.log('old question');
-        console.log('data',this.questions.question_id,this.selectedSession.eventID ,
-                        this.selectedEvent.attendee_id, this.questions.question);
-         this.submitQuestions({questionId: this.questions.question_id, eventId: this.selectedSession.eventID,
-                        attendeeId: this.selectedEvent.attendee_id, questions: this.questions.question});
-      }
-      else {
-        console.log('new question');
-        this.postQuestions({eventId: this.selectedSession.eventID,
-                            attendeeId: this.selectedEvent.attendee_id,
-                            questions: this.questions.question });
+      if (this.questions.question_id != 0) {
+        console.log("old question");
+        console.log(
+          "data",
+          this.questions.question_id,
+          this.selectedSession.eventID,
+          this.selectedEvent.attendeeId,
+          this.questions.question
+        );
+        this.submitQuestions({
+          questionId: this.questions.question_id,
+          eventId: this.selectedSession.eventID,
+          attendeeId: this.selectedEvent.attendeeId,
+          questions: this.questions.question
+        });
+      } else {
+        console.log("new question");
+        this.postQuestions({
+          eventId: this.selectedSession.eventID,
+          attendeeId: this.selectedEvent.attendeeId,
+          questions: this.questions.question
+        });
       }
     }
   },

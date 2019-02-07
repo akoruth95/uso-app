@@ -117,7 +117,7 @@ export default {
       "setShowBackButton"
     ]),
     setEventDetails() {
-      this.eventId = `${this.selectedEvent.event_id}`;
+      this.eventId = `${this.selectedEvent.eventId}`;
     },
     setSatisfactionRating: function(rating) {
       this.satisfactionRating = rating;

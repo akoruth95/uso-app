@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container fluid grid-list-lg>
-      <v-layout v-for="event in events" :key="event.event_id" row wrap>
+      <v-layout v-for="event in events" :key="event.eventId" row wrap>
         <v-flex xs12>
           <EventCard class="primary" v-bind:event="event" @click.native="clickEvent(event)"></EventCard>
         </v-flex>

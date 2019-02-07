@@ -106,10 +106,7 @@ export default {
     },
     fetchSessionInfo() {
       sessionsService
-        .getSessionInfo(
-          this.selectedEvent.event_id,
-          this.selectedSession.sessionId
-        )
+        .getSessionInfo(this.selectedSession.sessionId)
         .then(res => {
           this.sessionInfo = res["data"];
         });
@@ -127,8 +124,8 @@ export default {
       //     this.likeCount = res["data"].likes;
       //   });
       let payload = {
-        eventId: this.selectedEvent.event_id,
-        attendeeId: this.selectedEvent.attendee_id,
+        eventId: this.selectedEvent.eventId,
+        attendeeId: this.selectedEvent.attendeeId,
         activityType: "like",
         sourceTable: "sessions",
         sourceId: this.selectedSession.sessionId,
@@ -151,8 +148,8 @@ export default {
       //     this.bookmarkCount = res["data"].likes;
       //   });
       let payload = {
-        eventId: this.selectedEvent.event_id,
-        attendeeId: this.selectedEvent.attendee_id,
+        eventId: this.selectedEvent.eventId,
+        attendeeId: this.selectedEvent.attendeeId,
         activityType: "bookmark",
         sourceTable: "session_bookmarks",
         sourceId: this.selectedSession.sessionId,

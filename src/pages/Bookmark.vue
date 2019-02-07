@@ -55,10 +55,10 @@ export default {
     ...mapActions("common", ["setNewHeading"]),
     ...mapActions("bookmarks", ["getBookmarks"]),
     openBookmark(bookmark) {
-      switch (bookmark.bookmark_type) {
+      console.log(bookmark);
+      switch (bookmark.bookmarkType) {
         case "SESSION":
-          this.fetchSessionInfo(bookmark.event_id, bookmark.bookmark_id);
-
+          this.fetchSessionInfo(bookmark.itemId);
           break;
         case "RESOURCE":
           this.$router.push("/resource-info");
@@ -69,9 +69,9 @@ export default {
       }
     },
 
-    fetchSessionInfo(eventId, sessionId) {
-      sessionsService.getSessionInfo(this.eventId, this.sessionId).then(res => {
-        this.store.commit("sessions/selectSession", res["data"]);
+    fetchSessionInfo(sessionId) {
+      sessionsService.getSessionInfo(sessionId).then(res => {
+        store.commit("sessions/selectSession", res["data"]);
         this.$router.push("/session-info");
       });
     }

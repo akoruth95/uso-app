@@ -26,8 +26,8 @@ function getSession(eventId, sessionId) {
   );
 }
 
-function getSessionInfo(eventId, sessionId) {
-  return request.get(CONFIG.api.url + `/sessions/${sessionId}/`);
+function getSessionInfo(sessionId) {
+  return request.get(CONFIG.api.url + `/sessions/${sessionId}`);
 }
 
 function getNotes(eventId, sessionId, attendeeId) {

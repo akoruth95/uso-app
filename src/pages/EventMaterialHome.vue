@@ -27,7 +27,7 @@ import store from "../store";
 export default {
   created() {
     this.setNewHeading(this.event.name);
-    this.getMaterials(this.event.event_id);
+    this.getMaterials(this.event.eventId);
     this.setShowBackButton(true);
     this.setNewBacklink("/event/details");
   },

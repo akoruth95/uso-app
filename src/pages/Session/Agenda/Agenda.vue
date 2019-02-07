@@ -3,11 +3,7 @@
     <v-container fluid grid-list-lg>
       <v-layout row wrap>
         <v-flex xs12>
-          <v-img
-            class="white--text"
-            max-height="300px"
-            :src="selectedEvent.photoLink"
-          ></v-img>
+          <v-img class="white--text" max-height="300px" :src="selectedEvent.photoLink"></v-img>
         </v-flex>
       </v-layout>
       <v-layout v-for="session in sessions" :key="session.sessionId" row wrap>
@@ -54,7 +50,7 @@ export default {
     ]),
     ...mapActions("sessions", ["setSelectedSession"]),
     fetchSessions() {
-      sessionsService.getSessions(this.selectedEvent.event_id).then(res => {
+      sessionsService.getSessions(this.selectedEvent.eventId).then(res => {
         this.sessions = res["data"];
       });
     },
