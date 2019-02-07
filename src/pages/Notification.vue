@@ -68,7 +68,7 @@ export default {
   },
   created() {
     this.setNewHeading("My Notifications");
-    this.getNotifications();
+   // this.getNotifications();
    // this.getNewNotificationCount();
     
   },
@@ -84,13 +84,6 @@ export default {
     notificationClass(readStatus) {
       if (!readStatus) {
         return "newNotification";
-      }
-    },
-    getNewNotificationCount() {
-      for(let i=0;i<this.notifications.length;i++) {
-        if(this.notifications[i].notificationRead == 'N')
-            this.newNotifications++;
-          //  console.log(this.newNotifications);
       }
     }
   }
