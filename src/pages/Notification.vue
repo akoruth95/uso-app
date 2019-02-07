@@ -68,7 +68,7 @@ export default {
   },
   created() {
     this.setNewHeading("My Notifications");
-   // this.getNotifications();
+    this.getNotifications();
    // this.getNewNotificationCount();
     
   },

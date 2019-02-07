@@ -6,13 +6,6 @@
       </v-flex>
     </v-layout>
     <br>
-    <!-- <v-layout class="session-info-title" row wrap>
-      <v-flex xs12>
-        <h1>
-          <strong>{{sessionInfo.name}}</strong>
-        </h1>
-      </v-flex>
-    </v-layout>-->
     <v-layout row>
       <v-flex>
         <div class="title mt-2">
@@ -20,62 +13,24 @@
         </div>
       </v-flex>
       <v-flex>
-        <v-btn small color="secondary" class="elevation-5" v-on:click="callActivity('like')" icon>
+        <v-btn small color="secondary" class="elevation-5" @click="fetchLikes" icon>
           <v-icon small color="white">fas fa-thumbs-up</v-icon>
         </v-btn>
         {{sessionInfo.likesCount}}
       </v-flex>
       <v-flex>
-        <v-btn small class="elevation-5" v-on:click="callActivity('bookmark')" icon>
+        <v-btn small class="elevation-5" @click="fetchBookmarks()" icon>
           <v-icon small color="white">fas fa-bookmark</v-icon>
         </v-btn>
         {{sessionInfo.bookmarkCount}}
       </v-flex>
     </v-layout>
-    <!-- <v-layout class="session-info-actions">
-      <v-flex xs8>
-        <a href="#/speakerbio" class="subheading white--text"></a>
-    
-    < </v-flex>
-    </v-layout>-->
-    <!-- TODO: need to get speaker name, just getting speaker id now-->
     <v-btn flat block to="/speakerbio">Instructor - {{sessionInfo.speakerName}}</v-btn>
-    <!-- <div class="title pb-2">{{sessionInfo.name}}</div> -->
+
     <v-layout class="session-info-description text-xs-left" row wrap>
       <v-flex style="heigth:auto">{{sessionInfo.description}}</v-flex>
     </v-layout>
-
     <br>
-    <!-- <v-layout class="session-info-speaker" row wrap>
-      <v-flex xs4 offset-xs4>
-        <v-btn class="elevation-5" v-on:click="callActivity('like')" icon>
-          <v-icon small color="white">fas fa-thumbs-up</v-icon>
-        </v-btn>
-        {{likeCount}}
-      </v-flex>
-      <v-flex xs4>
-        <v-btn class="elevation-5" v-on:click="callActivity('bookmark')" icon>
-          <v-icon small color="white">fas fa-bookmark</v-icon>
-        </v-btn>
-        {{bookmarkCount}}
-      </v-flex>
-    </v-layout>
-    <br>-->
-    <!-- <v-speed-dial v-model="fab" bottom right direction="left" transition="slide-x">
-      <v-btn slot="activator" v-model="fab" color="secondary" dark fab>
-        <v-icon>fa-circle</v-icon>
-        <v-icon>fa-times</v-icon>
-      </v-btn>
-      <v-btn fab dark small color="secondary">
-        <v-icon>fa-edit</v-icon>
-      </v-btn>
-      <v-btn fab dark small color="secondary">
-        <v-icon>fa-plus</v-icon>
-      </v-btn>
-      <v-btn fab dark small color="secondary">
-        <v-icon>fa-trash</v-icon>
-      </v-btn>
-    </v-speed-dial>-->
     <v-layout class="session-info-buttons pb-4 mb-4" row wrap>
       <v-flex xs4>
         <v-btn class="session-info-btn secondary" to="/resources" small>Resources</v-btn>
@@ -131,8 +86,6 @@ export default {
 
   created() {
     this.fetchSessionInfo();
-    this.fetchLikes();
-    this.fetchBookmarks();
     this.setActivityDetails();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
@@ -163,29 +116,52 @@ export default {
     },
 
     fetchLikes() {
-      let details = {
-        ...this.ACTIVITY_DETAILS,
-        type: "like"
+      // let details = {
+      //   ...this.ACTIVITY_DETAILS,
+      //   type: "like"
+      // };
+      // activityService
+      //   .getActivity(this.userId, this.selectedEvent, details)
+      //   .then(res => {
+      //     //TODO: confirm with backend what field for number of likes is
+      //     this.likeCount = res["data"].likes;
+      //   });
+      let payload = {
+        eventId: this.selectedEvent.event_id,
+        attendeeId: this.selectedEvent.attendee_id,
+        activityType: "like",
+        sourceTable: "sessions",
+        sourceId: this.selectedSession.sessionId,
+        activityTime: Date.now()
       };
-      activityService
-        .getActivity(this.userId, this.selectedEvent, details)
-        .then(res => {
-          //TODO: confirm with backend what field for number of likes is
-          this.likeCount = res["data"].likes;
-        });
+      sessionsService.sessionLikes(payload).then(res => {
+        this.sessionInfo.likesCount = res.data;
+      });
     },
 
     fetchBookmarks() {
-      let details = {
-        ...this.ACTIVITY_DETAILS,
-        type: "bookmark"
+      // let details = {
+      //   ...this.ACTIVITY_DETAILS,
+      //   type: "bookmark"
+      // };
+      // activityService
+      //   .getActivity(this.userId, this.selectedEvent, details)
+      //   .then(res => {
+      //     //TODO: confirm with backend what field for number of bookmarks is
+      //     this.bookmarkCount = res["data"].likes;
+      //   });
+      let payload = {
+        eventId: this.selectedEvent.event_id,
+        attendeeId: this.selectedEvent.attendee_id,
+        activityType: "bookmark",
+        sourceTable: "session_bookmarks",
+        sourceId: this.selectedSession.sessionId,
+        activityTime: Date.now(),
+        insertUser: this.userId
       };
-      activityService
-        .getActivity(this.userId, this.selectedEvent, details)
-        .then(res => {
-          //TODO: confirm with backend what field for number of bookmarks is
-          this.bookmarkCount = res["data"].likes;
-        });
+      sessionsService.sessionBookmarks(payload).then(res => {
+        this.sessionInfo.bookmarkCount = res.data;
+      });
     },
 
     callActivity(activityType) {

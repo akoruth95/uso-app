@@ -100,7 +100,7 @@ const router = new Router({
       path: "/ProfileDetails",
       name: "profileDetails",
       component: () => import("./pages/Account/ProfileDetails.vue")
-    },   
+    },
     {
       path: "/register",
       name: "register",
@@ -132,18 +132,18 @@ const router = new Router({
       name: "resourceInfo",
       component: () => import("./pages/Session/Resources/ResourceInfo.vue")
     },
-    {
-      path: "/setup",
-      name: "setup",
-      component: () => import("./pages/Account/Setup.vue"),
-      beforeEnter: function(to, from, next) {
-        if (account.state.status.registered) {
-          next();
-        } else {
-          next("/register");
-        }
-      }
-    },
+    // {
+    //   path: "/setup",
+    //   name: "setup",
+    //   component: () => import("./pages/Account/Setup.vue"),
+    //   beforeEnter: function(to, from, next) {
+    //     if (account.state.status.registered) {
+    //       next();
+    //     } else {
+    //       next("/register");
+    //     }
+    //   }
+    // },
     {
       path: "/startup",
       name: "startup",
@@ -172,7 +172,7 @@ router.beforeResolve((to, from, next) => {
   store.dispatch("alert/clear").then(() => {
     store.dispatch("common/setShowBackButton", false);
     store.dispatch("common/setNewHeading", "");
-    store.dispatch("account/getNotifications");
+    //store.dispatch("account/getNotifications");
     next();
   });
 });
