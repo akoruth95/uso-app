@@ -17,4 +17,6 @@ function getProgress(eventId, userId) {
 
 }
 
-//https://api.v2.events.usoncevents.com/events/1/users/2/progress
+//function get
+
+//https://api.v1.usoncevents.com/api/events/1/polls

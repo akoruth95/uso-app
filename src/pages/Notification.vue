@@ -85,6 +85,13 @@ export default {
       if (!readStatus) {
         return "newNotification";
       }
+    },
+    getNewNotificationCount() {
+      for(let i=0;i<this.notifications.length;i++) {
+        if(this.notifications[i].notificationRead == 'N')
+            this.newNotifications++;
+          //  console.log(this.newNotifications);
+      }
     }
   }
 };
