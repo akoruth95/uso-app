@@ -7,5 +7,5 @@ export const bookmarkService = {
 
 //get attendees list for particular event
 function getBookmarks(usersId) {
-  return request.get(CONFIG.api.events + `/users/${usersId}/bookmarks`);
+  return request.get(CONFIG.api.url + `/users/${usersId}/bookmarks`);
 }

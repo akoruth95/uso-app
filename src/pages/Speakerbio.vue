@@ -19,7 +19,7 @@ export default {
   },
   created() {
     this.getSpeakerInfo();
-    this.setNewHeading("Speaker Bio");
+    this.setNewHeading("Instructor Bio");
     this.setShowBackButton(true);
     this.setNewBacklink("/session-info");
   },

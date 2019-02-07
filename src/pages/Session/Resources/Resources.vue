@@ -25,10 +25,7 @@ import store from "../../../store";
 export default {
   created() {
     this.setNewHeading("Resources");
-    this.getResources({
-      eventId: this.event.event_id,
-      sessionId: this.session.sessionId
-    });
+    this.getResources(this.session.sessionId);
     this.setShowBackButton(true);
     this.setNewBacklink("/session-info");
   },

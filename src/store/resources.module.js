@@ -18,12 +18,11 @@ const mutations = {
 };
 
 const actions = {
-  getResources({ commit }, payload) {
-    const eventId = payload.eventId;
-    const sessionId = payload.sessionId;
-    resourcesService.getResources(eventId, sessionId).then(
+  getResources({ commit }, sessionId) {
+    //const sessionId = payload.sessionId;
+    resourcesService.getResources(sessionId).then(
       result => {
-        commit("saveResources", result.data.resourceList);
+        commit("saveResources", result.data);
       },
       error => {
         Vue.$log.error(error);

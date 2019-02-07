@@ -23,13 +23,13 @@
         <v-btn small color="secondary" class="elevation-5" v-on:click="callActivity('like')" icon>
           <v-icon small color="white">fas fa-thumbs-up</v-icon>
         </v-btn>
-        {{likeCount}}
+        {{sessionInfo.likesCount}}
       </v-flex>
       <v-flex>
         <v-btn small class="elevation-5" v-on:click="callActivity('bookmark')" icon>
           <v-icon small color="white">fas fa-bookmark</v-icon>
         </v-btn>
-        {{bookmarkCount}}
+        {{sessionInfo.bookmarkCount}}
       </v-flex>
     </v-layout>
     <!-- <v-layout class="session-info-actions">
@@ -39,7 +39,7 @@
     < </v-flex>
     </v-layout>-->
     <!-- TODO: need to get speaker name, just getting speaker id now-->
-    <v-btn flat block to="/speakerbio">Speaker: Robert O'Neill</v-btn>
+    <v-btn flat block to="/speakerbio">Instructor - {{sessionInfo.speakerName}}</v-btn>
     <!-- <div class="title pb-2">{{sessionInfo.name}}</div> -->
     <v-layout class="session-info-description text-xs-left" row wrap>
       <v-flex style="heigth:auto">{{sessionInfo.description}}</v-flex>

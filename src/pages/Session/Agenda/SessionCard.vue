@@ -10,7 +10,7 @@
         <v-badge>
           <v-btn icon>
             <v-icon small color="white">fas fa-thumbs-up</v-icon>
-            {{likeCount}}
+            {{session.likesCount}}
           </v-btn>
         </v-badge>
       </v-list-tile-avatar>

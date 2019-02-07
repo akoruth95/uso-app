@@ -7,10 +7,10 @@
           <v-list two-line class="primary ma-0 pa-0" dark>
             <v-list-tile class="bookmark-text" @click="openBookmark(b)">
               <v-list-tile-avatar>
-                <v-icon color="grey">fa-{{icons[b.bookmark_type]}}</v-icon>
+                <v-icon color="grey">fa-{{icons[b.bookmarkType]}}</v-icon>
               </v-list-tile-avatar>
               <v-list-tile-content>
-                <v-list-tile-title class="body-2 grey--text">{{b.bookmark_type}}</v-list-tile-title>
+                <v-list-tile-title class="body-2 grey--text">{{b.bookmarkType}}</v-list-tile-title>
                 <v-list-tile-sub-title class="grey--text text--lighten-2">{{b.name}}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-avatar>
