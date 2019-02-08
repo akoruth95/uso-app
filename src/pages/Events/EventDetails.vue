@@ -76,9 +76,11 @@ export default {
       this.eventLocationString = `${this.selectedEvent.venueName}, ${
         this.selectedEvent.venueAddress1
       }`;
-      this.eventTimeString = `${this.selectedEvent.startDate} . ${
-        this.selectedEvent.startTime
-      } to ${this.selectedEvent.endTime}`;
+      this.eventTimeString = `${new Date(
+        this.selectedEvent.startDate
+      ).toDateString()} . ${this.selectedEvent.startTime} to ${
+        this.selectedEvent.endTime
+      }`;
     }
   }
 };

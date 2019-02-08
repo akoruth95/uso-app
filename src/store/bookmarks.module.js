@@ -8,7 +8,16 @@ const state = {
 const mutations = {
   saveBookmarks(state, bookmarks) {
     state.bookmarks = bookmarks;
+  },
+  deleteBookmark(state, streamId) {
+    state.bookmarks.forEach((element, index) => {
+      if (element.streamId == streamId) {
+        state.bookmarks.splice(index, 1);
+        return;
+      }
+    });
   }
+
   // setSelectedMaterial(state, material_id) {
   //     state.selectedMaterial = state.materialList.find(m => m.material_id === material_id);
   // }

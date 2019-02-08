@@ -14,7 +14,7 @@
                 <v-list-tile-sub-title class="grey--text text--lighten-2">{{b.name}}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-avatar>
-                <v-btn color="grey" icon>
+                <v-btn @click.stop="deleteBookmark(b.streamId)" color="grey" icon>
                   <v-icon color="secondary" style="height:auto;width:auto">fa-trash-alt</v-icon>
                 </v-btn>
               </v-list-tile-avatar>
@@ -34,7 +34,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import store from "../store";
-import { sessionsService } from "../services";
+import { sessionsService, userService } from "../services";
 import { CONFIG } from "../config/config";
 
 export default {
@@ -73,6 +73,13 @@ export default {
       sessionsService.getSessionInfo(sessionId).then(res => {
         store.commit("sessions/selectSession", res["data"]);
         this.$router.push("/session-info");
+      });
+    },
+    deleteBookmark(streamId) {
+      userService.deleteBookmark(streamId).then(r => {
+        if (r.status === 200) {
+          store.commit("bookmarks/deleteBookmark", streamId);
+        }
       });
     }
     // fetchMaterialInfo()
