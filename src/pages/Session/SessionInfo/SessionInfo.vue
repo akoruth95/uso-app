@@ -13,13 +13,19 @@
         </div>
       </v-flex>
       <v-flex>
-        <v-btn small color="secondary" class="elevation-5" @click="fetchLikes" icon>
+        <v-btn small :color="likeColor" class="elevation-5" @click="fetchLikes" icon>
           <v-icon small color="white">fas fa-thumbs-up</v-icon>
         </v-btn>
         {{sessionInfo.likesCount}}
       </v-flex>
       <v-flex>
-        <v-btn small class="elevation-5" @click="fetchBookmarks()" icon>
+        <v-btn
+          small
+          :class="(userbookmarked)?'grey':'primary'"
+          class="elevation-5"
+          @click="fetchBookmarks()"
+          icon
+        >
           <v-icon small color="white">fas fa-bookmark</v-icon>
         </v-btn>
         {{sessionInfo.bookmarkCount}}
@@ -62,7 +68,8 @@ export default {
       likeCount: 0,
       bookmarkCount: 0,
       activityState: { like: false, bookmark: false },
-      ACTIVITY_DETAILS: {}
+      ACTIVITY_DETAILS: {},
+      userbookmarked: false
     };
   },
 
@@ -70,6 +77,7 @@ export default {
     ...mapState("sessions", ["selectedSession"]),
     ...mapState("events", ["selectedEvent"]),
     ...mapState("account", ["userId"]),
+    ...mapState("bookmarks", ["bookmarks"]),
     activeFab() {
       switch (this.tabs) {
         case "one":
@@ -81,12 +89,13 @@ export default {
         default:
           return {};
       }
-    }
+    },
+    likeColor() {}
   },
 
   created() {
     this.fetchSessionInfo();
-    this.setActivityDetails();
+    //this.setActivityDetails();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
     this.setNewBacklink("/agenda");
@@ -109,7 +118,21 @@ export default {
         .getSessionInfo(this.selectedSession.sessionId)
         .then(res => {
           this.sessionInfo = res["data"];
+          this.userbookmarked = this.hasUserbookmarked();
         });
+    },
+    hasUserbookmarked() {
+      this.bookmarks.forEach(element => {
+        console.log(element, this.selectedEvent, this.sessionInfo.sessionId);
+        if (
+          element.attendeeId == this.selectedEvent.attendeeId &&
+          element.itemId == this.sessionInfo.sessionId
+        ) {
+          console.log(element, this.selectedEvent, this.sessionInfo.sessionId);
+          return true;
+        }
+      });
+      return false;
     },
 
     fetchLikes() {
