@@ -50,9 +50,11 @@ export default {
     ]),
     ...mapActions("sessions", ["setSelectedSession"]),
     fetchSessions() {
-      sessionsService.getSessions(this.selectedEvent.eventId).then(res => {
-        this.sessions = res["data"];
-      });
+      sessionsService
+        .getSessions(this.selectedEvent.eventId, this.selectedEvent.attendeeId)
+        .then(res => {
+          this.sessions = res["data"];
+        });
     },
     selectSession(session) {
       this.setSelectedSession(session);

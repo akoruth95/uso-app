@@ -15,8 +15,10 @@ export const sessionsService = {
 };
 
 //get session list for particular event
-function getSessions(eventId) {
-  return request.get(CONFIG.api.url + `/events/${eventId}/sessions`);
+function getSessions(eventId, attendeeId) {
+  return request.get(
+    CONFIG.api.url + `/events/${eventId}/attendees/${attendeeId}/sessions`
+  );
 }
 
 //get single session
@@ -26,8 +28,10 @@ function getSession(eventId, sessionId) {
   );
 }
 
-function getSessionInfo(sessionId) {
-  return request.get(CONFIG.api.url + `/sessions/${sessionId}`);
+function getSessionInfo(attendeId, sessionId) {
+  return request.get(
+    CONFIG.api.url + `/attendees/${attendeId}/sessions/${sessionId}`
+  );
 }
 
 function getNotes(eventId, sessionId, attendeeId) {

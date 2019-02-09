@@ -13,7 +13,13 @@
         </div>
       </v-flex>
       <v-flex>
-        <v-btn small :color="likeColor" class="elevation-5" @click="fetchLikes" icon>
+        <v-btn
+          small
+          :class="(hasLiked)?'secondary':'primary'"
+          class="elevation-5"
+          @click="fetchLikes"
+          icon
+        >
           <v-icon small color="white">fas fa-thumbs-up</v-icon>
         </v-btn>
         {{sessionInfo.likesCount}}
@@ -21,7 +27,7 @@
       <v-flex>
         <v-btn
           small
-          :class="(userbookmarked)?'grey':'primary'"
+          :class="(hasBookmarked)?'secondary':'primary'"
           class="elevation-5"
           @click="fetchBookmarks()"
           icon
@@ -64,12 +70,13 @@ export default {
       tabs: null,
       fab: false,
       fling: false,
-      sessionInfo: {},
+      sessionInfo: this.$store.state.sessions.selectedSession,
       likeCount: 0,
       bookmarkCount: 0,
       activityState: { like: false, bookmark: false },
       ACTIVITY_DETAILS: {},
-      userbookmarked: false
+      hasBookmarked: this.$store.state.sessions.selectedSession.hasBookmarked,
+      hasLiked: this.$store.state.sessions.selectedSession.hasLiked
     };
   },
 
@@ -78,24 +85,10 @@ export default {
     ...mapState("events", ["selectedEvent"]),
     ...mapState("account", ["userId"]),
     ...mapState("bookmarks", ["bookmarks"]),
-    activeFab() {
-      switch (this.tabs) {
-        case "one":
-          return { class: "purple", icon: "account_circle" };
-        case "two":
-          return { class: "red", icon: "edit" };
-        case "three":
-          return { class: "green", icon: "keyboard_arrow_up" };
-        default:
-          return {};
-      }
-    },
     likeColor() {}
   },
 
   created() {
-    this.fetchSessionInfo();
-    //this.setActivityDetails();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
     this.setNewBacklink("/agenda");
@@ -113,39 +106,8 @@ export default {
         sourceId: this.selectedSession.sessionId
       };
     },
-    fetchSessionInfo() {
-      sessionsService
-        .getSessionInfo(this.selectedSession.sessionId)
-        .then(res => {
-          this.sessionInfo = res["data"];
-          this.userbookmarked = this.hasUserbookmarked();
-        });
-    },
-    hasUserbookmarked() {
-      this.bookmarks.forEach(element => {
-        console.log(element, this.selectedEvent, this.sessionInfo.sessionId);
-        if (
-          element.attendeeId == this.selectedEvent.attendeeId &&
-          element.itemId == this.sessionInfo.sessionId
-        ) {
-          console.log(element, this.selectedEvent, this.sessionInfo.sessionId);
-          return true;
-        }
-      });
-      return false;
-    },
 
     fetchLikes() {
-      // let details = {
-      //   ...this.ACTIVITY_DETAILS,
-      //   type: "like"
-      // };
-      // activityService
-      //   .getActivity(this.userId, this.selectedEvent, details)
-      //   .then(res => {
-      //     //TODO: confirm with backend what field for number of likes is
-      //     this.likeCount = res["data"].likes;
-      //   });
       let payload = {
         eventId: this.selectedEvent.eventId,
         attendeeId: this.selectedEvent.attendeeId,
@@ -156,20 +118,11 @@ export default {
       };
       sessionsService.sessionLikes(payload).then(res => {
         this.sessionInfo.likesCount = res.data;
+        this.hasLiked = !this.hasLiked;
       });
     },
 
     fetchBookmarks() {
-      // let details = {
-      //   ...this.ACTIVITY_DETAILS,
-      //   type: "bookmark"
-      // };
-      // activityService
-      //   .getActivity(this.userId, this.selectedEvent, details)
-      //   .then(res => {
-      //     //TODO: confirm with backend what field for number of bookmarks is
-      //     this.bookmarkCount = res["data"].likes;
-      //   });
       let payload = {
         eventId: this.selectedEvent.eventId,
         attendeeId: this.selectedEvent.attendeeId,
@@ -181,6 +134,7 @@ export default {
       };
       sessionsService.sessionBookmarks(payload).then(res => {
         this.sessionInfo.bookmarkCount = res.data;
+        this.hasBookmarked = !this.hasBookmarked;
       });
     },
 

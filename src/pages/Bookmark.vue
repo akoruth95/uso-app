@@ -58,7 +58,7 @@ export default {
       console.log(bookmark);
       switch (bookmark.bookmarkType) {
         case "SESSION":
-          this.fetchSessionInfo(bookmark.itemId);
+          this.fetchSessionInfo(bookmark.attendeeId, bookmark.itemId);
           break;
         case "RESOURCE":
           this.$router.push("/resource-info");
@@ -69,8 +69,8 @@ export default {
       }
     },
 
-    fetchSessionInfo(sessionId) {
-      sessionsService.getSessionInfo(sessionId).then(res => {
+    fetchSessionInfo(attendeeId, sessionId) {
+      sessionsService.getSessionInfo(attendeeId, sessionId).then(res => {
         store.commit("sessions/selectSession", res["data"]);
         this.$router.push("/session-info");
       });
