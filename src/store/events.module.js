@@ -18,12 +18,9 @@ const actions = {
   selectEvent({ commit }, event) {
     commit("selectEvent", event);
   },
-  getProgress({ commit }, userId) {
+  getProgress({ state }, userId) {
     console.log("state", state);
-    return eventsService.getProgress(
-      state.selectedEvent.eventId,
-      state.selectedEvent.attendeeId
-    );
+    return eventsService.getProgress(state.selectedEvent.eventId, userId);
   }
 };
 

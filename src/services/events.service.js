@@ -13,7 +13,9 @@ function getEvents(userId) {
 
 function getProgress(eventId, userId) {
   //return request.get(CONFIG.api.events + `/events/${eventId}/users/${userId}/progress`)
-  return request.get(CONFIG.api.events + `/events/1/users/2/progress`);
+  return request.get(
+    CONFIG.api.url + `/events/${eventId}/users/${userId}/progress`
+  );
 }
 
 //function get
