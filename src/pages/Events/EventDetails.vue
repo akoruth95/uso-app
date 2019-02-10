@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @resize="adjustViewport()">
     <v-layout class="header ma-0 py-2 white--text location-bar" row>
       <v-flex xs10>
         <v-card-text class="my-0 pa-0 px-2">
@@ -26,7 +26,7 @@
           :key="index"
         >
           <v-card
-            :style="'height:'+(windowSize.y-200)/3+'px'"
+            :style="'height:'+(windowSize.y-200)/3+'px;width:'+(windowSize.x-10)/2+'px'"
             style="vertical-align:middle;display: table-cell"
             class="text-xs-center primaryLight grey--text"
             :to="option.route"
@@ -60,7 +60,7 @@ export default {
     ...mapState("events", ["selectedEvent"])
   },
   created() {
-    this.windowSize = { x: window.innerWidth, y: window.innerHeight };
+    this.adjustViewport();
     this.setEventDetails();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
@@ -81,6 +81,9 @@ export default {
       ).toDateString()} . ${this.selectedEvent.startTime} to ${
         this.selectedEvent.endTime
       }`;
+    },
+    adjustViewport() {
+      this.windowSize = { x: window.innerWidth, y: window.innerHeight };
     }
   }
 };

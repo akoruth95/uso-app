@@ -9,6 +9,7 @@
           rows="4"
           placeholder="Start Writing..."
           maxlength="300"
+          required
         ></textarea>
       </v-flex>
       <v-flex class="text-xs-right" xs12>
@@ -46,7 +47,7 @@
 }
 </style>
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
 import { wallsService } from "../services";
 
 export default {
@@ -77,12 +78,14 @@ export default {
         });
     },
     postMessage() {
-      wallsService
-        .postMessage(this.event.eventId, this.event.attendeeId, this.post)
-        .then(res => {
-          this.posts.push(res.data);
-          this.post = "";
-        });
+      if (this.post !== "") {
+        wallsService
+          .postMessage(this.event.eventId, this.event.attendeeId, this.post)
+          .then(res => {
+            this.posts.push(res.data);
+            this.post = "";
+          });
+      }
     },
     postLike(post) {
       let payload = {
