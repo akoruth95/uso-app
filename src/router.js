@@ -75,6 +75,11 @@ const router = new Router({
       component: () => import("./pages/Events/MyProgress.vue")
     },
     {
+      path: "/events/wall",
+      name: "eventWall",
+      component: () => import("./pages/SocialWall.vue")
+    },
+    {
       path: "/faq",
       name: "faq",
       component: () => import("./pages/Info/Faq.vue"),

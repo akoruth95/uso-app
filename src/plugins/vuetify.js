@@ -25,6 +25,7 @@ import {
   VStepper,
   VSwitch,
   VTextField,
+  VTextarea,
   VToolbar,
   VChip,
   VSubheader,
@@ -60,6 +61,7 @@ Vue.use(Vuetify, {
     VSubheader,
     VSwitch,
     VTextField,
+    VTextarea,
     VToolbar
   },
   theme: {

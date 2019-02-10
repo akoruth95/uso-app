@@ -57,10 +57,10 @@ export const eventOptions = [
   { name: "Agenda", icon: "fa-calendar-minus", route: "/agenda" },
   { name: "My Progress", icon: "fa-flag", route: "/events/progress" },
   { name: "Feedback", icon: "fa-comment-alt", route: "/events/feedback" },
-  { name: "Event Wall", icon: "fa-share-alt", route: "/" },
+  { name: "Event Wall", icon: "fa-share-alt", route: "/events/wall" },
   { name: "Attendees", icon: "fa-users", route: "/events/attendeelist" }
 ];
 
 export const TEXT = {
   staticPhotolink: "https://static.usoncevents.com/blank-profile.png"
-}
+};

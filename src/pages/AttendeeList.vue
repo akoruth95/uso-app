@@ -1,23 +1,25 @@
 <template>
   <div>
-    <v-container fluid grid-list-sm>
+    <v-container fluid grid-list-xs>
       <v-layout row justify-center="true">
-        <div>
-          <h2>Event Participants</h2>
-        </div>
+        <div class="title">Event Participants</div>
       </v-layout>
-      <v-layout row wrap>
-        <v-flex
-          class="ma-1 primaryLight text-xs-center"
+      <v-list class="primary">
+        <v-list-tile
           v-for="attendee in attendeeList"
           :key="attendee.attendeeId"
+          @click="clickAttendee(attendee)"
+          class="attendee-back py-2 my-2"
         >
-          <v-avatar size="100px" class="attendee-back elevation-5" @click="clickAttendee(attendee)">
-            <v-img contain :src="attendee.photo_link"></v-img>
-          </v-avatar>
-          <div class="caption">{{attendee.first_name}} {{attendee.last_name}}</div>
-        </v-flex>
-      </v-layout>
+          <v-list-tile-avatar size="50px" class="pr-3">
+            <v-img aspect-ratio="0.2" :src="attendee.photo_link"></v-img>
+          </v-list-tile-avatar>
+          <!-- <v-list-tile-content></v-list-tile-content> -->
+          <v-list-tile-content class="text-xs-right">
+            <div class="body-2 text-xs-right">{{attendee.first_name}} {{attendee.last_name}}</div>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
     </v-container>
   </div>
 </template>

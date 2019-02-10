@@ -3,7 +3,7 @@
     <v-img max-height="150" class="mb-3" src="https://static.usoncevents.com/learning.jpg"></v-img>
     <v-layout v-if="bookmarks.length" row wrap>
       <v-layout v-for="b in bookmarks" :key="b.id">
-        <v-flex xs12 class="px-2 pb-1">
+        <v-flex xs12 class="px-3 py-1">
           <v-list two-line class="primary ma-0 pa-0" dark>
             <v-list-tile class="bookmark-text" @click="openBookmark(b)">
               <v-list-tile-avatar>
@@ -24,7 +24,7 @@
       </v-layout>
     </v-layout>
     <v-layout v-if="!bookmarks.length" justify-center>
-      <h2 class="pa-4">You have no bookmarks</h2>
+      <div class="pa-4 body-2">You have no bookmarks</div>
     </v-layout>
   </v-container>
 </template>

@@ -3,44 +3,45 @@
     <v-container fluid grid-list-xl>
       <div>
         <v-flex text-xs-center align-center xs12>
-          <v-avatar size="250px">
-            <img v-bind:src="levelImage">
+          <v-avatar size="150px">
+            <img :src="levelImage">
           </v-avatar>
-          <h1 class="headline py-2">{{ name }}</h1>
+          <div class="title py-2">{{ name }}</div>
         </v-flex>
         <v-layout row wrap>
-          <v-flex xs6 text-xs-center>
-            <v-icon large color="yellow darken-2" right>fa-coins</v-icon>
+          <v-flex xs6 text-xs-center class="py-0">
+            <v-icon color="yellow darken-2" right>fa-coins</v-icon>
             <div>{{userProgress.gamePoints}}</div>
           </v-flex>
-
-          <v-flex xs6 text-xs-center>
-            <v-icon large color="yellow darken-2" right>fa-trophy</v-icon>
+          <v-flex xs6 text-xs-center class="py-0">
+            <v-icon color="yellow darken-2" right>fa-trophy</v-icon>
             <div>{{userProgress.gameRank}}</div>
           </v-flex>
-
-          <v-flex text-xs-center>
-            <v-card dense>
-              <v-toolbar color="secondary" dark>
-                <v-toolbar-title class="text-xs-center">Achievements</v-toolbar-title>
-                <v-spacer></v-spacer>
-              </v-toolbar>
+          <v-flex xs12>
+            <v-card dense class="elevation-0">
               <v-list class="primaryLight" dense>
-                <v-list-tile class="progress-text" v-for="item in items" :key="item.title" avatar>
+                <v-list-tile class="progress-text my-1" avatar>
                   <v-list-tile-content>
-                    <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                    <v-list-tile-title class="subheading">Achievements</v-list-tile-title>
                   </v-list-tile-content>
-
+                  <v-list-tile-action>{{userProgress.achievementCount}}</v-list-tile-action>
+                </v-list-tile>
+                <v-list-tile
+                  class="progress-text my-1"
+                  v-for="item in items"
+                  :key="item.title"
+                  avatar
+                >
+                  <v-list-tile-content>
+                    <v-list-tile-title class="body-2">{{ item.title }}</v-list-tile-title>
+                  </v-list-tile-content>
                   <v-list-tile-action>
-                    <v-icon :color="item.active ? 'teal' : 'grey'">fa-check-circle</v-icon>
+                    <v-icon :color="item.active ? 'teal' : 'grey darken-2'">fa-check-circle</v-icon>
                   </v-list-tile-action>
                 </v-list-tile>
               </v-list>
             </v-card>
           </v-flex>
-        </v-layout>
-        <v-layout row>
-          <v-flex xs12 sm6 offset-sm3></v-flex>
         </v-layout>
       </div>
     </v-container>
