@@ -61,18 +61,12 @@ function getQuestions(eventId, sessionId) {
   );
 }
 
-function postQuestions(eventId, sessionId, data) {
-  return request.post(
-    CONFIG.api.sessions + `/events/${eventId}/sessions/${sessionId}/questions`,
-    data
-  );
+function postQuestions(data) {
+  return request.post(CONFIG.api.url + "/questions/create", data);
 }
 
-function submitQuestions(eventId, sessionId, data) {
-  return request.put(
-    CONFIG.api.sessions + `/events/${eventId}/sessions/${sessionId}/questions`,
-    data
-  );
+function submitQuestions(questionId, data) {
+  return request.put(CONFIG.api.url + `/questions/${questionId}`, data);
 }
 
 function sessionLikes(payload) {

@@ -42,6 +42,7 @@ export default {
     this.setEventDetails();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
+    this.setNewBacklink("/session-info");
     this.getNotes(this.selectedEvent.attendeeId).then(res => {
       if (res.data.length == 0) this.userNote.note_id = 0;
       else {
@@ -51,7 +52,11 @@ export default {
     });
   },
   methods: {
-    ...mapActions("common", ["setNewHeading", "setShowBackButton"]),
+    ...mapActions("common", [
+      "setNewHeading",
+      "setShowBackButton",
+      "setNewBacklink"
+    ]),
     ...mapActions("sessions", ["getNotes", "submitNotes", "postNotes"]),
     setEventDetails() {
       this.eventLocationString = `${this.selectedEvent.venueName}, ${

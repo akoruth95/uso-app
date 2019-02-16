@@ -75,40 +75,41 @@ const actions = {
       state.selectedSession.sessionId
     );
   },
-  postQuestions({ commit }, { eventId, attendeeId, questions }) {
+  postQuestions({ commit }, { sessionId, attendeeId, questions }) {
     const data = {
-      sessionid: state.selectedSession.sessionId,
-      attendeeid: store.state.events.selectedEvent.attendeeId,
-      question: questions
+      sessionId: sessionId,
+      attendeeId: attendeeId,
+      question: questions,
+      askedTime: Date.now()
     };
-    sessionsService
-      .postQuestions(eventId, state.selectedSession.sessionId, data)
-      .then(
-        response => {
-          commit("saveQuestions", response.data);
-        },
-        error => {
-          Vue.$log.error(error.mesage);
-        }
-      );
+    sessionsService.postQuestions(data).then(
+      response => {
+        commit("saveQuestions", response.data);
+      },
+      error => {
+        Vue.$log.error(error.mesage);
+      }
+    );
   },
-  submitQuestions({ commit }, { questionId, eventId, attendeeId, questions }) {
+  submitQuestions(
+    { commit },
+    { questionId, sessionId, attendeeId, questions }
+  ) {
     const data = {
-      question_id: questionId,
-      sessionid: state.selectedSession.sessionId,
-      attendeeid: store.state.events.selectedEvent.attendeeId,
-      question: questions
+      questionId: questionId,
+      sessionId: sessionId,
+      attendeeId: attendeeId,
+      question: questions,
+      askedTime: Date.now()
     };
-    sessionsService
-      .submitQuestions(eventId, state.selectedSession.sessionId, data)
-      .then(
-        response => {
-          commit("saveQuestions", response.data);
-        },
-        error => {
-          Vue.$log.error(error.mesage);
-        }
-      );
+    sessionsService.submitQuestions(attendeeId, data).then(
+      response => {
+        commit("saveQuestions", response.data);
+      },
+      error => {
+        Vue.$log.error(error.mesage);
+      }
+    );
   }
 };
 
