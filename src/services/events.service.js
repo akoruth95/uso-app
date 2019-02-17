@@ -3,7 +3,9 @@ import request from "./common.service";
 
 export const eventsService = {
   getEvents,
-  getProgress
+  getProgress,
+  getPolls,
+  submitPolls
 };
 
 //get all events user is subscribed to
@@ -18,6 +20,15 @@ function getProgress(eventId, userId) {
   );
 }
 
+function getPolls(eventId, attendeeId) {
+  return request.get(
+    CONFIG.api.url + `/events/${eventId}/attendees/${attendeeId}/polls`
+  );
+}
+
+function submitPolls(data) {
+  return request.post(CONFIG.api.url + `/answers/post`, data);
+}
 //function get
 
 //https://api.v1.usoncevents.com/api/events/1/polls

@@ -64,12 +64,15 @@ const actions = {
     );
   },
   getNotifications({ commit, dispatch }) {
+    let counter = 0;
     userService.getNotifications().then(response => {
       commit("getNotifications", response.data);
-      // console.log("notification" ,response.data);
-      for (let i = 0; i < response.data.length; i++) {
-        if (response.data[i].notificationRead == "N") commit("incrementCount");
-      }
+      response.data.forEach(element => {
+        if (element.notificationRead == "N") {
+          counter++;
+        }
+      });
+      commit("incrementCount", counter);
     });
   },
 
@@ -269,8 +272,8 @@ const mutations = {
     state.newNotifications = 0;
     // Object.assign(state, newNotifications);
   },
-  incrementCount(state) {
-    state.newNotifications++;
+  incrementCount(state, counter) {
+    state.newNotifications = counter;
   }
 };
 

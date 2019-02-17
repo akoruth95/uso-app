@@ -1,100 +1,72 @@
 <template>
   <div>
-    <div class="title py-3 text-xs-center">Feedback</div>
-
-    <v-container fluid grid-list-xl>
-      <div>
-        <p style="color:white">Use the Space below to provide any additional comments you might have</p>
-        <textarea id="ip2" v-model="comments"/>
+    <div class="title pa-2 text-xs-center">Feedback</div>
+    <div v-if="ratingPolls.length">
+      <div v-for="b in ratingPolls" :key="b.pollId">
+        <div class="feedback-text ma-2 pa-2">
+          <div class="text-xs-left body-2">{{ b.question }}</div>
+          <div align="text-xs-center">
+            <span v-for="(star,index) in stars" :key="index">
+              <v-btn
+                v-if="b.ratingAnswer > index"
+                class="mx-1"
+                small
+                icon
+                color="secondary"
+                @click="updateRating(b,index+1)"
+              >
+                <v-icon small>fa-star</v-icon>
+              </v-btn>
+              <v-btn
+                v-else
+                class="mx-1"
+                small
+                icon
+                color="primary"
+                @click="updateRating(b,index+1)"
+              >
+                <v-icon small color="grey">fa-star</v-icon>
+              </v-btn>
+            </span>
+          </div>
+        </div>
       </div>
+    </div>
+    <div v-else>
+      <div class="pa-4 body-2">You have no rating polls</div>
+    </div>
 
-      <v-layout row align-center justify-center fill-height>
-        <v-flex d-flex xs12 sm6 md4>
-          <v-card>
-            <v-flex text-xs-center>
-              <h3 align="justify">In terms of overall satisfaction, how would you rate the event</h3>
-              <div align="center">
-                <star-rating
-                  align="center"
-                  :star-size="20"
-                  :show-rating="false"
-                  active-color="yellow"
-                  @rating-selected="setSatisfactionRating"
-                ></star-rating>
-              </div>
-            </v-flex>
-          </v-card>
-        </v-flex>
-      </v-layout>
-      <v-layout row align-center justify-center fill-height>
-        <v-flex d-flex xs12 sm6 md4>
-          <v-card>
-            <v-flex text-xs-center>
-              <h3 align="justify">Do you think the event met the objectives you had in mind</h3>
-              <div align="center">
-                <star-rating
-                  align="center"
-                  :star-size="20"
-                  :show-rating="false"
-                  active-color="yellow"
-                  @rating-selected="setObjectivesRating"
-                ></star-rating>
-              </div>
-            </v-flex>
-          </v-card>
-        </v-flex>
-      </v-layout>
-      <v-layout row align-center justify-center fill-height>
-        <v-flex d-flex xs12 sm6 md4>
-          <v-card tile="true">
-            <v-flex text-xs-center>
-              <h3 align="justify">How likely are you to suggest events from USO to your friends</h3>
-              <div align="center">
-                <star-rating
-                  align="center"
-                  :star-size="20"
-                  :show-rating="false"
-                  active-color="yellow"
-                  @rating-selected="setSuggestionRating"
-                ></star-rating>
-              </div>
-            </v-flex>
-          </v-card>
-        </v-flex>
-      </v-layout>
-
-      <div align="center">
-        <v-btn style="background-color: #f80750" @click="submit">submit</v-btn>
+    <div v-if="commentPolls.length">
+      <div v-for="b in commentPolls" :key="b.pollId">
+        <div class="feedback-text ma-2 pa-2">
+          <div class="text-xs-left body-2">{{ b.question }}</div>
+          <div align="text-xs-center">
+            <textarea id="ip2" v-model="b.commentAnswer"/>
+          </div>
+        </div>
       </div>
-      <v-dialog hide-overlay v-model="dialog" max-width="300">
-        <v-card>
-          <v-card-text>Thank you for your comments. Your feedback has been accepted.</v-card-text>
+    </div>
+    <div v-else>
+      <div class="pa-4 body-2">You have no comment polls</div>
+    </div>
 
-          <v-card-actions>
-            <v-spacer></v-spacer>
-
-            <v-btn color="white" flat="flat" @click="dialog = false">Close</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-container>
+    <div align="center">
+      <v-btn color="secondary" @click="submit">submit</v-btn>
+    </div>
   </div>
 </template>
 
 <script>
 import topBar from "../../components/TopBar";
 import { mapActions, mapState } from "vuex";
-import StarRating from "vue-star-rating";
-import Rating from "v-rating";
 export default {
   data() {
     return {
-      satisfactionRating: 0,
-      objectivesRating: 0,
-      suggestionRating: 0,
-      comments: "",
-      dialog: false,
-      eventId: ""
+      eventId: "",
+      ratingPolls: [],
+      commentPolls: [],
+      allPolls: [],
+      stars: 5
     };
   },
   computed: {
@@ -109,6 +81,21 @@ export default {
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
     this.setNewBacklink("/event/details");
+    const pollsRequestData = {
+      eventId: this.selectedEvent.eventId,
+      attendeeId: this.selectedEvent.attendeeId
+    };
+    this.getPolls(pollsRequestData).then(res => {
+      res.data.forEach(element => {
+        this.allPolls = res.data;
+        if (element.questionType == "RATING") {
+          if (!element.ratingAnswer) element.ratingAnswer = -1;
+          this.ratingPolls.push(element);
+        } else {
+          this.commentPolls.push(element);
+        }
+      });
+    });
   },
   methods: {
     ...mapActions("common", [
@@ -116,64 +103,54 @@ export default {
       "setNewHeading",
       "setShowBackButton"
     ]),
+    ...mapActions("events", ["getPolls", "submitPolls"]),
     setEventDetails() {
       this.eventId = `${this.selectedEvent.eventId}`;
     },
-    setSatisfactionRating: function(rating) {
-      this.satisfactionRating = rating;
+    submit() {
+      let payload = [];
+      this.allPolls.forEach(element => {
+        if (null === element.answerId) {
+          let item = {
+            attendeeId: this.selectedEvent.attendeeId,
+            commentAnswer: element.commentAnswer,
+            pollId: element.pollId,
+            ratingAnswer: element.ratingAnswer
+          };
+          payload.push(item);
+        } else {
+          let item = {
+            attendeeId: this.selectedEvent.attendeeId,
+            commentAnswer: element.commentAnswer,
+            pollId: element.pollId,
+            ratingAnswer: element.ratingAnswer,
+            answerId: element.answerId
+          };
+          payload.push(item);
+        }
+      });
+      this.submitPolls(payload);
     },
-    setObjectivesRating: function(rating) {
-      this.objectivesRating = rating;
-    },
-    setSuggestionRating: function(rating) {
-      this.suggestionRating = rating;
-    },
-    submit: function() {
-      console.log("satisfactionRating = " + this.satisfactionRating);
-      console.log("objectivesRating = " + this.objectivesRating);
-      console.log("suggestionRating = " + this.suggestionRating);
-      console.log("comments = " + this.comments);
-      console.log("event ID = " + this.eventId);
-      console.log("user Id = " + this.userId);
-      this.dialog = true;
+    updateRating(b, index) {
+      b.ratingAnswer = index;
     }
   },
   components: {
-    topBar,
-    StarRating,
-    Rating
+    topBar
   }
 };
 </script>
 
-<style>
-.column {
-  float: left;
-  padding: 10px;
-}
-.left {
-  width: 80%;
-}
-.right {
-  width: 20%;
-}
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-body {
-  font-family: "Raleway", sans-serif;
-}
-h3 {
-  color: white;
-  font-family: "Raleway", sans-serif;
+<style >
+.feedback-text {
+  background-color: #003472;
 }
 #ip2 {
-  border-radius: 25px;
+  border-radius: 15px;
   border: 2px solid white;
-  padding: 10px;
-  width: 95%;
-  height: 50px;
+  padding: 2px 10px;
+  margin-top: 1vh;
+  width: 100%;
+  height: 60px;
 }
 </style>
