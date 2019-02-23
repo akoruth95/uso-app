@@ -45,9 +45,15 @@ import store from "../store";
 
 export default {
   created() {
-    this.setNewHeading(this.event.name);
+    let heading = this.selectedMaterial.name;
+    let backLink = "/bookmark";
+    if (this.event.name) {
+      heading = this.event.name;
+      backLink = "material";
+    }
+    this.setNewHeading(heading);
     this.setShowBackButton(true);
-    this.setNewBacklink("material");
+    this.setNewBacklink(backLink);
   },
 
   computed: {
