@@ -74,7 +74,7 @@ export default {
         eventId: this.event.eventId,
         attendeeId: this.event.attendeeId,
         activityType: "bookmark",
-        sourceTable: "material_bookmarks",
+        sourceTable: "material",
         sourceId: this.selectedMaterial.materialId,
         activityTime: Date.now()
       };

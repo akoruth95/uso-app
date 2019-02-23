@@ -11,7 +11,8 @@ export const sessionsService = {
   postQuestions,
   submitQuestions,
   sessionLikes,
-  sessionBookmarks
+  sessionBookmarks,
+  getQuestionsBySession
 };
 
 //get session list for particular event
@@ -69,6 +70,9 @@ function submitQuestions(questionId, data) {
   return request.put(CONFIG.api.url + `/questions/${questionId}`, data);
 }
 
+function getQuestionsBySession(sessionId) {
+  return request.get(CONFIG.api.url + `/sessions/${sessionId}/questions`);
+}
 function sessionLikes(payload) {
   return request.post(CONFIG.api.url + "/sessions/likes", payload);
 }

@@ -127,7 +127,7 @@ export default {
         eventId: this.selectedEvent.eventId,
         attendeeId: this.selectedEvent.attendeeId,
         activityType: "bookmark",
-        sourceTable: "session_bookmarks",
+        sourceTable: "session",
         sourceId: this.selectedSession.sessionId,
         activityTime: Date.now(),
         insertUser: this.userId

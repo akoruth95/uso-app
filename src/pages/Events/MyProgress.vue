@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       levelName: "",
-      maxPoints: 600,
+      maxPoints: 800,
       comments: "",
       userProgress: {},
       //active : userProgress.answer_poll_flag === 'Y' ? true : false
@@ -93,6 +93,10 @@ export default {
         {
           key: "updateProfileFlag",
           title: "Update Profile"
+        },
+        {
+          key: "uploadPhotoFlag",
+          title: "Upload photo"
         }
       ]
     };
