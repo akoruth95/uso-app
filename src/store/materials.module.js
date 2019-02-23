@@ -10,16 +10,21 @@ const mutations = {
   saveMaterials(state, materialList) {
     state.materialList = materialList;
   },
-  setSelectedMaterial(state, material_id) {
+  setSelectedMaterial(state, materialId) {
     state.selectedMaterial = state.materialList.find(
-      m => m.material_id === material_id
+      m => m.materialId === materialId
     );
+  },
+  setSelectedMaterialByMaterial(state, material) {
+    state.selectedMaterial = material;
   }
 };
 
 const actions = {
-  getMaterials({ commit }, eventId) {
-    materialsService.getMaterials(eventId).then(
+  getMaterials({ commit }, data) {
+    const eventId = data.eventId;
+    const attendeeId = data.attendeeId;
+    materialsService.getMaterials(eventId, attendeeId).then(
       result => {
         commit("saveMaterials", result.data);
       },

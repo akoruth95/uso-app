@@ -34,12 +34,11 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import store from "../store";
-import { sessionsService, userService } from "../services";
-import { CONFIG } from "../config/config";
+import { sessionsService, userService, materialsService } from "../services";
 
 export default {
   created() {
-    this.setNewHeading("Bookmarks");
+    this.setNewHeading("My Bookmarks");
     this.getBookmarks(this.$store.state.account.userId);
   },
   data() {
@@ -64,7 +63,7 @@ export default {
           this.$router.push("/resource-info");
           break;
         case "MATERIAL":
-          this.$router.push("/events/material-info");
+          this.fetchMaterialInfo(bookmark.attendeeId, bookmark.itemId);
           break;
       }
     },
@@ -73,6 +72,12 @@ export default {
       sessionsService.getSessionInfo(attendeeId, sessionId).then(res => {
         store.commit("sessions/selectSession", res["data"]);
         this.$router.push("/session-info");
+      });
+    },
+    fetchMaterialInfo(attendeeId, materialId) {
+      materialsService.getMaterialsDetails(attendeeId, materialId).then(res => {
+        store.commit("materials/setSelectedMaterialByMaterial", res.data);
+        this.$router.push("/events/material-info");
       });
     },
     deleteBookmark(streamId) {
