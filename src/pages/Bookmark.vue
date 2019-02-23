@@ -75,6 +75,7 @@ export default {
       });
     },
     fetchMaterialInfo(attendeeId, materialId) {
+      console.log("fetch material");
       materialsService.getMaterialsDetails(attendeeId, materialId).then(res => {
         store.commit("materials/setSelectedMaterialByMaterial", res.data);
         this.$router.push("/events/material-info");
