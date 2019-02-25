@@ -12,21 +12,28 @@
     </v-stepper-header>
     <v-stepper-items>
       <v-stepper-content class="px-0 primary" step="1">
-        <v-form ref="passwordForm" v-model="passwordFormValid">
-          <input
-            class="startup-text mb-2 elevation-5 pa-2"
-            type="password"
-            v-model="password"
-            placeholder="New Password"
-          >
-          <input
-            class="startup-text ma-3 pa-2 elevation-5"
-            type="password"
-            v-model="passwordCopy"
-            placeholder="Retype password"
-          >
-        </v-form>
-
+        <v-layout justify-center>
+        <v-flex xs10>
+          <v-form ref="passwordForm" v-model="passwordFormValid">
+            <v-text-field
+              color="none"
+              type="password"
+              v-model="formParams.password"
+              placeholder="New Password"
+              :rules="[requiredRule]"
+              required
+            ></v-text-field>
+            <v-text-field
+              color="none"
+              type="password"
+              v-model="passwordCopy"
+              placeholder="Retype password"
+              :rules="copyPasswordRules"
+              required
+            ></v-text-field>
+          </v-form>
+        </v-flex>
+        </v-layout>
         <div class="text-xs-right px-3">
           <v-btn
             color="secondary"
@@ -36,60 +43,69 @@
         </div>
       </v-stepper-content>
       <v-stepper-content class="px-0 primary" step="2">
-        <v-form ref="passwordForm" v-model="passwordFormValid">
-          <input
-            class="startup-text mb-2 pa-2 elevation-5"
-            type="text"
-            v-model="firstName"
-            placeholder="First Name"
-          >
-          <input
-            class="startup-text mb-2 pa-2 elevation-5"
-            type="text"
-            v-model="lastName"
-            placeholder="Last Name"
-          >
-          <input
-            class="startup-text mb-2 pa-2 elevation-5"
-            type="text"
-            v-model="phone"
-            placeholder="Phone Number"
-          >
-          <input
-            class="startup-text mb-2 pa-2 elevation-5"
-            type="text"
-            v-model="streetAddress1"
-            placeholder="Street Address 1"
-          >
-          <input
-            class="startup-text mb-2 pa-2 elevation-5"
-            type="text"
-            v-model="streetAddress2"
-            placeholder="Street Address 2"
-          >
-          <input
-            class="startup-text mb-2 pa-2 elevation-5"
-            type="text"
-            v-model="city"
-            placeholder="City"
-          >
-          <select
-            id="select-statelist"
-            @click="loadStates"
-            class="startup-text mb-2 pa-2 elevation-5"
-          ></select>
-          <!-- <v-select color="white" v-model="state" :items="stateList" label="State" required></v-select> -->
-          <input
-            class="startup-text mb-2 pa-2 elevation-5"
-            type="text"
-            v-model="zip"
-            placeholder="Zip Code"
-          >
-        </v-form>
-        <div class="text-xs-right px-3">
-          <v-btn color="secondary" @click="progress = 1" :disabled="!passwordFormValid">Back</v-btn>
-          <v-btn color="secondary" @click="progress = 3" :disabled="!passwordFormValid">Next</v-btn>
-        </div>
+        <v-layout justify-center>
+          <v-flex xs10>
+            <v-form ref="passwordForm" v-model="passwordFormValid">
+              <v-text-field
+                color="none"
+                type="text"
+                v-model="formParams.firstName"
+                placeholder="First Name - required"
+                :rules="[requiredRule]"
+                required
+              ></v-text-field>
+              <v-text-field
+                color="none"
+                type="text"
+                v-model="formParams.lastName"
+                placeholder="Last Name - required"
+                :rules="[requiredRule]"
+                required
+              ></v-text-field>
+              <v-text-field
+                color="none"
+                type="text"
+                v-model="formParams.phoneNumber"
+                placeholder="Phone Number"
+              ></v-text-field>
+              <v-text-field
+                type="text"
+                color="none"
+                v-model="formParams.address1"
+                placeholder="Street Address 1"
+              ></v-text-field>
+              <v-text-field
+                type="text"
+                color="none"
+                v-model="formParams.address2"
+                placeholder="Street Address 2"
+              ></v-text-field>
+              <v-text-field
+                type="text"
+                color="none"
+                v-model="formParams.city"
+                placeholder="City"
+              ></v-text-field>
+              <v-select
+                :items="stateList"
+                color="none"
+                label="State"
+                v-model="formParams.state"
+              ></v-select>
+              <!-- <v-select color="white" v-model="state" :items="stateList" label="State" required></v-select> -->
+              <v-text-field
+                type="text"
+                color="none"
+                v-model="formParams.zip"
+                placeholder="Zip Code"
+              ></v-text-field>
+            </v-form>
+            <div class="text-xs-right px-3">
+              <v-btn color="secondary" @click="progress = 1" :disabled="!passwordFormValid">Back</v-btn>
+              <v-btn color="secondary" @click="progress = 3" :disabled="!passwordFormValid">Next</v-btn>
+            </div>
+          </v-flex>
+        </v-layout>
       </v-stepper-content>
       <v-stepper-content class="px-0 primary" step="3">
         <div class="text-xs-center">
@@ -143,41 +159,51 @@
   </v-stepper>
 </template>
 
-<style scoped>
-.header {
-  background-color: #1f4778;
-}
-</style>
-
 <script>
-import { STATELIST } from "../utils/constants.js";
+import { STATELIST, TEXT_VALIDATIONS } from "../utils/constants.js";
 import { mapActions } from "vuex";
 
 export default {
   data() {
     return {
-      city: "",
+      formParams: {
+        "address1": "",
+        "address2": "",
+        "city": "",
+        "firstName": "",
+        "lastName": "",
+        "nickName": "",
+        "password": "",
+        "phoneNumber": "",
+        "state": "",
+        "zip": "",
+        "userRole": "Attendee"
+      },
       dialog: false,
       eulaAccepted: false,
       eulaText: "I have read and agree to the terms and conditions",
-      firstName: "",
-      lastName: "",
-      nickName: "",
-      password: "",
       passwordCopy: "",
       passwordFormValid: false,
-      phone: "",
       profileFormValid: false,
       profileImage: require("../assets/blank-profile.png"),
       progress: 0,
-      state: "",
       stateList: STATELIST,
-      streetAddress1: "",
-      streetAddress2: "",
-      zip: ""
+      copyPasswordRules: [
+        pwdCopy => pwdCopy === this.formParams.password || 'Passwords do not match',
+        TEXT_VALIDATIONS.REQUIRED
+      ],
     };
   },
-  created: {},
+  props: [
+    "user"
+    // need to get user object in here
+    // need emailAddress, userId
+  ],
+  computed: {
+    requiredRule() {
+      return TEXT_VALIDATIONS.REQUIRED
+    }
+  },
   methods: {
     ...mapActions({
       createProfile: "account/createProfile",
@@ -203,25 +229,34 @@ export default {
       this.$refs.file.click();
     },
     submitForm: function() {
-      // TODO
-      const data = {};
+      const data = Object.assign({}, this.formParams, 
+        {
+          userId: this.user.userId,
+          emailAddress: this.user.emailAddress
+        }
+      );
       this.createProfile(data);
     },
     submitPasswordChange: function() {
-      if (this.password !== this.passwordCopy) {
-        this.error("Passwords do not match.");
-      } else {
+      this.passwordFormValid = false;
         this.progress = 2;
-      }
     },
-    loadStates() {
-      let x = document.getElementById("select-statelist");
-      STATELIST.forEach(s => {
-        let option = document.createElement("option");
-        option.text = s;
-        x.add(option);
-      });
+    passwordChangeValidate() {
+      return !this.password.length || !this.passwordCopy.length || this.password !== this.passwordCopy
     }
   }
 };
 </script>
+
+<style scoped>
+.header {
+  background-color: #1f4778;
+}
+
+.input-error {
+  outline:none;
+	box-shadow: 0 0 20px maroon !important;
+	border: 1px solid maroon;
+
+}
+</style>

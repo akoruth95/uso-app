@@ -5,9 +5,8 @@
       <div class="text-xs-center">
         <v-alert
           transition="slide-y-transition"
-          style="position: absolute; z-index: 2; width: 100%;"
-          v-if="alert.message"
-          :value="true"
+          style="position: absolute; z-index: 999; width: 100%;"
+          v-model="showAlert"
           :type="alert.type"
           dismissible
         >{{ alert.message }}</v-alert>
@@ -23,18 +22,35 @@
 <script>
 import topBar from "./components/TopBar";
 import bottomBar from "./components/BottomBar";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "App",
   data() {
-    return { bottomNav: 0 };
+    return { 
+      bottomNav: 0
+    };
   },
+
+  methods: {
+     ...mapActions('alert', ['clear'])
+  },
+
   computed: {
     ...mapState({
       loggedIn: state => state.account.status.loggedIn,
       alert: state => state.alert
-    })
+    }),
+    showAlert: {
+      get() {
+        return !!this.alert.message;
+      },
+      set (val) {
+        if (!val) {
+          this.clear();
+        }
+      }
+    }
   },
   components: {
     topBar,

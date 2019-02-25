@@ -64,3 +64,7 @@ export const eventOptions = [
 export const TEXT = {
   staticPhotolink: "https://static.usoncevents.com/blank-profile.png"
 };
+
+export const TEXT_VALIDATIONS = {
+  REQUIRED: val => !!val || 'required'
+};

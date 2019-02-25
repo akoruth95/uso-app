@@ -2,7 +2,7 @@ import request from "./common.service";
 import store from "../store";
 import { CONFIG } from "../config/config";
 
-const baseUrl = CONFIG.api.users;
+const baseUrl = CONFIG.api.url;
 
 function changePassword(data) {
   // TODO
@@ -13,8 +13,11 @@ function changePassword(data) {
 }
 
 function createProfile(data) {
-  // TODO
   console.log(data);
+  return request.post(
+    baseUrl + "/users/create",
+    data
+  );
 }
 
 function forgotPassword(data) {
