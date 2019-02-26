@@ -92,7 +92,7 @@ export default {
     let heading = this.sessionInfo.name;
     let backLink = "/bookmark";
     if (this.selectedEvent.name) {
-      heading = this.event.name;
+      heading = this.selectedEvent.name;
       backLink = "/agenda";
     }
     this.setNewHeading(heading);
