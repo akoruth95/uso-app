@@ -34,7 +34,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import store from "../store";
-import { sessionsService, userService, materialsService } from "../services";
+import { sessionsService, userService, materialsService, resourcesService } from "../services";
 
 export default {
   created() {
@@ -54,18 +54,36 @@ export default {
     ...mapActions("common", ["setNewHeading"]),
     ...mapActions("bookmarks", ["getBookmarks"]),
     openBookmark(bookmark) {
-      console.log(bookmark);
+      this.clearSelectedEvent();
+      this.clearSelectedSession();
       switch (bookmark.bookmarkType) {
         case "SESSION":
           this.fetchSessionInfo(bookmark.attendeeId, bookmark.itemId);
           break;
         case "RESOURCE":
-          this.$router.push("/resource-info");
+          this.fetchResourceInfo(bookmark.itemId);
           break;
         case "MATERIAL":
           this.fetchMaterialInfo(bookmark.attendeeId, bookmark.itemId);
           break;
       }
+    },
+
+    clearSelectedEvent() {
+      store.commit('events/selectEvent', {});
+    },
+
+    clearSelectedSession() {
+      store.commit('sessions/selectSession', {});
+    },
+
+    fetchResourceInfo(resourceId) {
+      resourcesService.getResourceDetails(resourceId).then(
+        res => {
+          store.commit("resources/setSelectedResourceByResource", res.data);
+          this.$router.push("/resource-info");
+        }
+      )
     },
 
     fetchSessionInfo(attendeeId, sessionId) {
@@ -75,7 +93,6 @@ export default {
       });
     },
     fetchMaterialInfo(attendeeId, materialId) {
-      console.log("fetch material");
       materialsService.getMaterialsDetails(attendeeId, materialId).then(res => {
         store.commit("materials/setSelectedMaterialByMaterial", res.data);
         this.$router.push("/events/material-info");

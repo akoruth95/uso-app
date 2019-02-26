@@ -89,9 +89,15 @@ export default {
   },
 
   created() {
-    this.setNewHeading(this.selectedEvent.name);
+    let heading = this.sessionInfo.name;
+    let backLink = "/bookmark";
+    if (this.selectedEvent.name) {
+      heading = this.event.name;
+      backLink = "/agenda";
+    }
+    this.setNewHeading(heading);
     this.setShowBackButton(true);
-    this.setNewBacklink("/agenda");
+    this.setNewBacklink(backLink);
   },
 
   methods: {

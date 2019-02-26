@@ -14,6 +14,9 @@ const mutations = {
     state.selectedResource = state.resourceList.find(
       m => m.resourceId === resourceId
     );
+  },
+  setSelectedResourceByResource(state, resource) {
+    state.selectedResource = resource;
   }
 };
 

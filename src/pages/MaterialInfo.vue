@@ -79,6 +79,7 @@ export default {
         activityTime: Date.now()
       };
       materialsService.materialBookmarks(payload).then(res => {
+        console.log('Material response: ', res);
         store.commit("materials/setSelectedMaterialByMaterial", res.data);
       });
     }

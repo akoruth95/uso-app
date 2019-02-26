@@ -37,7 +37,9 @@
                   small
                 >fas fa-thumbs-up</v-icon>
                 {{ post.likeCount }}
-                <!-- <v-icon color="grey" small class="ml-2">fas fa-flag</v-icon> -->
+                <v-icon v-if="showDeleteIcon" @click="deletePost(post.wallId)" color="grey" small class="ml-2">
+                  fas fa-trash-alt
+                </v-icon>
               </v-flex>
             </v-layout>
           </v-flex>
@@ -68,13 +70,20 @@
 <script>
 import { mapActions } from "vuex";
 import { wallsService } from "../services";
+import { USERROLES } from "../utils/constants";
 
 export default {
+  computed: {
+    showDeleteIcon() {
+      return this.role === USERROLES.ADMIN;
+    }
+  },
   data() {
-    return {
+    return {      
+      event: this.$store.state.events.selectedEvent,
       post: "",
       posts: [],
-      event: this.$store.state.events.selectedEvent
+      role: this.$store.state.account.userInfo.userRole
     };
   },
   created() {
@@ -89,6 +98,19 @@ export default {
       "setShowBackButton",
       "setNewBacklink"
     ]),
+    deletePost(postId) {
+      wallsService.deletePost(postId).then(
+        res => {
+          if (res.status === 200) {
+            this.loadAllWallMessages();
+          } else {
+            console.error('There was a problem deleting this post');
+          }
+        }, err => {
+          console.error(err);
+        }
+      );
+    },
     loadAllWallMessages() {
       wallsService
         .getWalls(this.event.eventId, this.event.attendeeId)

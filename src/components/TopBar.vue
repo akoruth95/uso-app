@@ -5,13 +5,14 @@
     </v-btn>
     <v-toolbar-title>{{heading}}</v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-btn color="primary" small fab to="/faq">
+    <v-btn @click="navigateInfo()" color="primary" small fab>
       <v-icon style="height:auto;width:auto">fa-info</v-icon>
     </v-btn>
   </v-toolbar>
 </template>
 
 <script>
+
 import { mapState } from "vuex";
 
 export default {
@@ -22,6 +23,15 @@ export default {
       "showBackButton",
       "showButton"
     ])
+  },
+  methods: {
+    navigateInfo() {
+      if (this.$route.name === 'faq') {
+        this.$router.go(-1);
+      } else {
+        this.$router.push('faq');
+      }
+    }
   },
   name: "TopBar"
 };

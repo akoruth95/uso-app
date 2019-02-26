@@ -299,6 +299,7 @@ function createUser(userInfo) {
     userInfo.userId,
     userInfo.shareProfile,
     userInfo.photoLink,
+    userInfo.userRole,
     userInfo.zip
   );
   return newUser;

@@ -2,10 +2,16 @@ import { CONFIG } from "../config/config";
 import request from "./common.service";
 
 export const wallsService = {
+  deletePost,
   getWalls,
   postMessage,
   wallLikes
 };
+
+// delete a wall post
+function deletePost(postId) {
+  return request.delete(CONFIG.api.url + `/walls/${postId}`);
+}
 
 //get wall messages for particular event
 function getWalls(eventId, attendeeId) {

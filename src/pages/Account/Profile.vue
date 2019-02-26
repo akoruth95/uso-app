@@ -46,8 +46,8 @@
             </v-flex>
         </v-layout>
         <v-layout row justify-center>
-            <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-                <v-toolbar dark color="secondary">
+            <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
+                <v-toolbar dark color="secondary" fixed>
                     <v-btn icon dark @click="closeDialog()">
                         <v-icon>fa-times</v-icon>
                     </v-btn>
@@ -57,12 +57,13 @@
                         <v-btn dark flat @click="dialogAction()" :disabled="disableDialogSubmission()">Save</v-btn>
                     </v-toolbar-items>
                 </v-toolbar>
+                <!-- <br /> <br /> -->
                 <div class="text-xs-center"><v-alert transition="slide-y-transition" style="position: absolute; z-index: 2; width: 100%;" v-if="alert.message" :value="true" :type="alert.type" dismissible>{{alert.message}}</v-alert></div>
                 <v-card color="primary">
                     <v-card-text v-if="action === 'editProfile'">
-                        <br />
+                        <br /><br />
                         <v-form ref="profileForm" v-model="profileFormValid">
-                            <div class="text-xs-center">
+                            <div class="text-xs-center pt-3">
                                 <v-avatar size="100px"><img v-bind:src="profileFormImage" @click="openFileUpload()"></v-avatar>
                                 <input style="display:none" type="file" accept="image/*" id="file" ref="file" v-on:change="handleFileUpload()" />
                             </div>
@@ -142,6 +143,7 @@
                         </v-form>
                     </v-card-text>
                     <v-card-text v-if="this.action === 'changePassword'">
+                        <br /><br /><br />
                         <v-form ref="passwordForm" v-model="passwordFormValid">
                             <v-text-field
                                 color="white"
@@ -170,12 +172,14 @@
                         </v-form>
                     </v-card-text>
                 </v-card>
+                <br /><br />
+                <bottom-bar></bottom-bar>
             </v-dialog>
         </v-layout>
     </v-container>
 </template>
 
-<style scoped>
+<style>
     .v-divider {
         border-color: gray;
     }
@@ -190,6 +194,7 @@
 <script>
     import { STATELIST } from '../../utils/constants.js';
     import { mapActions, mapState } from 'vuex';
+    import bottomBar from "../../components/BottomBar";
     
     export default {
         data () {
@@ -209,9 +214,11 @@
                 windowSize: {x: 0, y: 0}
             }
         },
+        components: {
+            bottomBar
+        },
         created() {
             this.windowSize = {x: window.innerWidth, y: window.innerHeight};
-            console.log(this.windowSize);
             this.getUserInfo();
             this.setNewHeading('My Profile');
         },
@@ -222,6 +229,9 @@
                 }),
                 dialogHeader() {
                     return this.action === 'editProfile' ? "Edit Profile" : "Change Password";
+                },
+                dialogHeight() {
+                    return (this.windowSize.y - 56) + 'px';
                 },
                 profileFormImage() {
                     return this.profileForm.profileUrl || require('../../assets/blank-profile.png');
