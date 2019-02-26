@@ -1,19 +1,17 @@
 <template>
-  <v-container fluid grid-list-lg>
-    <v-img max-height="150" class="mb-3" src="https://static.usoncevents.com/megaphone.jpg"></v-img>
+  <v-container>
+    <v-img max-height="150" class="mb-2" src="https://static.usoncevents.com/megaphone.jpg"></v-img>
     <v-layout v-if="notifications.length" row wrap>
-      <v-layout v-for="b in notifications" :key="b.id">
-        <v-flex xs12 class="px-3 py-1">
-          <v-list two-line class="primary ma-0 pa-0" dark>
-            <v-list-tile :class="notificationClass(b.notificationRead)" class="notification-text">
-              <v-list-tile-content>
-                <v-list-tile-title class="body-2 grey--text">{{b.notifiedTime}}</v-list-tile-title>
-                <v-list-tile-sub-title class="grey--text text--lighten-2">{{b.notification}}</v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </v-list>
-        </v-flex>
-      </v-layout>
+      <v-flex v-for="b in notifications" :key="b.id" xs12 class="py-1">
+        <v-list two-line class="primary ma-0 pa-0" dark>
+          <v-list-tile :class="notificationClass(b.notificationRead)" class="notification-text">
+            <v-list-tile-content>
+              <v-list-tile-title class="body-2 grey--text">{{b.notifiedTime}}</v-list-tile-title>
+              <v-list-tile-sub-title class="grey--text text--lighten-2">{{b.notification}}</v-list-tile-sub-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-flex>
     </v-layout>
 
     <v-layout v-if="!notifications.length" justify-center>

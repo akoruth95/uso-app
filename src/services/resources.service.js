@@ -2,10 +2,16 @@ import { CONFIG } from "../config/config";
 import request from "./common.service";
 
 //export const resourcesService = { getResources, getResourceDetails };
-export const resourcesService = { getResourceDetails, getResources, resourceBookmarks };
+export const resourcesService = {
+  getResourceDetails,
+  getResources,
+  resourceBookmarks
+};
 
-function getResourceDetails(resourceId) {
-  return request.get(CONFIG.api.url + `/resources/${resourceId}`);
+function getResourceDetails(attendeeId, resourceId) {
+  return request.get(
+    CONFIG.api.url + `/attendees/${attendeeId}/resources/${resourceId}`
+  );
 }
 
 function getResources(sessionId) {
