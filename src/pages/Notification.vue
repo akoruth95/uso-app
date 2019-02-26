@@ -6,7 +6,9 @@
         <v-list two-line class="primary ma-0 pa-0" dark>
           <v-list-tile :class="notificationClass(b.notificationRead)" class="notification-text">
             <v-list-tile-content>
-              <v-list-tile-title class="body-2 grey--text">{{b.notifiedTime}}</v-list-tile-title>
+              <v-list-tile-title
+                class="body-2 grey--text"
+              >{{ new Date(b.notifiedTime).toDateString() }}</v-list-tile-title>
               <v-list-tile-sub-title class="grey--text text--lighten-2">{{b.notification}}</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
