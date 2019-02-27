@@ -1,56 +1,64 @@
-import axios from 'axios';
+import axios from "axios";
 
 class Service {
+  service;
 
-    service;
+  constructor() {
+    let service = axios.create();
 
-    constructor() {
-        let service = axios.create();
+    service.interceptors.response.use(this.handleSuccess, this.handleError);
+    this.service = service;
+  }
 
-        service.interceptors.response.use(this.handleSuccess, this.handleError);
-        this.service = service;
-    }
+  handleSuccess(response) {
+    //Add any additional general response handling here
+    return response;
+  }
 
-    handleSuccess(response) {
-        //Add any additional general response handling here
-        return response;
-    }
+  handleError(error) {
+    //Add any additional general error handling here
+    return Promise.reject(error);
+  }
 
-    handleError(error) {
-        //Add any additional general error handling here
-        return Promise.reject(error);
-    }
+  get(path) {
+    return this.service.get(path);
+  }
 
-    get(path) {
-        return this.service.get(path);
-    }
+  put(path, body) {
+    return this.service.request({
+      method: "PUT",
+      url: path,
+      responseType: "json",
+      data: body
+    });
+  }
 
-    put(path, body) {
-        return this.service.request({
-            method: 'PUT',
-            url: path,
-            responseType:'json',
-            data: body
-        })
-    }
+  patch(path, body) {
+    return this.service.request({
+      method: "PATCH",
+      url: path,
+      responseType: "json",
+      data: body
+    });
+  }
 
-    post(path, body) {
-        return this.service.request({
-            method: 'POST',
-            url: path,
-            responseType:'json',
-            data: body
-        })
-    }
+  post(path, body) {
+    return this.service.request({
+      method: "POST",
+      url: path,
+      responseType: "json",
+      data: body
+    });
+  }
 
-    delete(path, body) {
-        return this.service.request({
-            method: 'DELETE',
-            url: path,
-            responseType:'json',
-            data: body
-        })
-    }
+  delete(path, body) {
+    return this.service.request({
+      method: "DELETE",
+      url: path,
+      responseType: "json",
+      data: body
+    });
+  }
 }
 
 let instance = new Service();

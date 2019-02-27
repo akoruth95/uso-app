@@ -14,10 +14,7 @@ function changePassword(data) {
 
 function createProfile(data) {
   console.log(data);
-  return request.post(
-    baseUrl + "/users/create",
-    data
-  );
+  return request.post(baseUrl + "/users/create", data);
 }
 
 function forgotPassword(data) {
@@ -61,10 +58,7 @@ function register(data) {
 }
 
 function updateProfile(data) {
-  return request.post(
-    baseUrl + `/users/${store.state.account.userId}/profile`,
-    data
-  );
+  return request.patch(baseUrl + `/users/${store.state.account.userId}`, data);
 }
 
 function deleteBookmark(streamId) {
