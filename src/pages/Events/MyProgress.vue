@@ -113,24 +113,24 @@ export default {
     },
     levelImage() {
       let level = this.userProgress.gamePoints / this.maxPoints;
-      if (level < 0.2) {
-        this.levelName = "Journey Man";
-        return require("../../assets/journeyman.png");
+      if (level > 0.8 && this.userProgress.achievementCount == "9/9") {
+        this.levelName = "Promithean";
+        return require("../../assets/promithean.png");
       }
-      if (level < 0.4) {
-        this.levelName = "Magus";
-        return require("../../assets/magus.png");
-      }
-      if (level < 0.6) {
-        this.levelName = "Grand Master";
-        return require("../../assets/grandmaster.png");
-      }
-      if (level < 0.8) {
+      if (level > 0.6) {
         this.levelName = "Archmage";
         return require("../../assets/archmage.png");
       }
-      this.levelName = "Promithean";
-      return require("../../assets/promithean.png");
+      if (level > 0.4) {
+        this.levelName = "Grand Master";
+        return require("../../assets/grandmaster.png");
+      }
+      if (level > 0.2) {
+        this.levelName = "Magus";
+        return require("../../assets/magus.png");
+      }
+      this.levelName = "Journey Man";
+      return require("../../assets/journeyman.png");
     },
     name: function() {
       return (
