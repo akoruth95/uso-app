@@ -4,6 +4,7 @@
       <v-list-tile-content>
         <v-list-tile-title>{{ session.name }}</v-list-tile-title>
         <v-list-tile-sub-title>{{ session.speakerName }}</v-list-tile-sub-title>
+        <v-list-tile-sub-title>{{ new Date(session.sessionDate).toDateString() }}</v-list-tile-sub-title>
         <v-list-tile-sub-title>{{session.startTime}} - {{session.endTime}} | {{session.location}}</v-list-tile-sub-title>
       </v-list-tile-content>
       <v-list-tile-avatar>

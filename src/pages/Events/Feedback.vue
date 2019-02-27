@@ -75,7 +75,6 @@ export default {
   computed: {
     ...mapState("events", ["selectedEvent"]),
     ...mapState("account", ["userId"]),
-
     ...mapState({
       alert: state => state.alert,
       userId: state => state.account.userId
@@ -137,7 +136,6 @@ export default {
       });
       console.log("length", payload.length);
       this.submitPolls(payload);
-
       if (payload.length > 1) {
         this.success("Thank you for your feedback");
       } else {
