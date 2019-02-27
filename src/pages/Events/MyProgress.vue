@@ -14,7 +14,16 @@
             <div>{{userProgress.gamePoints}}</div>
           </v-flex>
           <v-flex xs6 text-xs-center class="py-0">
-            <v-icon color="yellow darken-2" right>fa-trophy</v-icon>
+            <v-dialog
+        v-model="dialog"
+        width="500"
+      >
+            <v-icon slot="activator" color="yellow darken-2" right>fa-trophy</v-icon>
+             <v-card>
+                <img :src="images.sample" class="full">
+                <v-divider></v-divider>    
+        </v-card>
+      </v-dialog>
             <div>{{userProgress.gameRank}}</div>
           </v-flex>
           <v-flex xs12>
@@ -60,6 +69,10 @@ export default {
       maxPoints: 800,
       comments: "",
       userProgress: {},
+      images: {
+                sample: require('../../assets/Leaderboard.png')
+            },
+      dialog: false,
       //active : userProgress.answer_poll_flag === 'Y' ? true : false
       items: [
         {
@@ -110,6 +123,9 @@ export default {
       return (
         this.userInfo.profileUrl || require("../../assets/blank-profile.png")
       );
+    },
+    leaderboardImage() {
+      return require("../../assets/Leaderboard.png");
     },
     levelImage() {
       let level = this.userProgress.gamePoints / this.maxPoints;
@@ -219,5 +235,9 @@ h3 {
 }
 .progress-text {
   background-color: #0077ff3b;
+}
+.full {
+  width: 100%;
+  height: auto;
 }
 </style>
