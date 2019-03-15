@@ -4,8 +4,11 @@
       <div>
         <h2 class="whitetext">Take Notes about the session</h2>
         <p class="whitetext">Use the Space below to write your own notes about the session</p>
+        <br>
         <form>
-          <textarea id="text-area" v-model="userNote.note" name="content"></textarea>
+          <textarea v-model="userNote.note" name="content" style="width:100%;border-radius:15px"
+          maxlength="300" 
+          class="post-text pa-2" block ></textarea>
           <!-- <trix-editor input="x"></trix-editor> -->
           <!-- <input id="x" type="hidden" name="content">
           <VueTrix inputId="x" v-model="userNote.note" />-->
@@ -138,5 +141,9 @@ trix-editor {
 .btn {
   bottom: 4%;
   right: 10%;
+}
+.post-text {
+  background-color: #003472;
+  min-height: calc(100vh * 0.5);
 }
 </style>
