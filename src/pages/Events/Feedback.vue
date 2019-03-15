@@ -95,7 +95,7 @@ export default {
         if (element.questionType == "RATING") {
           if (!element.ratingAnswer) element.ratingAnswer = -1;
           this.ratingPolls.push(element);
-        } else {
+        } else if (element.questionType == "COMMENT"){
           this.commentPolls.push(element);
         }
       });

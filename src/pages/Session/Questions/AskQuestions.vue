@@ -4,8 +4,11 @@
       <div>
         <p class="whitetext title pb-2">You can ask questions to the speaker</p>
         <p class="whitetext">Your questions will be answered during or after the session</p>
+        <br>
         <form>
-          <textarea id="text-area" v-model="questions.question" name="content"></textarea>
+          <textarea v-model="questions.question"  style="width:100%;border-radius:15px"
+          maxlength="300" 
+          class="post-text pa-2" blockname="content"></textarea>
           <!-- <trix-editor input="x"></trix-editor> -->
           <!-- <input id="x" type="hidden" name="content">
           <VueTrix inputId="x" v-model="userNote.note" />-->
@@ -154,5 +157,9 @@ trix-editor {
 .btn {
   bottom: 4%;
   right: 10%;
+}
+.post-text {
+  background-color: #003472;
+  min-height: calc(100vh * 0.5);
 }
 </style>
