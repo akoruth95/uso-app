@@ -1,12 +1,22 @@
 <template>
   <div>
     <v-container fluid grid-list-xs>
-      <v-layout row justify-center="true">
-        <div class="title">Event Participants</div>
-      </v-layout>
+      <div class="wrapper">
+        <v-text-field
+          clearable
+          color="light"
+          prepend-icon="fa-search"
+          name="search"
+          label="type here"
+          type="text"
+          v-model="search"
+        ></v-text-field>
+        <v-spacer></v-spacer>
+      </div>
+      <!-- <div v-for="attendee in filteredList" :key="attendee.attendeeId">{{ attendee.first_name }}{{attendee.last_name}}</div> -->
       <v-list class="primary">
         <v-list-tile
-          v-for="attendee in attendeeList"
+          v-for="attendee in filteredList"
           :key="attendee.attendeeId"
           @click="clickAttendee(attendee)"
           class="attendee-back py-2 my-2"
@@ -31,6 +41,7 @@ import { attendeesService } from "../services";
 export default {
   data() {
     return {
+      search: "",
       attendeeList: []
     };
   },
@@ -43,7 +54,24 @@ export default {
   computed: {
     ...mapState({
       event: state => state.events.selectedEvent
-    })
+    }),
+    filteredList() {
+      if (!this.search) return this.attendeeList;
+      let al = [];
+      this.attendeeList.forEach(element => {
+        if (
+          (element !== undefined &&
+            element.first_name
+              .toLowerCase()
+              .indexOf(this.search.toLowerCase()) != -1) ||
+          element.last_name.toLowerCase().indexOf(this.search.toLowerCase()) !=
+            -1
+        ) {
+          al.push(element);
+        }
+      });
+      return al;
+    }
   },
   methods: {
     ...mapActions("common", [
