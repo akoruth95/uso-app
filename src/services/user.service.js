@@ -13,8 +13,17 @@ function changePassword(data) {
 }
 
 function createProfile(data) {
-  console.log(data);
   return request.post(baseUrl + "/users/create", data);
+}
+
+function uploadPhoto(data) {
+  let userId = data.get('userId');
+  let headers = {
+    'accept': 'application/json',
+    'Accept-Language': 'en-US,en;q=0.8',
+    'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+  }
+  return request.post(baseUrl + `/users/${userId}/photo/upload`, data, headers);
 }
 
 function forgotPassword(data) {
@@ -77,5 +86,6 @@ export const userService = {
   updateProfile,
   getAttendeeProfile,
   updateNotifications,
-  deleteBookmark
+  deleteBookmark,
+  uploadPhoto
 };

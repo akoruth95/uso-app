@@ -42,8 +42,9 @@ class Service {
     });
   }
 
-  post(path, body) {
+  post(path, body, requestHeaders) {
     return this.service.request({
+      ...(requestHeaders && {headers: requestHeaders}),
       method: "POST",
       url: path,
       responseType: "json",
