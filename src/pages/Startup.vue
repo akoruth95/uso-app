@@ -101,10 +101,12 @@
                 ></v-text-field>
                 <v-text-field
                   color="none"
-                  type="password"
+                  :type="fieldType[passwordFieldIcon]"
                   v-model="password"
                   :rules="passwordRules"
                   label="Temporary Password"
+                  :append-icon="passwordFieldIcon"
+                  @click:append="togglePasswordVisibility()"
                   required
                 >
                 </v-text-field>
@@ -120,6 +122,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import { PASSWORD_SHOW, PASSWORD_HIDE, FIELD_TYPE } from "../utils/constants.js";
 import { userService } from "../services";
 import stepper from "../components/Setup.vue";
 export default {
@@ -131,6 +134,7 @@ export default {
         v => /.+@.+/.test(v) || 'E-mail must be valid'
       ],
       forgotPasswordDialog: false,
+      passwordFieldIcon: PASSWORD_HIDE,
       registerDialog: false,
       formValid: false,
       loginDirections: "Enter your email address and password.",
@@ -151,6 +155,9 @@ export default {
     };
   },
   computed: {
+    fieldType() {
+      return FIELD_TYPE
+    },
     logo() {
       return require("../assets/NC_badge_darkbg_RGB.png");
     },
@@ -180,6 +187,9 @@ export default {
       const { email, password } = this;
       this.login({ email, password });
     },
+    togglePasswordVisibility() {
+      this.passwordFieldIcon = this.passwordFieldIcon === PASSWORD_SHOW ? PASSWORD_HIDE : PASSWORD_SHOW;
+    },
     async checkRegistrationCredentials() {
       const data = {
         emailAddress: this.email,
@@ -187,10 +197,10 @@ export default {
       }
       return userService.login(data).then(res => {
         this.user = res.data;
-        return res.registrationComplete === 'Y' ? {continue: false, message: this.registeredMessage} : {continue: true}
+        return res.data.registrationComplete === 'Y' ? {continue: false, message: this.registeredMessage, registered: true} : {continue: true};
       },
       () => {
-        return {continue: false, message: this.registerErrorMessage}
+        return {continue: false, message: this.registerErrorMessage, registered: false}
       });
     },
     async startRegistration() {
@@ -198,6 +208,10 @@ export default {
       if (status.continue) {
         this.showStepper = true;
       } else {
+        this.password = '';
+        if (status.registered) {
+          this.registerDialog = false;
+        }
         this.error(status.message);
       }
     },

@@ -1,14 +1,14 @@
 <template>
   <v-stepper v-model="progress" class="elevation-0">
-    <div class="header pt-1">Change Password</div>
+    <div class="header pt-1" v-if="progress===1">Change Password</div>
+    <div class="header pt-1" v-else-if="progress===2">Update Profile</div>
+    <div class="header pt-1" v-else>Add Photo</div>
     <v-stepper-header class="header">
-      <v-stepper-step :complete="progress > 1" step="1">
-        <div>Change Password</div>
-      </v-stepper-step>
+      <v-stepper-step step="1"></v-stepper-step>
       <v-divider></v-divider>
-      <v-stepper-step :complete="progress > 2" step="2">Update Profile</v-stepper-step>
+      <v-stepper-step step="2"></v-stepper-step>
       <v-divider></v-divider>
-      <v-stepper-step step="3">Add Photo</v-stepper-step>
+      <v-stepper-step step="3"></v-stepper-step>
     </v-stepper-header>
     <v-stepper-items>
       <v-stepper-content class="px-0 primary" step="1">
@@ -17,17 +17,21 @@
           <v-form ref="passwordForm" v-model="passwordFormValid">
             <v-text-field
               color="none"
-              type="password"
+              :type="fieldType[formIcons.passwordField]"
               v-model="formParams.password"
               placeholder="New Password"
+              :append-icon="formIcons.passwordField"
+              @click:append="togglePasswordVisibility('passwordField')"
               :rules="[requiredRule]"
               required
             ></v-text-field>
             <v-text-field
               color="none"
-              type="password"
+              :type="fieldType[formIcons.passwordCopyField]"
               v-model="passwordCopy"
               placeholder="Retype password"
+              :append-icon="formIcons.passwordCopyField"
+              @click:append="togglePasswordVisibility('passwordCopyField')"
               :rules="copyPasswordRules"
               required
             ></v-text-field>
@@ -45,7 +49,7 @@
       <v-stepper-content class="px-0 primary" step="2">
         <v-layout justify-center>
           <v-flex xs10>
-            <v-form ref="passwordForm" v-model="passwordFormValid">
+            <v-form ref="passwordForm" v-model="profileFormValid">
               <v-text-field
                 color="none"
                 type="text"
@@ -65,7 +69,9 @@
               <v-text-field
                 color="none"
                 type="text"
-                v-model="formParams.phoneNumber"
+                v-model="phoneNumberMask"
+                @keydown="onPhoneKeydown($event)"
+                @keyup="formatPhoneNumber()"
                 placeholder="Phone Number"
               ></v-text-field>
               <v-text-field
@@ -101,8 +107,8 @@
               ></v-text-field>
             </v-form>
             <div class="text-xs-right px-3">
-              <v-btn color="secondary" @click="progress = 1" :disabled="!passwordFormValid">Back</v-btn>
-              <v-btn color="secondary" @click="progress = 3" :disabled="!passwordFormValid">Next</v-btn>
+              <v-btn color="secondary" @click="progress = 1">Back</v-btn>
+              <v-btn color="secondary" @click="progress = 3" :disabled="!profileFormValid">Next</v-btn>
             </div>
           </v-flex>
         </v-layout>
@@ -146,8 +152,10 @@
     </v-stepper-items>
     <v-dialog v-model="dialog" width="85%" scrollable>
       <v-card>
-        <v-card-title class="headline primary">End-User License Agreement</v-card-title>
-        <v-card-text></v-card-text>
+        <v-card-title class="eula-header headline primary">End-User License Agreement</v-card-title>
+        <v-card-text>
+          {{eula}}
+        </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn @click="dialog = false">Cancel</v-btn>
@@ -160,8 +168,17 @@
 </template>
 
 <script>
-import { STATELIST, TEXT_VALIDATIONS } from "../utils/constants.js";
 import { mapActions } from "vuex";
+import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js'
+
+import { STATELIST, 
+        TEXT_VALIDATIONS, 
+        PASSWORD_SHOW, 
+        PASSWORD_HIDE, 
+        FIELD_TYPE 
+} from "../utils/constants.js";
+import { EULA } from "./Setup.const.js";
+import { userService } from "../services/user.service.js";
 
 export default {
   data() {
@@ -179,6 +196,12 @@ export default {
         "zip": "",
         "userRole": "Attendee"
       },
+      formIcons: {
+        passwordField: PASSWORD_HIDE,
+        passwordCopyField: PASSWORD_HIDE
+      },
+      file: null,
+      phoneNumberMask: "",
       dialog: false,
       eulaAccepted: false,
       eulaText: "I have read and agree to the terms and conditions",
@@ -186,7 +209,7 @@ export default {
       passwordFormValid: false,
       profileFormValid: false,
       profileImage: require("../assets/blank-profile.png"),
-      progress: 0,
+      progress: 1,
       stateList: STATELIST,
       copyPasswordRules: [
         pwdCopy => pwdCopy === this.formParams.password || 'Passwords do not match',
@@ -202,6 +225,12 @@ export default {
   computed: {
     requiredRule() {
       return TEXT_VALIDATIONS.REQUIRED
+    },
+    fieldType() {
+      return FIELD_TYPE
+    },
+    eula() {
+      return EULA
     }
   },
   methods: {
@@ -235,14 +264,36 @@ export default {
           emailAddress: this.user.emailAddress
         }
       );
+      if (this.file) {
+        let formData = new FormData();
+        formData.append('file', this.file, this.file.fileName);
+        formData.append('userId', this.user.userId)
+        userService.uploadPhoto(formData);
+      }
       this.createProfile(data);
     },
     submitPasswordChange: function() {
-      this.passwordFormValid = false;
-        this.progress = 2;
+      this.progress = 2;
     },
     passwordChangeValidate() {
       return !this.password.length || !this.passwordCopy.length || this.password !== this.passwordCopy
+    },
+    togglePasswordVisibility(field) {
+      this.formIcons[field] = this.formIcons[field] === PASSWORD_SHOW ? PASSWORD_HIDE : PASSWORD_SHOW;
+    },
+    onPhoneKeydown($event) {
+      if ($event.key === 'Backspace') {
+        return;
+      }
+      if (isNaN($event.key) || this.formParams.phoneNumber.length === 10) {
+        $event.preventDefault();
+        $event.stopPropagation();
+      }
+    },
+    formatPhoneNumber() {
+      this.phoneNumberMask = new AsYouType('US').input(this.phoneNumberMask);
+      const realNumber = parsePhoneNumberFromString(this.phoneNumberMask, 'US');
+      this.formParams['phoneNumber'] = realNumber ? realNumber.nationalNumber : '';
     }
   }
 };
@@ -258,5 +309,9 @@ export default {
 	box-shadow: 0 0 20px maroon !important;
 	border: 1px solid maroon;
 
+}
+
+.eula-header {
+  text-align: center;
 }
 </style>

@@ -52,6 +52,13 @@ export const STATELIST = [
   "WY"
 ];
 
+export const PASSWORD_SHOW = 'fa-eye';
+export const PASSWORD_HIDE = 'fa-eye-slash';
+export const FIELD_TYPE = {
+   'fa-eye': 'text',
+   'fa-eye-slash': 'password'
+};
+
 export const eventOptions = [
   { name: "Materials", icon: "fa-book", route: "/events/material" },
   { name: "Agenda", icon: "fa-calendar-minus", route: "/agenda" },
