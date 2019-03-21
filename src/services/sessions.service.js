@@ -22,43 +22,30 @@ function getSessions(eventId, attendeeId) {
   );
 }
 
-//get single session
-function getSession(eventId, sessionId) {
+function getSessionInfo(attendeeId, sessionId) {
   return request.get(
-    CONFIG.api.sessions + `/events/${eventId}/sessions/${sessionId}`
+    CONFIG.api.url + `/attendees/${attendeeId}/sessions/${sessionId}`
   );
 }
 
-function getSessionInfo(attendeId, sessionId) {
+function getNotes(sessionId, attendeeId) {
   return request.get(
-    CONFIG.api.url + `/attendees/${attendeId}/sessions/${sessionId}`
+    CONFIG.api.url +
+      `/sessions/${sessionId}/attendees/${attendeeId}/sessionnotes`
   );
 }
 
-function getNotes(eventId, sessionId, attendeeId) {
+function submitNotes(notesId, data) {
+  return request.put(CONFIG.api.url + `/sessionnotes/${notesId}`, data);
+}
+
+function postNotes(data) {
+  return request.post(CONFIG.api.url + "/sessionnotes/create", data);
+}
+
+function getQuestions(sessionId, attendeeId) {
   return request.get(
-    CONFIG.api.sessions +
-      `/events/${eventId}/sessions/${sessionId}/notes?attendeeid=${attendeeId}`
-  );
-}
-
-function submitNotes(eventId, sessionId, data) {
-  return request.put(
-    CONFIG.api.sessions + `/events/${eventId}/sessions/${sessionId}/notes`,
-    data
-  );
-}
-
-function postNotes(eventId, sessionId, data) {
-  return request.post(
-    CONFIG.api.sessions + `/events/${eventId}/sessions/${sessionId}/notes`,
-    data
-  );
-}
-
-function getQuestions(eventId, sessionId) {
-  return request.get(
-    CONFIG.api.sessions + `/events/${eventId}/sessions/${sessionId}/questions`
+    CONFIG.api.url + `/sessions/${sessionId}/attendees/${attendeeId}/questions`
   );
 }
 
@@ -80,5 +67,3 @@ function sessionLikes(payload) {
 function sessionBookmarks(payload) {
   return request.post(CONFIG.api.url + "/sessions/bookmarks", payload);
 }
-
-//https://api.v2.sessions.usoncevents.com/events/1/sessions/1/questions

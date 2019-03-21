@@ -1,7 +1,7 @@
 <template>
   <v-app dark>
     <top-bar v-if="loggedIn"></top-bar>
-    <v-content class="primary">
+    <v-content class="primary pb-4">
       <div class="text-xs-center">
         <v-alert
           transition="slide-y-transition"
@@ -27,13 +27,13 @@ import { mapState, mapActions } from "vuex";
 export default {
   name: "App",
   data() {
-    return { 
+    return {
       bottomNav: 0
     };
   },
 
   methods: {
-     ...mapActions('alert', ['clear'])
+    ...mapActions("alert", ["clear"])
   },
 
   computed: {
@@ -45,7 +45,7 @@ export default {
       get() {
         return !!this.alert.message;
       },
-      set (val) {
+      set(val) {
         if (!val) {
           this.clear();
         }

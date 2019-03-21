@@ -27,48 +27,49 @@ const actions = {
   setSelectedSession({ commit }, session) {
     commit("selectSession", session);
   },
-  getNotes({ commit }, attendeeId) {
-    return sessionsService.getNotes(
-      state.selectedSession.eventID,
-      state.selectedSession.sessionId,
-      attendeeId
-    );
-  },
-  submitNotes({ commit }, { noteId, eventId, attendeeId, notes }) {
-    const data = {
-      note_id: noteId,
-      sessionid: state.selectedSession.sessionId,
-      attendeeid: store.state.events.selectedEvent.attendeeId,
-      note: notes
-    };
-    sessionsService
-      .submitNotes(eventId, state.selectedSession.sessionId, data)
-      .then(
-        response => {
-          commit("saveNote", response.data);
-        },
-        error => {
-          Vue.$log.error(error.mesage);
-        }
-      );
-  },
-  postNotes({ commit }, { eventId, attendeeId, notes }) {
-    const data = {
-      sessionid: state.selectedSession.sessionId,
-      attendeeid: store.state.events.selectedEvent.attendeeId,
-      note: notes
-    };
-    sessionsService
-      .postNotes(eventId, state.selectedSession.sessionId, data)
-      .then(
-        response => {
-          commit("saveNote", response.data);
-        },
-        error => {
-          Vue.$log.error(error.mesage);
-        }
-      );
-  },
+  // getNotes({ commit }, attendeeId) {
+  //   return sessionsService.getNotes(
+  //     state.selectedSession.eventID,
+  //     state.selectedSession.sessionId,
+  //     attendeeId
+  //   );
+  // },
+  // submitNotes({ commit }, { noteId, eventId, attendeeId, notes }) {
+  //   const data = {
+  //     note_id: noteId,
+  //     sessionid: state.selectedSession.sessionId,
+  //     attendeeid: store.state.events.selectedEvent.attendeeId,
+  //     note: notes
+  //   };
+  //   sessionsService.submitNotes(data).then(
+  //     response => {
+  //       commit("saveNote", response.data);
+  //     },
+  //     error => {
+  //       Vue.$log.error(error.mesage);
+  //     }
+  //   );
+  // },
+  // postNotes({ commit }, note) {
+  //   // const data = {
+  //   //   sessionid: state.selectedSession.sessionId,
+  //   //   attendeeid: store.state.events.selectedEvent.attendeeId,
+  //   //   note: notes
+  //   // };
+  //   const data = {
+  //     attendeeId: state.events.selectedEvent.attendeeId,
+  //     note: note,
+  //     sessionId: state.selectedSession.sessionId
+  //   };
+  //   sessionsService.postNotes(data).then(
+  //     response => {
+  //       commit("saveNote", response.data);
+  //     },
+  //     error => {
+  //       Vue.$log.error(error.mesage);
+  //     }
+  //   );
+  // },
   getQuestions({ commit }, attendeeId) {
     return sessionsService.getQuestions(
       state.selectedSession.eventID,

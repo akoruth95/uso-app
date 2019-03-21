@@ -21,10 +21,3 @@ function getResources(sessionId) {
 function resourceBookmarks(payload) {
   return request.post(CONFIG.api.url + "/resources/bookmarks", payload);
 }
-
-// function getResourceDetails(eventId, sessionId, resourceId) {
-//   return request.get(
-//     CONFIG.api.sessions +
-//       `/events/${eventId}/sessions/${sessionId}/resources/${resourceId}`
-//   );
-// }

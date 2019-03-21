@@ -21,10 +21,10 @@
           class="attendee-back py-2 my-2"
         >
           <v-list-tile-avatar size="50px" class="pr-3">
-            <v-img aspect-ratio="0.2" :src="attendee.photo_link"></v-img>
+            <v-img aspect-ratio="0.2" :src="attendee.photoLink"></v-img>
           </v-list-tile-avatar>
           <v-list-tile-content class="text-xs-right">
-            <div class="body-2 text-xs-right">{{attendee.first_name}} {{attendee.last_name}}</div>
+            <div class="body-2 text-xs-right">{{attendee.firstName}} {{attendee.lastName}}</div>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -59,10 +59,10 @@ export default {
       this.attendeeList.forEach(element => {
         if (
           (element !== undefined &&
-            element.first_name
+            element.firstName
               .toLowerCase()
               .indexOf(this.search.toLowerCase()) != -1) ||
-          element.last_name.toLowerCase().indexOf(this.search.toLowerCase()) !=
+          element.lastName.toLowerCase().indexOf(this.search.toLowerCase()) !=
             -1
         ) {
           al.push(element);
