@@ -1,19 +1,18 @@
 <template>
   <div>
     <v-container fluid grid-list-xs>
-      <div class="wrapper">
-        <v-text-field
-          clearable
-          color="light"
-          prepend-icon="fa-search"
-          name="search"
-          label="type here"
-          type="text"
-          v-model="search"
-        ></v-text-field>
-        <v-spacer></v-spacer>
-      </div>
-      <!-- <div v-for="attendee in filteredList" :key="attendee.attendeeId">{{ attendee.first_name }}{{attendee.last_name}}</div> -->
+      <v-text-field
+        solo
+        clearable
+        dark
+        background-color="#054185"
+        color="white"
+        name="search"
+        label="search here"
+        type="text"
+        hide-details
+        v-model="search"
+      ></v-text-field>
       <v-list class="primary">
         <v-list-tile
           v-for="attendee in filteredList"
@@ -24,7 +23,6 @@
           <v-list-tile-avatar size="50px" class="pr-3">
             <v-img aspect-ratio="0.2" :src="attendee.photo_link"></v-img>
           </v-list-tile-avatar>
-          <!-- <v-list-tile-content></v-list-tile-content> -->
           <v-list-tile-content class="text-xs-right">
             <div class="body-2 text-xs-right">{{attendee.first_name}} {{attendee.last_name}}</div>
           </v-list-tile-content>
