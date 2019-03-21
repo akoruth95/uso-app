@@ -80,7 +80,7 @@
         >
           <div class="primary text-xs-center" style="height:inherit;">
             <v-toolbar dark color="secondary">
-              <v-btn icon dark @click="registerDialog = false">
+              <v-btn icon dark @click="exitRegistration()">
                 <v-icon>fa-arrow-left</v-icon>
               </v-btn>
               <v-toolbar-title>Registration</v-toolbar-title>
@@ -219,6 +219,13 @@ export default {
       const { email, password } = this;
       this.register({ email, password });
       this.resgisterSuccessful = true;
+    },
+    exitRegistration() {
+      this.registerDialog = false;
+      // adding timeout to wait for transition to end first
+      setTimeout(() => this.showStepper = false, 1000)
+      this.password = "";
+      this.email = "";
     }
   },
   destroyed() {
