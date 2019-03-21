@@ -4,7 +4,8 @@ import request from './common.service'
 
 export const attendeesService = {
     getAttendees,
-    getAttendeeInfo
+    getAttendeeInfo,
+    getLeaderboard
 }
 
 
@@ -13,6 +14,9 @@ function getAttendees(eventId) {
     return request.get(CONFIG.api.events + `/events/${eventId}/attendees`)
 }
 
+function getLeaderboard(eventId) {
+    return request.get(`https://api.v1.uat.usoncevents.com/api/events/${eventId}/progress`)
+}
 
 //get attendee info
 function getAttendeeInfo(attendeeId) {

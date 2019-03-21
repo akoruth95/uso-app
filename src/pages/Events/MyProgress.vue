@@ -1,4 +1,5 @@
 <template>
+
   <div>
     <v-container fluid grid-list-xl>
       <div>
@@ -14,15 +15,45 @@
             <div>{{userProgress.gamePoints}}</div>
           </v-flex>
           <v-flex xs6 text-xs-center class="py-0">
-            <v-dialog
+            <v-dialog scrollable
         v-model="dialog"
         width="500"
       >
-            <v-icon slot="activator" color="yellow darken-2" right>fa-trophy</v-icon>
-             <v-card>
-                <img :src="images.sample" class="full">
-                <v-divider></v-divider>    
-        </v-card>
+            <v-icon slot="activator" color="yellow darken-2" right @click="getLeaderBoardInfo()">fa-trophy</v-icon>
+      <v-card dense class="elevation-0">
+        <v-toolbar color=secondary dark>
+             <v-toolbar-title >Leaderboard</v-toolbar-title>   
+             <v-spacer></v-spacer>
+             <v-icon>fa-times</v-icon>
+            </v-toolbar>
+       <!-- orderBy(rooms,'last_iteraction') -->
+                    <v-list class="primaryLight" >
+                        <v-list-tile
+                              v-for="(attendee,index) in orderedUsers"
+                              :key="attendee.attendeeId"
+                              class="attendee-back py-2 my-2">
+                            <v-list-tile-avatar size="50px" class="pr-3">
+                                <v-img aspect-ratio="0.2" :src="attendee.photoLink"></v-img>
+                            </v-list-tile-avatar>
+                            <v-list-tile-content class="text-xs-right">
+                                <div class="body-2 text-xs-right">{{attendee.firstName}} {{attendee.lastName}}</div>
+                                <div> 
+                                  {{attendee.gamePoints}} points 
+                                </div> 
+                            </v-list-tile-content>
+                            <!-- v-bind:class="{'classcss': class1 === 1,'classcss2': class1 === 2}" -->
+                            <v-list-tile   v-if="index === 0" size="50px" class="pr-3">
+                                <v-icon color="yellow darken-2">fa-trophy</v-icon>
+                            </v-list-tile>
+                            <v-list-tile   v-if="index === 1" size="50px" class="pr-3">
+                                <v-icon >fa-trophy</v-icon>
+                            </v-list-tile>
+                            <v-list-tile   v-if="index === 2" size="50px" class="pr-3">
+                                <v-icon color="brown">fa-trophy</v-icon>
+                            </v-list-tile>
+                        </v-list-tile>
+                    </v-list>
+           </v-card>
       </v-dialog>
             <div>{{userProgress.gameRank}}</div>
           </v-flex>
@@ -59,12 +90,16 @@
 
 <script>
 import topBar from "../../components/TopBar";
+import _ from 'lodash';
 import { mapActions, mapState, Store } from "vuex";
 import { eventsService } from "../../services";
+import { attendeesService } from "../../services";
+
 
 export default {
   data() {
     return {
+      orderBy : require('lodash.orderby'),
       levelName: "",
       maxPoints: 800,
       comments: "",
@@ -73,6 +108,8 @@ export default {
                 sample: require('../../assets/Leaderboard.png')
             },
       dialog: false,
+      attendeeList: [],
+      leaderBoard: [],
       //active : userProgress.answer_poll_flag === 'Y' ? true : false
       items: [
         {
@@ -119,6 +156,12 @@ export default {
     ...mapState({
       userInfo: state => state.account.userInfo
     }),
+  //   orderedUsers: function () {
+  //   return _.orderBy(this.users, 'name')
+  // },
+    orderedUsers: function() {
+        return _.orderBy(this.leaderBoard,'gamePoints').reverse();
+    },
     profileImage: function() {
       return (
         this.userInfo.profileUrl || require("../../assets/blank-profile.png")
@@ -174,7 +217,7 @@ export default {
           item.active = false;
         }
       });
-      console.log(this.userProgress);
+      // console.log(this.userProgress);
     });
   },
   methods: {
@@ -184,6 +227,12 @@ export default {
       "setNewBacklink"
     ]),
     ...mapActions("events", ["getProgress"]),
+
+    getLeaderBoardInfo() {
+      attendeesService.getLeaderboard(this.userProgress.eventId).then(result => {
+        this.leaderBoard = result.data;
+     })
+    },
 
     setEventDetails() {
       this.eventLocationString = `${this.selectedEvent.venueName}, ${
@@ -240,4 +289,5 @@ h3 {
   width: 100%;
   height: auto;
 }
+
 </style>
