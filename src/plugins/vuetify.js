@@ -29,6 +29,7 @@ import {
   VToolbar,
   VChip,
   VSubheader,
+  VTabs,
   Vuetify
 } from "vuetify";
 import "vuetify/src/stylus/app.styl";
@@ -63,7 +64,8 @@ Vue.use(Vuetify, {
     VSwitch,
     VTextField,
     VTextarea,
-    VToolbar
+    VToolbar,
+    VTabs
   },
   theme: {
     primary: "#002147",

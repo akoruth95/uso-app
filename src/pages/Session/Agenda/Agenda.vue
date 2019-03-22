@@ -8,30 +8,21 @@
       </v-layout>
       <v-layout row wrap>
         <v-flex>
-          <v-tabs v-model="active" color="cyan" dark slider-color="yellow">
-            <v-tab v-for="n in 3" :key="n" ripple>Day {{ n }}</v-tab>
-            <v-tab-item v-for="n in 3" :key="n">
-              <v-card flat>
-                <v-card-text class="primary"></v-card-text>
+          <v-tabs v-model="sessionGroup" color="blue" slider-color="yellow">
+            <v-tab v-for="d in dates" :key="d" ripple>{{ d }}</v-tab>
+            <v-tab-item v-for="d in dates" :key="d">
+              <v-card flat color="primary">
+                <div v-for="session in currentSessions" :key="session.sessionId">
+                  <SessionCard
+                    class="my-2"
+                    :session="session"
+                    :event="selectedEvent"
+                    @click.native="selectSession(session)"
+                  ></SessionCard>
+                </div>
               </v-card>
             </v-tab-item>
           </v-tabs>
-
-          <div class="text-xs-center mt-3">
-            <v-btn @click="next">next tab</v-btn>
-          </div>
-        </v-flex>
-        <!-- <v-flex class="text-xs-center" xs6 v-for="dat in dates" :key="dat">
-          {{ dat}}
-        </v-flex>-->
-      </v-layout>
-      <v-layout v-for="session in sessions" :key="session.sessionId" row wrap>
-        <v-flex xs12>
-          <SessionCard
-            :session="session"
-            :event="selectedEvent"
-            @click.native="selectSession(session)"
-          ></SessionCard>
         </v-flex>
       </v-layout>
     </v-container>
@@ -46,12 +37,26 @@ import { sessionsService } from "../../../services";
 export default {
   data() {
     return {
+      sessionGroup: "Fri Mar 01 2019",
       sessions: [],
       dates: []
     };
   },
   computed: {
-    ...mapState("events", ["selectedEvent"])
+    ...mapState("events", ["selectedEvent"]),
+    currentSessions() {
+      let cs = [];
+      this.sessions.forEach(session => {
+        if (
+          session.sessionDate &&
+          new Date(session.sessionDate).toDateString() ==
+            this.dates[this.sessionGroup]
+        ) {
+          cs.push(session);
+        }
+      });
+      return cs;
+    }
   },
   created() {
     this.fetchSessions();
@@ -82,12 +87,14 @@ export default {
       this.$router.push({ path: "session-info" });
     },
     calulateTabs() {
-      // let startDate = new Date(this.selectedEvent.startDate).getDate();
-      // let endDate = new Date(this.selectedEvent.endDate).getDate();
-      // console.log(endDate, startDate, endDate - startDate);
-      // need to add logic to calulcate date tabs
-      this.dates.push("Fri Mar 01 2019");
-      this.dates.push("Sat Mar 02 2019");
+      let startDate = new Date(this.selectedEvent.startDate);
+      let endDate = new Date(this.selectedEvent.endDate);
+      let totalEventDays = (endDate - startDate) / 86400000;
+      let currentDate = startDate;
+      for (let i = 0; i <= totalEventDays; i++) {
+        this.dates.push(currentDate.toDateString());
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
     }
   }
 };
