@@ -5,11 +5,7 @@ import { CONFIG } from "../config/config";
 const baseUrl = CONFIG.api.url;
 
 function changePassword(data) {
-  // TODO
-  return request.put(
-    baseUrl + `/users/${store.state.account.userId}/password`,
-    data
-  );
+  return request.post(baseUrl + "/users/password/update", data);
 }
 
 function createProfile(data) {
@@ -17,12 +13,12 @@ function createProfile(data) {
 }
 
 function uploadPhoto(data) {
-  let userId = data.get('userId');
+  let userId = data.get("userId");
   let headers = {
-    'accept': 'application/json',
-    'Accept-Language': 'en-US,en;q=0.8',
-    'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
-  }
+    accept: "application/json",
+    "Accept-Language": "en-US,en;q=0.8",
+    "Content-Type": `multipart/form-data; boundary=${data._boundary}`
+  };
   return request.post(baseUrl + `/users/${userId}/photo/upload`, data, headers);
 }
 

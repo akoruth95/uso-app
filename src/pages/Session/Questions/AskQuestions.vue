@@ -85,30 +85,6 @@ export default {
 </script>
 
 <style>
-/* .column {
-  float: left;
-  padding: 10px;
-}
-
-.left {
-  width: 80%;
-}
-
-.right {
-  width: 20%;
-}
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-body {
-  font-family: "Raleway", sans-serif;
-}
-.whitetext {
-  color: white;
-  font-family: "Raleway", sans-serif;
-} */
 #text-area {
   border: 1px solid #bbb;
   border-radius: 3px;
@@ -119,29 +95,6 @@ body {
   outline: none;
   width: -webkit-fill-available;
 }
-/* #ip3 {
-  border-radius: 25px;
-  border: 2px solid white;
-  padding: 10px;
-  width: 95%;
-  height: 350px;
-}
-trix-toolbar .trix-button-group button {
-  background-color: white;
-}
-trix-editor {
-  position: relative;
-  border: 1px solid #bbb;
-  border-radius: 3px;
-  margin: 0;
-  padding: 0.4em 0.6em;
-  min-height: calc(100vh * 0.5);
-  outline: none;
-}
-.btn {
-  bottom: 4%;
-  right: 10%;
-} */
 .post-text {
   background-color: #003472;
   min-height: calc(100vh * 0.5);

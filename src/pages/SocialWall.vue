@@ -37,9 +37,13 @@
                   small
                 >fas fa-thumbs-up</v-icon>
                 {{ post.likeCount }}
-                <v-icon v-if="showDeleteIcon" @click="deletePost(post.wallId)" color="grey" small class="ml-2">
-                  fas fa-trash-alt
-                </v-icon>
+                <v-icon
+                  v-if="showDeleteIcon"
+                  @click="deletePost(post.wallId)"
+                  color="grey"
+                  small
+                  class="ml-2"
+                >fas fa-trash-alt</v-icon>
               </v-flex>
             </v-layout>
           </v-flex>
@@ -79,7 +83,7 @@ export default {
     }
   },
   data() {
-    return {      
+    return {
       event: this.$store.state.events.selectedEvent,
       post: "",
       posts: [],
@@ -104,9 +108,10 @@ export default {
           if (res.status === 200) {
             this.loadAllWallMessages();
           } else {
-            console.error('There was a problem deleting this post');
+            console.error("There was a problem deleting this post");
           }
-        }, err => {
+        },
+        err => {
           console.error(err);
         }
       );

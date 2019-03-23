@@ -128,6 +128,11 @@ const router = new Router({
       component: () => import("./pages/Session/Questions/AskQuestions.vue")
     },
     {
+      path: "/view-questions",
+      name: "view-questions",
+      component: () => import("./pages/Session/Questions/ViewQuestions.vue")
+    },
+    {
       path: "/resources",
       name: "resources",
       component: () => import("./pages/Session/Resources/Resources.vue")
