@@ -20,14 +20,12 @@ const state = {
 
 const actions = {
   changePassword({ commit }, { oldPassword, newPassword }) {
-    // TODO
     const data = {
+      emailAddress: state.userInfo.email,
       newPassword: newPassword,
-      oldPassword: oldPassword,
-      userid: state.userId
+      oldPassword: oldPassword
     };
     userService.changePassword(data).then(
-      // TODO
       response => {
         console.log(response);
         commit("passwordChangeSuccess");
@@ -38,14 +36,14 @@ const actions = {
       }
     );
   },
-  createProfile({dispatch}, data) {
+  createProfile({ dispatch }, data) {
     userService.createProfile(data).then(
       () => {
         const params = {
           email: data.emailAddress,
           password: data.password,
           registration: true
-        }
+        };
         Vue.$log.info("Successful registration for " + params.email);
         dispatch("login", params);
       },
@@ -70,7 +68,7 @@ const actions = {
       }
     );
   },
-  getNotifications({ commit}) {
+  getNotifications({ commit }) {
     userService.getNotifications().then(response => {
       commit("getNotifications", response.data);
       for (let i = 0; i < response.data.length; i++) {
@@ -79,7 +77,7 @@ const actions = {
     });
   },
 
-  updateNotifications({dispatch }) {
+  updateNotifications({ dispatch }) {
     const data = {
       userId: state.USERID,
       notificationRead: "Y"
@@ -88,27 +86,6 @@ const actions = {
       dispatch("getNotifications");
     });
   },
-
-  // submitNotes({commit}, {eventId, attendeeId, notes}) {
-  //     console.log("store id in session = ", store);
-  //     console.log("attendee id in session = ", store.state.events.selectedEvent.attendee_id);
-  //     console.log("note id in session = ", notes);
-
-  //     const data = {
-  //             sessionid : state.selectedSession.sessionId,
-  //             attendeeid : store.state.events.selectedEvent.attendee_id,
-  //             note: notes
-  //             };
-  //             console.log('body: ', data)
-  //     sessionsService.submitNotes(eventId, state.selectedSession.sessionId, data).then(
-  //         response => {
-  //             commit('saveNote', response.data);
-  //         }, error => {
-  //             Vue.$log.error(error.mesage);
-  //         }
-
-  //     )
-  // }
 
   getUserInfo({ commit, dispatch }) {
     userService.getUserInfo().then(
@@ -150,9 +127,13 @@ const actions = {
           // router.push("/");
           router.push("/", () => {
             if (registration) {
-              dispatch("alert/error", "You were registered successfully. You have been logged in automatically.", {
-                root: true
-              });
+              dispatch(
+                "alert/error",
+                "You were registered successfully. You have been logged in automatically.",
+                {
+                  root: true
+                }
+              );
             }
           });
         }

@@ -51,7 +51,7 @@
         <v-btn class="session-info-btn secondary" small to="/take-notes">Take Notes</v-btn>
       </v-flex>
       <v-flex xs4>
-        <v-btn class="session-info-btn secondary" small to="/ask-questions">Questions</v-btn>
+        <v-btn class="session-info-btn secondary" small @click="gotoQuestions()">Questions</v-btn>
       </v-flex>
     </v-layout>
     <br>
@@ -83,7 +83,7 @@ export default {
   computed: {
     ...mapState("sessions", ["selectedSession"]),
     ...mapState("events", ["selectedEvent"]),
-    ...mapState("account", ["userId"]),
+    ...mapState("account", ["userId", "userInfo"]),
     ...mapState("bookmarks", ["bookmarks"]),
     likeColor() {}
   },
@@ -144,25 +144,33 @@ export default {
       });
     },
 
-    callActivity(activityType) {
-      let details = {
-        ...this.ACTIVITY_DETAILS,
-        type: activityType
-      };
-      if (this.activityState[activityType]) {
-        activityService
-          .undoActivity(this.userId, this.selectedEvent, details)
-          .then(this.toggleActivity(activityType));
+    gotoQuestions() {
+      if (this.userInfo.userRole.toLowerCase() === "Attendee".toLowerCase()) {
+        this.$router.push("/ask-questions");
       } else {
-        activityService
-          .updateActivity(this.userId, this.selectedEvent, details)
-          .then(this.toggleActivity(activityType));
+        this.$router.push("/view-questions");
       }
-    },
-
-    toggleActivity(activityType) {
-      this.activityState[activityType] = !this.activityState[activityType];
     }
+
+    // callActivity(activityType) {
+    //   let details = {
+    //     ...this.ACTIVITY_DETAILS,
+    //     type: activityType
+    //   };
+    //   if (this.activityState[activityType]) {
+    //     activityService
+    //       .undoActivity(this.userId, this.selectedEvent, details)
+    //       .then(this.toggleActivity(activityType));
+    //   } else {
+    //     activityService
+    //       .updateActivity(this.userId, this.selectedEvent, details)
+    //       .then(this.toggleActivity(activityType));
+    //   }
+    // },
+
+    // toggleActivity(activityType) {
+    //   this.activityState[activityType] = !this.activityState[activityType];
+    // }
   }
 };
 </script>
