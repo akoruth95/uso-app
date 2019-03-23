@@ -90,7 +90,7 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      faqDialog: true,
+      faqDialog: false,
       dialogTitle: "How do I change my password or logout?",
       dialogBody:
         "From the Bottom Bar, navigate to the Profile page. Here you can change your Reset app password as well as logout of the Reset application",
