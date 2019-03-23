@@ -28,7 +28,7 @@
                     <v-icon color="indigo">fa-phone</v-icon>
                   </v-list-tile-action>
                   <v-list-tile-content>
-                    <v-list-tile-title>(650) 555-1234</v-list-tile-title>
+                    <v-list-tile-title>+1 919 840 3000</v-list-tile-title>
                     <v-list-tile-sub-title>Phone</v-list-tile-sub-title>
                   </v-list-tile-content>
                 </v-list-tile>
@@ -41,7 +41,7 @@
                   </v-list-tile-action>
 
                   <v-list-tile-content>
-                    <v-list-tile-title>ncreset@example.com</v-list-tile-title>
+                    <v-list-tile-title>IWRIGHT@USO-NC.ORG</v-list-tile-title>
                     <v-list-tile-sub-title>Email</v-list-tile-sub-title>
                   </v-list-tile-content>
                 </v-list-tile>
@@ -54,8 +54,8 @@
                   </v-list-tile-action>
 
                   <v-list-tile-content>
-                    <v-list-tile-title>1400 Main Street</v-list-tile-title>
-                    <v-list-tile-sub-title>Orlando, FL 79938</v-list-tile-sub-title>
+                    <v-list-tile-title>600 Airport Blvd, Suite 200</v-list-tile-title>
+                    <v-list-tile-sub-title>Morrisville, NC 27560</v-list-tile-sub-title>
                   </v-list-tile-content>
                 </v-list-tile>
               </v-list>
@@ -91,43 +91,56 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      credits: "Ausaif Ali",         
+      
       items: [
         {
-          title: "Download and Installation",
+          title: "Logging out and Changing Password",
           body: [
-            { title: "How to use the app" },
-            { title: "Updating the app" },
-            { title: "Reinstalling the app" }
+            { title: "How do I change my password or logout?", 
+              description: "From the Bottom Bar, navigate to the Profile page. Here you can change your Reset app password as well as logout of the Reset application" }
+              ]
+        },
+        {
+          title: "User Profile",
+          body: [
+            { title: "How to edit my profile or change my photo?" ,
+              description: "[Bottom Bar -> Profile -> Edit Profile] Touch the 'Profile' icon in the Bottom Bar. This will display your profile information. Click on the Edit (pencil) button to change your profile including uploading or changing your photo. Touch the photo to replace with a new photo from your phone camera roll or photo gallery. " },
+          { title: "Is my profile information private?" ,
+              description: "[Bottom Bar -> Profile -> Edit Profile -> Privacy Toggle]. By default, your profile is private - none of the information, except your name and city are visible to others. If you wish to change this behaviour, navigate to the Profile page, Edit profile and set the toggle at the bottom of the page to: Your profile is public." }
           ]
         },
         {
-          title: "Verification",
+          title: "Event and Sessions",
           body: [
-            { title: "Verify your number" },
-            { title: "Two step authentication" }
+            { title: "Where can I find Event information?" ,
+              description: "[Bottom Bar -> Event Listing -> Event Home]. In the Bottom Bar, use the Events icon to go to a list of events that you have registered for. From there you can navigate to a particular Event Home page. The top of the page displays Event Venue, date and time. There are icons there to lead you to pages that show the Agenda, materials available for the Event, Attendees of the Event and so on." },
+          { title: "Where can I find details of individual Sessions?" ,
+              description: "[Events Listing -> Event Home -> Agenda -> Session Listing -> Session Details]. The Session details page provides a description of the Session, an Instructor Bio, Resources connected with the Session as well as Notes and Questions." }
+
           ]
         },
         {
-          title: "Account and Profile",
+          title: "Tools",
           body: [
-            { title: "Managing your profile" },
-            { title: "Deleting your account" },
-            { title: "Changing your phone" }
-          ]
+            { title: "What are Notes and Questions?" ,
+              description: "[Events Listing -> Event Home -> Agenda -> Session Listing -> Session Details -> Notes]. Notes allow you to take Notes during a Session for later reference. You can use the Questions page to ask questions to the Instructor before or during a Session. The Instructor will answer all questions at the end of the Session. Questions asked after the Session closure may not be answered. [Events Listing -> Event Home -> Agenda -> Session Listing -> Session Details -> Questions]" },
+          { title: "What are Materials and Resources?" ,
+              description: "[Events Listing -> Event Home -> Materials]. Help guides, links, documents etc. provided for an Event can be accessed from the Materials section of the Event.  Similarly, material relating to a particular Session can be accessed from Resources section. [Events Listing -> Event Home -> Agenda -> Session Listing -> Session Details -> Resources]. Both Materials and Resources can be bookmarked for easy access. " },
+            { title: "What are Bookmarks?" ,
+              description: "[Bottom Bar -> Bookmarks]. Bookmarks are shortcuts to reach your favorite pages quickly. For example, you can bookmark a Session under an Event and at a later time, navigate to the Session page quickly using the Bookmark. Other than a Session, you can also bookmark Materials and Resources. Touch the Bookmark icon to bookmark the page. All bookmarked items will be listed under the Bookmarks page which can be accessed from the Bottom Bar. Once in the Bookmarks page, touch a bookmarked item to quickly navigate to it. Use the delete button to remove a bookmark if you do not need it." },
+          { title: "Where can I see notifications that I have received?" ,
+              description: "[Bottom Bar -> Notifications (Bell icon)]. The Reset app addministrators may periodically send announcements or reminders over to you. These are displayed in the Notifications page, which can be accessed through the Bottom Bar. This page provides a reverse chronological display of all notifications." }
+                ]
         },
         {
-          title: "Chat Wall",
+          title: "Connecting with Event participants",
           body: [
-            { title: "Deleting chats" },
-            { title: "Disabling notifications" }
-          ]
-        },
-        {
-          title: "Troubleshooting",
-          body: [
-            { title: "Connection problems" },
-            { title: "Why don't I get notifications" },
-            { title: "seeing blurry photos" }
+            { title: "Where to find info about attendees to my event?" ,
+              description: "[Events Listing -> Event Home -> Attendees]. You can view all Attendees for an event through the Attendees section in the Event Home.  This page lists the attendees along with their profile photo. Clicking on one of the rows will take you to the Profile page of the attendee. Depending on their privacy settings, you can either view all or brief details about them." },
+          { title: "How to communicate with other attendees?" ,
+              description: "[Events Listing -> Event Home -> Event Wall]. The Reset app provides an Event Wall which can be accessed from the Event Home of your event. You can post messages on the wall and read replies. Note that all messages posted on the app is public. Spamming or bad language is prohibited. " }
+
           ]
         },
         {
@@ -139,7 +152,7 @@ export default {
   },
   computed: {
     getImage() {
-      return require("../../assets/DB-Vows-banner.png");
+      return require("../../assets/AppDevelopedBy.png");
     }
   },
   created() {
