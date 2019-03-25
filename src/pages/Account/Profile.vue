@@ -11,9 +11,9 @@
       </h1>
       <h3 class="py-0">{{userInfo.city}}, {{userInfo.state}}</h3>
     </v-flex>
-    <v-layout clas="py-0" row>
+    <v-layout class="py-0" row>
       <v-flex xs12 sm12>
-        <v-list style="height:250px;" two-line class="primary">
+        <v-list style="height:auto;" two-line class="primary">
           <v-list-tile class="condense">
             <v-list-tile-content>
               <v-list-tile-title>{{phoneString(userInfo.phone)}}</v-list-tile-title>
@@ -28,11 +28,36 @@
           <v-divider></v-divider>
           <v-list-tile v-bind:class="userInfo.streetAddress2 ? '' : 'condense'">
             <v-list-tile-content>
-              <v-list-tile-title>{{userInfo.streetAddress1}}</v-list-tile-title>
-              <v-list-tile-sub-title>{{userInfo.streetAddress2}}</v-list-tile-sub-title>
+              <v-list-tile-title>{{userInfo.streetAddress1}},{{userInfo.streetAddress2}}</v-list-tile-title>
+              <!-- <v-list-tile-sub-title>{{userInfo.streetAddress2}}</v-list-tile-sub-title> -->
               <v-list-tile-sub-title>{{userInfo.city}}, {{userInfo.state}} {{userInfo.zip}}</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
+          <v-divider></v-divider>
+          <span v-if="userInfo.interests">
+            <v-divider></v-divider>
+            <v-list-tile>
+              <v-list-tile-content>
+                <v-list-tile-title>{{userInfo.interests}}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </span>
+          <span v-if="userInfo.serviceBranch">
+            <v-divider></v-divider>
+            <v-list-tile>
+              <v-list-tile-content>
+                <v-list-tile-title>{{userInfo.serviceBranch}}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </span>
+          <span v-if="userInfo.station">
+            <v-divider></v-divider>
+            <v-list-tile class="condense">
+              <v-list-tile-content>
+                <v-list-tile-title>{{userInfo.station}}</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </span>
           <v-divider></v-divider>
           <v-list-tile class="condense">
             <v-list-tile-content>Your profile is {{profileStatus(userInfo.profilePublic)}}</v-list-tile-content>
@@ -58,7 +83,7 @@
       </v-flex>
     </v-layout>
     <v-layout row justify-center>
-      <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition">
+      <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition" class="pt-4">
         <v-toolbar dark color="secondary" fixed>
           <v-btn icon dark @click="closeDialog()">
             <v-icon>fa-times</v-icon>
@@ -166,6 +191,17 @@
                 mask="#####"
                 required
               ></v-text-field>
+              <v-text-field
+                color="white"
+                v-model="profileForm.interests"
+                label="Interests (optional)"
+              ></v-text-field>
+              <v-text-field
+                color="white"
+                v-model="profileForm.serviceBranch"
+                label="Service Branch (optional)"
+              ></v-text-field>
+              <v-text-field color="white" v-model="profileForm.station" label="Station (optional)"></v-text-field>
               <v-switch
                 color="white"
                 :label="`Your profile is ${profileStatus(profileForm.profilePublic)}`"

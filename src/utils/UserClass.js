@@ -13,8 +13,11 @@ export class User {
     profileUrl;
     userRole;
     zip;
+    interests;
+    serviceBranch;
+    station;
 
-    constructor(city, email, firstName, lastName, nickName, phone, state, streetAddress1, streetAddress2, userId, profilePublic, profileUrl, userRole, zip) {
+    constructor(city, email, firstName, lastName, nickName, phone, state, streetAddress1, streetAddress2, userId, profilePublic, profileUrl, userRole, zip, interests, serviceBranch, station) {
         this.city = city;
         this.email = email;
         this.firstName = firstName;
@@ -29,5 +32,8 @@ export class User {
         this.profileUrl = profileUrl;
         this.userRole = userRole;
         this.zip = zip;
+        this.interests = interests;
+        this.serviceBranch = serviceBranch;
+        this.station = station;
     }
 }

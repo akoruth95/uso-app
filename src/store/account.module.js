@@ -199,7 +199,10 @@ const actions = {
       phoneNumber: form.phone,
       shareProfile: form.profilePublic ? "Y" : "N",
       state: form.state,
-      zip: form.zip
+      zip: form.zip,
+      interests:form.interests,
+      serviceBranch:form.serviceBranch,
+      station:form.station
     };
     userService.updateProfile(data).then(
       response => {
@@ -281,7 +284,10 @@ function createUser(userInfo) {
     userInfo.shareProfile,
     userInfo.photoLink,
     userInfo.userRole,
-    userInfo.zip
+    userInfo.zip,
+    userInfo.interests,
+    userInfo.serviceBranch,
+    userInfo.station
   );
   return newUser;
 }
