@@ -77,7 +77,7 @@
           <v-flex class="primary">
             <div class="mx-3">
               <div class="subheading pb-3">App Created By</div>
-              <v-img :src="getImage" @click="handleDetails('App Created By',credits)"></v-img>
+              <v-img :src="getImage" @click="handleDetails('Credits',credits)"></v-img>
             </div>
           </v-flex>
         </v-card>
@@ -92,10 +92,10 @@ export default {
   data() {
     return {
       faqDialog: false,
-      dialogTitle: "How do I change my password or logout?",
-      dialogBody:
-        "From the Bottom Bar, navigate to the Profile page. Here you can change your Reset app password as well as logout of the Reset application",
-      credits: "Ausaif Ali",
+      dialogTitle: " ",
+      dialogBody: " ",
+    
+      credits: "<i>Alan Krouth<br> Ausaif Ali<br> Indraneel Bende<br> Janeth Jepkogei<br> Joseph Prem Anand<br> Kameswara Eati<br> Kumarasamy Ramasamy<br> Maki Ma<br> Piriyanka Aruwani<br> Prithika Manivannan<br> Raghavendra Mesta</i>",
 
       items: [
         {
@@ -104,7 +104,7 @@ export default {
             {
               title: "How do I change my password or logout?",
               description:
-                "<b>From the Bottom Bar, navigate to the Profile page</b>.Here you can change your Reset app password as well as logout of the Reset application"
+                "From the <b>Bottom Bar</b>, navigate to the Profile page. Here you can change your Reset app password as well as logout of the Reset application. <br><br><b>[Bottom Bar -> Profile -> Change Password (lock icon) or Logout]</b>"
             }
           ]
         },
@@ -114,12 +114,12 @@ export default {
             {
               title: "How to edit my profile or change my photo?",
               description:
-                "[Bottom Bar -> Profile -> Edit Profile] Touch the 'Profile' icon in the Bottom Bar. This will display your profile information. Click on the Edit (pencil) button to change your profile including uploading or changing your photo. Touch the photo to replace with a new photo from your phone camera roll or photo gallery. "
+                "Touch the <b>'Profile'</b> icon in the <b> Bottom Bar</b>. This will display your profile information. Click on the Edit (pencil) button to change your profile including uploading or changing your photo. <br> Touch the photo to replace with a new photo from your phone's camera roll or photo gallery. <br><br><b>[Bottom Bar -> Profile -> Edit Profile]</b> "
             },
             {
               title: "Is my profile information private?",
               description:
-                "[Bottom Bar -> Profile -> Edit Profile -> Privacy Toggle]. By default, your profile is private - none of the information, except your name and city are visible to others. If you wish to change this behaviour, navigate to the Profile page, Edit profile and set the toggle at the bottom of the page to: Your profile is public."
+                "By default, your profile is private - none of the information, except your name and city are visible to others. If you wish to change this behaviour, navigate to the Profile page, Edit profile and set the toggle at the bottom of the page to: <b>Your profile is public<b>. <br><br><b> [Bottom Bar -> Profile -> Edit Profile -> Privacy Toggle]</b>"
             }
           ]
         },
@@ -129,12 +129,12 @@ export default {
             {
               title: "Where can I find Event information?",
               description:
-                "[Bottom Bar -> Event Listing -> Event Home]. In the Bottom Bar, use the Events icon to go to a list of events that you have registered for. From there you can navigate to a particular Event Home page. The top of the page displays Event Venue, date and time. There are icons there to lead you to pages that show the Agenda, materials available for the Event, Attendees of the Event and so on."
+                "In the Bottom Bar, use the <b>Events</b> icon to go to a list of events that you have registered for. From there you can navigate to a particular Event <b>Home page</b>. The top of the page displays <b>Event Venue</b>, date and time. There are icons there to lead you to pages that show the Agenda, materials available for the Event, Attendees of the Event and so on. <br><br><b>[Bottom Bar -> Event Listing -> Event Home]</b>."
             },
             {
               title: "Where can I find details of individual Sessions?",
               description:
-                "[Events Listing -> Event Home -> Agenda -> Session Listing -> Session Details]. The Session details page provides a description of the Session, an Instructor Bio, Resources connected with the Session as well as Notes and Questions."
+                "The <b>Session Details </b> page provides a description of the Session, an Instructor Bio, Resources connected with the Session as well as Notes and Questions. <br><br><b> [Events Listing -> Event Home -> Agenda -> Session Listing -> Session Details]</b>."
             }
           ]
         },
@@ -144,22 +144,22 @@ export default {
             {
               title: "What are Notes and Questions?",
               description:
-                "[Events Listing -> Event Home -> Agenda -> Session Listing -> Session Details -> Notes]. Notes allow you to take Notes during a Session for later reference. You can use the Questions page to ask questions to the Instructor before or during a Session. The Instructor will answer all questions at the end of the Session. Questions asked after the Session closure may not be answered. [Events Listing -> Event Home -> Agenda -> Session Listing -> Session Details -> Questions]"
+                "<b>Notes</b> allow you to take Notes during a Session for later reference. You can use the <b>Questions</b> page to ask questions to the Instructor before or during a Session. <br><br><b>[Events Listing -> Event Home -> Agenda -> Session Listing -> Session Details -> Notes]</b>. <br><br> The Instructor will answer all questions at the end of the Session. Questions asked after the Session closure may not be answered. <br><br><b>[Events Listing -> Event Home -> Agenda -> Session Listing -> Session Details -> Questions]</b>"
             },
             {
               title: "What are Materials and Resources?",
               description:
-                "[Events Listing -> Event Home -> Materials]. Help guides, links, documents etc. provided for an Event can be accessed from the Materials section of the Event.  Similarly, material relating to a particular Session can be accessed from Resources section. [Events Listing -> Event Home -> Agenda -> Session Listing -> Session Details -> Resources]. Both Materials and Resources can be bookmarked for easy access. "
+                "Help guides, links, documents etc. provided for an Event can be accessed from the <b>Materials</b> section of the Event. <br><br><b>[Events Listing -> Event Home -> Materials]</b>. <br><br> Similarly, material relating to a particular Session can be accessed from <b>Resources</b> section. <br><br><b>[Events Listing -> Event Home -> Agenda -> Session Listing -> Session Details -> Resources]</b>. <br><br> Both Materials and Resources can be bookmarked for easy access. "
             },
             {
               title: "What are Bookmarks?",
               description:
-                "[Bottom Bar -> Bookmarks]. Bookmarks are shortcuts to reach your favorite pages quickly. For example, you can bookmark a Session under an Event and at a later time, navigate to the Session page quickly using the Bookmark. Other than a Session, you can also bookmark Materials and Resources. Touch the Bookmark icon to bookmark the page. All bookmarked items will be listed under the Bookmarks page which can be accessed from the Bottom Bar. Once in the Bookmarks page, touch a bookmarked item to quickly navigate to it. Use the delete button to remove a bookmark if you do not need it."
+                "<b>Bookmarks</b> are shortcuts to reach your favorite pages quickly. For example, you can bookmark a Session under an Event and at a later time, navigate to the Session page quickly using the Bookmark. Other than a Session, you can also bookmark Materials and Resources. <br><br>Touch the Bookmark icon to bookmark a page. All bookmarked items will be listed under the Bookmarks page which can be accessed from the Bottom Bar. Once in the Bookmarks page, touch a bookmarked item to quickly navigate to it. Use the delete button to remove a bookmark if you do not need it. <br><br><b>[Bottom Bar -> Bookmarks]</b>."
             },
             {
               title: "Where can I see notifications that I have received?",
               description:
-                "[Bottom Bar -> Notifications (Bell icon)]. The Reset app addministrators may periodically send announcements or reminders over to you. These are displayed in the Notifications page, which can be accessed through the Bottom Bar. This page provides a reverse chronological display of all notifications."
+                "The Reset app addministrators may periodically send announcements or reminders over to you. These are displayed in the <b>Notifications page</b>, which can be accessed through the Bottom Bar. This page provides a reverse chronological display of all notifications. <br><br><b>[Bottom Bar -> Notifications (Bell icon)]</b>."
             }
           ]
         },
@@ -169,12 +169,12 @@ export default {
             {
               title: "Where to find info about attendees to my event?",
               description:
-                "[Events Listing -> Event Home -> Attendees]. You can view all Attendees for an event through the Attendees section in the Event Home.  This page lists the attendees along with their profile photo. Clicking on one of the rows will take you to the Profile page of the attendee. Depending on their privacy settings, you can either view all or brief details about them."
+                "You can view all attendees for an event through the <b>Attendees </b> section in the Event Home.  This page lists the attendees along with their profile photo. Clicking on one of the rows will take you to the Profile page of the attendee. Depending on their privacy settings, you can either view all or brief details about them. <br><br><b>[Events Listing -> Event Home -> Attendees]</b>."
             },
             {
               title: "How to communicate with other attendees?",
               description:
-                "[Events Listing -> Event Home -> Event Wall]. The Reset app provides an Event Wall which can be accessed from the Event Home of your event. You can post messages on the wall and read replies. Note that all messages posted on the app is public. Spamming or bad language is prohibited. "
+                "The Reset app provides an Event Wall which can be accessed from the Event Home of your event. You can post messages on the wall and read replies. Note that all messages posted on the app is public. Spamming or bad language is prohibited. <br><br><b>[Events Listing -> Event Home -> Event Wall]</b>. "
             }
           ]
         },
