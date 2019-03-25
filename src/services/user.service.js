@@ -9,7 +9,7 @@ function changePassword(data) {
 }
 
 function createProfile(data) {
-  return request.post(baseUrl + "/users/create", data);
+  return request.patch(baseUrl + `/users/${data.userId}`, data);
 }
 
 function uploadPhoto(data) {

@@ -95,7 +95,7 @@ export default {
         if (element.questionType == "RATING") {
           if (!element.ratingAnswer) element.ratingAnswer = -1;
           this.ratingPolls.push(element);
-        } else if (element.questionType == "COMMENT"){
+        } else if (element.questionType == "COMMENT") {
           this.commentPolls.push(element);
         }
       });
@@ -135,11 +135,15 @@ export default {
         }
       });
       console.log("length", payload.length);
-      this.submitPolls(payload);
-      if (payload.length > 1) {
-        this.success("Thank you for your feedback");
+      if (this.allPolls.length === 0) {
+        this.error("Polls are yet to be created, thank you for your patience.");
       } else {
-        this.error("Please provide your feedback");
+        this.submitPolls(payload);
+        if (payload.length > 1) {
+          this.success("Thank you for your feedback");
+        } else {
+          this.error("OOPS! There is something wrong. Please try again");
+        }
       }
     },
     updateRating(b, index) {
