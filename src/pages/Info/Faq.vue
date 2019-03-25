@@ -4,8 +4,9 @@
       <v-flex>
         <v-dialog persistent v-model="faqDialog">
           <v-card color="white" light>
-            <v-card-title class="blue lighten-4">{{ dialogTitle }}</v-card-title>
-            <v-card-text class="grey lighten-4">{{ dialogBody }}</v-card-text>
+            <v-card-title class="blue lighten-4 subheading">{{ dialogTitle }}</v-card-title>
+            <v-card-text class="grey lighten-4 subheading" v-html="dialogBody">
+            </v-card-text>
             <v-card-actions class="blue lighten-4">
               <v-spacer></v-spacer>
               <v-btn color="primary" flat @click="faqDialog = false">Close</v-btn>
@@ -103,7 +104,7 @@ export default {
             {
               title: "How do I change my password or logout?",
               description:
-                "From the Bottom Bar, navigate to the Profile page. Here you can change your Reset app password as well as logout of the Reset application"
+                "<b>From the Bottom Bar, navigate to the Profile page</b>.Here you can change your Reset app password as well as logout of the Reset application"
             }
           ]
         },
