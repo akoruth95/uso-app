@@ -46,17 +46,16 @@
           </v-list-tile>
           <v-divider inset></v-divider>
           <v-list-tile>
-                <v-list-tile-action>
-              <v-icon color="white">fa-trophy</v-icon>
+            <v-list-tile-action>
+              <v-icon color="white">fa-walking</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
-           
               <v-list-tile-title>{{user.interests}}</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-divider inset></v-divider>
           <v-list-tile>
-             <v-list-tile-action>
+            <v-list-tile-action>
               <v-icon color="white">fa-id-badge</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
@@ -65,8 +64,8 @@
           </v-list-tile>
           <v-divider inset></v-divider>
           <v-list-tile>
-             <v-list-tile-action>
-              <v-icon color="white">fa-at</v-icon>
+            <v-list-tile-action>
+              <v-icon color="white">fa-flag</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>{{user.station}}</v-list-tile-title>
