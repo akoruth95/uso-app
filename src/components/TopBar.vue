@@ -12,7 +12,6 @@
 </template>
 
 <script>
-
 import { mapState } from "vuex";
 
 export default {
@@ -26,10 +25,10 @@ export default {
   },
   methods: {
     navigateInfo() {
-      if (this.$route.name === 'faq') {
+      if (this.$route.name === "faq") {
         this.$router.go(-1);
       } else {
-        this.$router.push('faq');
+        this.$router.push("/faq");
       }
     }
   },
