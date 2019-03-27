@@ -4,12 +4,16 @@
       <div>
         <h2 class="whitetext">Take Notes about the session</h2>
         <p class="whitetext">Use the Space below to write your own notes about the session</p>
+        <br>
         <form>
-          <textarea id="text-area" v-model="userNote.note" name="content"></textarea>
-          <!-- <trix-editor input="x"></trix-editor> -->
-          <!-- <input id="x" type="hidden" name="content">
-          <VueTrix inputId="x" v-model="userNote.note" />-->
-          <!-- <trix-editor input="x"></trix-editor> -->
+          <textarea
+            v-model="userNote.note"
+            name="content"
+            style="width:100%;border-radius:15px"
+            maxlength="300"
+            class="post-text pa-2"
+            block
+          ></textarea>
           <div align="center">
             <v-btn style="background-color: #f80750" @click="submit()">save</v-btn>
           </div>
@@ -20,18 +24,16 @@
 </template>
 
 <script>
-import topBar from "../../../components/TopBar";
+import { sessionsService } from "../../../services";
 import { mapActions, mapState } from "vuex";
-import VueTrix from "vue-trix";
+
 export default {
   data() {
     return {
       userNote: {
         note: "",
-        note_id: 0
-      },
-      notes: [],
-      note: ""
+        noteId: 0
+      }
     };
   },
   computed: {
@@ -39,75 +41,44 @@ export default {
     ...mapState("sessions", ["notes", "selectedSession"])
   },
   created() {
-    this.setEventDetails();
+    this.loadNotes();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
-    this.getNotes(this.selectedEvent.attendeeId).then(res => {
-      if (res.data.length == 0) this.userNote.note_id = 0;
-      else {
-        this.notes = res.data[0];
-        this.userNote = this.notes;
-      }
-    });
+    this.setNewBacklink("/session-info");
   },
   methods: {
-    ...mapActions("common", ["setNewHeading", "setShowBackButton"]),
-    ...mapActions("sessions", ["getNotes", "submitNotes", "postNotes"]),
-    setEventDetails() {
-      this.eventLocationString = `${this.selectedEvent.venueName}, ${
-        this.selectedEvent.venueAddress1
-      }`;
-      this.eventTimeString = `${this.selectedEvent.startDate} . ${
-        this.selectedEvent.startTime
-      } to ${this.selectedEvent.endTime}`;
+    ...mapActions("common", [
+      "setNewHeading",
+      "setShowBackButton",
+      "setNewBacklink"
+    ]),
+    loadNotes() {
+      sessionsService
+        .getNotes(this.selectedSession.sessionId, this.selectedEvent.attendeeId)
+        .then(response => {
+          if (response.data.length > 0) {
+            this.userNote = response.data[0];
+          }
+        });
     },
-    submit: function() {
-      if (this.userNote.note_id != 0) {
-        this.submitNotes({
-          noteId: this.userNote.note_id,
-          eventId: this.selectedSession.eventID,
-          attendeeId: this.selectedEvent.attendeeId,
-          notes: this.userNote.note
-        });
+    submit() {
+      const data = {
+        attendeeId: this.selectedEvent.attendeeId,
+        note: this.userNote.note,
+        sessionId: this.selectedSession.sessionId
+      };
+      if (this.userNote.noteId != 0) {
+        data.noteId = this.userNote.noteId;
+        sessionsService.submitNotes(this.userNote.noteId, data);
       } else {
-        this.postNotes({
-          eventId: this.selectedSession.eventID,
-          attendeeId: this.selectedEvent.attendeeId,
-          notes: this.userNote.note
-        });
+        sessionsService.postNotes(data);
       }
     }
-  },
-  components: {
-    topBar,
-    VueTrix
   }
 };
 </script>
 
 <style>
-.column {
-  float: left;
-  padding: 10px;
-}
-.left {
-  width: 80%;
-}
-.right {
-  width: 20%;
-}
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-body {
-  font-family: "Raleway", sans-serif;
-}
-.whitetext {
-  color: white;
-  font-family: "Raleway", sans-serif;
-}
 #text-area {
   position: relative;
   border: 1px solid #bbb;
@@ -118,20 +89,9 @@ body {
   min-width: calc(100vh * 0.5);
   outline: none;
 }
-trix-toolbar .trix-button-group button {
-  background-color: white;
-}
-trix-editor {
-  position: relative;
-  border: 1px solid #bbb;
-  border-radius: 3px;
-  margin: 0;
-  padding: 0.4em 0.6em;
+
+.post-text {
+  background-color: #003472;
   min-height: calc(100vh * 0.5);
-  outline: none;
-}
-.btn {
-  bottom: 4%;
-  right: 10%;
 }
 </style>

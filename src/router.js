@@ -75,6 +75,11 @@ const router = new Router({
       component: () => import("./pages/Events/MyProgress.vue")
     },
     {
+      path: "/events/wall",
+      name: "eventWall",
+      component: () => import("./pages/SocialWall.vue")
+    },
+    {
       path: "/faq",
       name: "faq",
       component: () => import("./pages/Info/Faq.vue"),
@@ -121,6 +126,11 @@ const router = new Router({
       path: "/ask-questions",
       name: "ask-questions",
       component: () => import("./pages/Session/Questions/AskQuestions.vue")
+    },
+    {
+      path: "/view-questions",
+      name: "view-questions",
+      component: () => import("./pages/Session/Questions/ViewQuestions.vue")
     },
     {
       path: "/resources",

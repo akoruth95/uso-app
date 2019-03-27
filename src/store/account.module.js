@@ -20,14 +20,12 @@ const state = {
 
 const actions = {
   changePassword({ commit }, { oldPassword, newPassword }) {
-    // TODO
     const data = {
+      emailAddress: state.userInfo.email,
       newPassword: newPassword,
-      oldPassword: oldPassword,
-      userid: state.userId
+      oldPassword: oldPassword
     };
     userService.changePassword(data).then(
-      // TODO
       response => {
         console.log(response);
         commit("passwordChangeSuccess");
@@ -38,17 +36,24 @@ const actions = {
       }
     );
   },
-  createProfile() {
-    // TODO
-    const data = {};
+  createProfile({ dispatch }, data) {
     userService.createProfile(data).then(
-      response => {
-        // TODO
-        console.log(response);
+      () => {
+        const params = {
+          email: data.emailAddress,
+          password: data.password,
+          registration: true
+        };
+        Vue.$log.info("Successful registration for " + params.email);
+        dispatch("login", params);
       },
       error => {
-        // TODO
-        console.error(error);
+        Vue.$log.error(error.message);
+        dispatch(
+          "alert/error",
+          "There was a problem registering. Please try again in a few minutes.",
+          { root: true }
+        );
       }
     );
   },
@@ -63,48 +68,24 @@ const actions = {
       }
     );
   },
-  getNotifications({ commit, dispatch }) {
+  getNotifications({ commit }) {
     userService.getNotifications().then(response => {
       commit("getNotifications", response.data);
-      // console.log("notification" ,response.data);
       for (let i = 0; i < response.data.length; i++) {
         if (response.data[i].notificationRead == "N") commit("incrementCount");
       }
     });
   },
 
-  updateNotifications({ commit, dispatch }) {
-    //  console.log("user Id = ", state.USERID);
+  updateNotifications({ dispatch }) {
     const data = {
       userId: state.USERID,
       notificationRead: "Y"
     };
-    userService.updateNotifications(data).then(response => {
-      //  console.log('notification status updated to read');
+    userService.updateNotifications(data).then(() => {
       dispatch("getNotifications");
     });
   },
-
-  // submitNotes({commit}, {eventId, attendeeId, notes}) {
-  //     console.log("store id in session = ", store);
-  //     console.log("attendee id in session = ", store.state.events.selectedEvent.attendee_id);
-  //     console.log("note id in session = ", notes);
-
-  //     const data = {
-  //             sessionid : state.selectedSession.sessionId,
-  //             attendeeid : store.state.events.selectedEvent.attendee_id,
-  //             note: notes
-  //             };
-  //             console.log('body: ', data)
-  //     sessionsService.submitNotes(eventId, state.selectedSession.sessionId, data).then(
-  //         response => {
-  //             commit('saveNote', response.data);
-  //         }, error => {
-  //             Vue.$log.error(error.mesage);
-  //         }
-
-  //     )
-  // }
 
   getUserInfo({ commit, dispatch }) {
     userService.getUserInfo().then(
@@ -125,7 +106,7 @@ const actions = {
       }
     );
   },
-  login({ commit, dispatch }, { email, password }) {
+  login({ commit, dispatch }, { email, password, registration = false }) {
     dispatch("alert/clear", null, { root: true });
     const data = {
       emailAddress: email,
@@ -141,9 +122,20 @@ const actions = {
           });
         } else {
           Vue.$log.info("Successful login for " + email);
-          commit("loginSuccess", response.data["user_id "]);
+          commit("loginSuccess", response.data["userId"]);
           dispatch("getUserInfo");
-          router.push("/");
+          // router.push("/");
+          router.push("/", () => {
+            if (registration) {
+              dispatch(
+                "alert/error",
+                "You were registered successfully. You have been logged in automatically.",
+                {
+                  root: true
+                }
+              );
+            }
+          });
         }
       },
       error => {
@@ -207,7 +199,10 @@ const actions = {
       phoneNumber: form.phone,
       shareProfile: form.profilePublic ? "Y" : "N",
       state: form.state,
-      zip: form.zip
+      zip: form.zip,
+      interests:form.interests,
+      serviceBranch:form.serviceBranch,
+      station:form.station
     };
     userService.updateProfile(data).then(
       response => {
@@ -269,8 +264,8 @@ const mutations = {
     state.newNotifications = 0;
     // Object.assign(state, newNotifications);
   },
-  incrementCount(state) {
-    state.newNotifications++;
+  incrementCount(state, counter) {
+    state.newNotifications = counter;
   }
 };
 
@@ -288,7 +283,11 @@ function createUser(userInfo) {
     userInfo.userId,
     userInfo.shareProfile,
     userInfo.photoLink,
-    userInfo.zip
+    userInfo.userRole,
+    userInfo.zip,
+    userInfo.interests,
+    userInfo.serviceBranch,
+    userInfo.station
   );
   return newUser;
 }

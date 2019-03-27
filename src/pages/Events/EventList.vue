@@ -27,6 +27,8 @@ export default {
   },
   created() {
     this.fetchEvents();
+    this.getNotifications();
+    this.getBookmarks(this.$store.state.account.userId);
     this.setNewHeading("My Events");
   },
 
@@ -38,6 +40,8 @@ export default {
   methods: {
     ...mapActions("common", ["setNewHeading"]),
     ...mapActions("events", ["selectEvent"]),
+    ...mapActions("bookmarks", ["getBookmarks"]),
+    ...mapActions("account", ["getNotifications"]),
     fetchEvents() {
       //TODO: change to make service handle parameter object parsing
       eventsService.getEvents(this.userId).then(res => {

@@ -52,15 +52,30 @@ export const STATELIST = [
   "WY"
 ];
 
+export const PASSWORD_SHOW = 'fa-eye';
+export const PASSWORD_HIDE = 'fa-eye-slash';
+export const FIELD_TYPE = {
+   'fa-eye': 'text',
+   'fa-eye-slash': 'password'
+};
+
 export const eventOptions = [
   { name: "Materials", icon: "fa-book", route: "/events/material" },
   { name: "Agenda", icon: "fa-calendar-minus", route: "/agenda" },
   { name: "My Progress", icon: "fa-flag", route: "/events/progress" },
   { name: "Feedback", icon: "fa-comment-alt", route: "/events/feedback" },
-  { name: "Event Wall", icon: "fa-share-alt", route: "/" },
+  { name: "Event Wall", icon: "fa-share-alt", route: "/events/wall" },
   { name: "Attendees", icon: "fa-users", route: "/events/attendeelist" }
 ];
 
 export const TEXT = {
   staticPhotolink: "https://static.usoncevents.com/blank-profile.png"
+};
+
+export const USERROLES = {
+  ADMIN: "Admin"
 }
+
+export const TEXT_VALIDATIONS = {
+  REQUIRED: val => !!val || 'required'
+};

@@ -80,31 +80,38 @@
         >
           <div class="primary text-xs-center" style="height:inherit;">
             <v-toolbar dark color="secondary">
-              <v-btn icon dark @click="registerDialog = false">
+              <v-btn icon dark @click="exitRegistration()">
                 <v-icon>fa-arrow-left</v-icon>
               </v-btn>
               <v-toolbar-title>Registration</v-toolbar-title>
             </v-toolbar>
-            <stepper v-if="resgisterSuccessful"></stepper>
+            <stepper v-if="showStepper" :user="user"></stepper>
             <div v-else class="mx-3 pt-4">
               <p class="mt-5">{{ registrationDirections }}</p>
               <br>
               <!-- <p>A temporary password will be sent to the provided email address.</p> -->
               <v-form ref="registrationForm" v-model="valid">
-                <input
-                  class="startup-text mb-2 elevation-5 pa-2"
+                <v-text-field
                   type="text"
+                  color="none"
                   v-model="email"
-                  placeholder="Email"
-                >
-                <input
-                  class="startup-text ma-3 pa-2 elevation-5"
-                  type="password"
+                  :rules="emailRules"
+                  label="Email"
+                  required
+                ></v-text-field>
+                <v-text-field
+                  color="none"
+                  :type="fieldType[passwordFieldIcon]"
                   v-model="password"
-                  placeholder="Temporary Password"
+                  :rules="passwordRules"
+                  label="Temporary Password"
+                  :append-icon="passwordFieldIcon"
+                  @click:append="togglePasswordVisibility()"
+                  required
                 >
+                </v-text-field>
+                <v-btn color="secondary" @click="startRegistration()" :disabled="!valid">Register</v-btn>
               </v-form>
-              <v-btn color="secondary" @click="registerUser()" :disabled="!formValid">Register</v-btn>
             </div>
           </div>
         </v-dialog>
@@ -112,6 +119,123 @@
     </v-layout>
   </v-container>
 </template>
+
+<script>
+import { mapActions, mapState } from "vuex";
+import { PASSWORD_SHOW, PASSWORD_HIDE, FIELD_TYPE } from "../utils/constants.js";
+import { userService } from "../services";
+import stepper from "../components/Setup.vue";
+export default {
+  data() {
+    return {
+      email: "",
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+/.test(v) || 'E-mail must be valid'
+      ],
+      forgotPasswordDialog: false,
+      passwordFieldIcon: PASSWORD_HIDE,
+      registerDialog: false,
+      formValid: false,
+      loginDirections: "Enter your email address and password.",
+      password: "",
+      passwordRules: [
+        v => !!v || 'Password is required'
+      ],
+      user: null,
+      valid: false,
+      registrationDirections:
+        "Enter your email address and the temporary password you " +
+        "received from USO after registration. If you have not received a " +
+        "temporary password yet, contact reset@usoofnc.org",
+      showStepper: false,
+      registeredMessage: 'User already registered! Please login',
+      registerErrorMessage: `Credentials do not match. Check if you have entered correct temporary password. 
+        If so, check if you have registered on EventBrite.`
+    };
+  },
+  computed: {
+    fieldType() {
+      return FIELD_TYPE
+    },
+    logo() {
+      return require("../assets/NC_badge_darkbg_RGB.png");
+    },
+    reset() {
+      return require("../assets/reset-title.png");
+    },
+    validate() {
+      return this.$refs.registrationForm.validate();
+    },
+    ...mapState({
+      alert: state => state.alert
+    })
+  },
+  methods: {
+    ...mapActions("account", ["login", "register"]),
+    ...mapActions("alert", ["error", "clear"]),
+    autoLogin() {
+      this.email = "dbvows@gmail.com";
+      this.password = "reset2018";
+      this.handleSubmit();
+    },
+    forgotPassword() {
+      // TODO
+      console.log("forgot password");
+    },
+    handleSubmit() {
+      const { email, password } = this;
+      this.login({ email, password });
+    },
+    togglePasswordVisibility() {
+      this.passwordFieldIcon = this.passwordFieldIcon === PASSWORD_SHOW ? PASSWORD_HIDE : PASSWORD_SHOW;
+    },
+    async checkRegistrationCredentials() {
+      const data = {
+        emailAddress: this.email,
+        password: this.password
+      }
+      return userService.login(data).then(res => {
+        this.user = res.data;
+        return res.data.registrationComplete === 'Y' ? {continue: false, message: this.registeredMessage, registered: true} : {continue: true};
+      },
+      () => {
+        return {continue: false, message: this.registerErrorMessage, registered: false}
+      });
+    },
+    async startRegistration() {
+      const status = await this.checkRegistrationCredentials();
+      if (status.continue) {
+        this.showStepper = true;
+      } else {
+        this.password = '';
+        if (status.registered) {
+          this.registerDialog = false;
+        }
+        this.error(status.message);
+      }
+    },
+    registerUser() {
+      const { email, password } = this;
+      this.register({ email, password });
+      this.resgisterSuccessful = true;
+    },
+    exitRegistration() {
+      this.registerDialog = false;
+      // adding timeout to wait for transition to end first
+      setTimeout(() => this.showStepper = false, 1000)
+      this.password = "";
+      this.email = "";
+    }
+  },
+  destroyed() {
+    this.clear();
+  },
+  components: {
+    stepper
+  }
+};
+</script>
 
 <style >
 .startup-text {
@@ -133,59 +257,3 @@
   transition-timing-function: ease-in-out;
 }
 </style>
-<script>
-import { mapActions } from "vuex";
-import stepper from "../components/Setup.vue";
-export default {
-  data() {
-    return {
-      email: "",
-      forgotPasswordDialog: false,
-      registerDialog: false,
-      formValid: false,
-      loginDirections: "Enter your email address and password.",
-      password: "",
-      valid: true,
-      registrationDirections:
-        "Enter your email address and the temporary password you " +
-        "received from USO after registration. If you have not received a " +
-        "temporary password yet, contact reset@usoofnc.org",
-      resgisterSuccessful: false
-    };
-  },
-  computed: {
-    logo() {
-      return require("../assets/NC_badge_darkbg_RGB.png");
-    },
-    reset() {
-      return require("../assets/reset-title.png");
-    }
-  },
-  methods: {
-    ...mapActions("account", ["login", "register"]),
-    autoLogin() {
-      this.email = "dbvows@gmail.com";
-      this.password = "reset2018";
-      this.handleSubmit();
-    },
-    forgotPassword() {
-      // TODO
-      console.log("forgot password");
-    },
-    handleSubmit() {
-      const { email, password } = this;
-      this.login({ email, password });
-    },
-    registerUser() {
-      if (this.$refs.registrationForm.validate()) {
-        const { email, password } = this;
-        this.register({ email, password });
-        this.resgisterSuccessful = true;
-      }
-    }
-  },
-  components: {
-    stepper
-  }
-};
-</script>

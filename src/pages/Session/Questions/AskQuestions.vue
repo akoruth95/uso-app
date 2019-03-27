@@ -4,12 +4,15 @@
       <div>
         <p class="whitetext title pb-2">You can ask questions to the speaker</p>
         <p class="whitetext">Your questions will be answered during or after the session</p>
+        <br>
         <form>
-          <textarea id="text-area" v-model="questions.question" name="content"></textarea>
-          <!-- <trix-editor input="x"></trix-editor> -->
-          <!-- <input id="x" type="hidden" name="content">
-          <VueTrix inputId="x" v-model="userNote.note" />-->
-          <!-- <trix-editor input="x"></trix-editor> -->
+          <textarea
+            v-model="questions.question"
+            style="width:100%;border-radius:15px"
+            maxlength="300"
+            class="post-text pa-2"
+            blockname="content"
+          ></textarea>
           <div align="center">
             <v-btn style="background-color: #f80750" @click="submit()">save</v-btn>
           </div>
@@ -20,14 +23,14 @@
 </template>
 
 <script>
-import topBar from "../../../components/TopBar";
+import { sessionsService } from "../../../services";
 import { mapActions, mapState } from "vuex";
-import VueTrix from "vue-trix";
+
 export default {
   data() {
     return {
       questions: {
-        question_id: 0,
+        questionId: 0,
         question: ""
       }
     };
@@ -35,20 +38,14 @@ export default {
 
   computed: {
     ...mapState("events", ["selectedEvent"]),
-    ...mapState("sessions", ["questions", "selectedSession"])
+    ...mapState("sessions", ["selectedSession"])
   },
 
   created() {
-    this.setEventDetails();
+    this.loadQuestions();
     this.setNewHeading(this.selectedEvent.name);
     this.setShowBackButton(true);
     this.setNewBacklink("/session-info");
-    this.getQuestions(this.selectedEvent.attendeeId).then(res => {
-      if (res.data.length == 0) this.questions.question_id = 0;
-      else {
-        this.questions = res.data[0];
-      }
-    });
   },
 
   methods: {
@@ -57,79 +54,37 @@ export default {
       "setShowBackButton",
       "setNewBacklink"
     ]),
-    ...mapActions("sessions", [
-      "getQuestions",
-      "submitNotes",
-      "postNotes",
-      "postQuestions",
-      "submitQuestions"
-    ]),
-    setEventDetails() {
-      this.eventLocationString = `${this.selectedEvent.venueName}, ${
-        this.selectedEvent.venueAddress1
-      }`;
-      this.eventTimeString = `${this.selectedEvent.startDate} . ${
-        this.selectedEvent.startTime
-      } to ${this.selectedEvent.endTime}`;
+    loadQuestions() {
+      sessionsService
+        .getQuestions(
+          this.selectedSession.sessionId,
+          this.selectedEvent.attendeeId
+        )
+        .then(response => {
+          if (response.data.length > 0) {
+            this.questions = response.data[0];
+          }
+        });
     },
     submit: function() {
-      if (this.questions.question_id != 0) {
-        console.log("old question");
-        console.log(
-          "data",
-          this.questions.question_id,
-          this.selectedSession.eventID,
-          this.selectedEvent.attendeeId,
-          this.questions.question
-        );
-        this.submitQuestions({
-          questionId: this.questions.question_id,
-          eventId: this.selectedSession.eventID,
-          attendeeId: this.selectedEvent.attendeeId,
-          questions: this.questions.question
-        });
+      const data = {
+        sessionId: this.selectedSession.sessionId,
+        attendeeId: this.selectedEvent.attendeeId,
+        question: this.questions.question,
+        askedTime: new Date()
+      };
+      if (this.questions.questionId != 0) {
+        data.questionId = this.questions.questionId;
+        sessionsService.submitQuestions(this.questions.questionId, data);
       } else {
-        console.log("new question");
-        this.postQuestions({
-          eventId: this.selectedSession.eventID,
-          attendeeId: this.selectedEvent.attendeeId,
-          questions: this.questions.question
-        });
+        sessionsService.postQuestions(data);
       }
     }
-  },
-  components: {
-    topBar,
-    VueTrix
   }
 };
 </script>
 
 <style>
-.column {
-  float: left;
-  padding: 10px;
-}
-
-.left {
-  width: 80%;
-}
-
-.right {
-  width: 20%;
-}
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-body {
-  font-family: "Raleway", sans-serif;
-}
-.whitetext {
-  color: white;
-  font-family: "Raleway", sans-serif;
-}
 #text-area {
   border: 1px solid #bbb;
   border-radius: 3px;
@@ -140,27 +95,8 @@ body {
   outline: none;
   width: -webkit-fill-available;
 }
-#ip3 {
-  border-radius: 25px;
-  border: 2px solid white;
-  padding: 10px;
-  width: 95%;
-  height: 350px;
-}
-trix-toolbar .trix-button-group button {
-  background-color: white;
-}
-trix-editor {
-  position: relative;
-  border: 1px solid #bbb;
-  border-radius: 3px;
-  margin: 0;
-  padding: 0.4em 0.6em;
+.post-text {
+  background-color: #003472;
   min-height: calc(100vh * 0.5);
-  outline: none;
-}
-.btn {
-  bottom: 4%;
-  right: 10%;
 }
 </style>

@@ -1,23 +1,33 @@
 <template>
   <div>
-    <v-container fluid grid-list-sm>
-      <v-layout row justify-center="true">
-        <div>
-          <h2>Event Participants</h2>
-        </div>
-      </v-layout>
-      <v-layout row wrap>
-        <v-flex
-          class="ma-1 primaryLight text-xs-center"
-          v-for="attendee in attendeeList"
+    <v-container fluid grid-list-xs>
+      <v-text-field
+        solo
+        clearable
+        dark
+        background-color="#054185"
+        color="white"
+        name="search"
+        label="search here"
+        type="text"
+        hide-details
+        v-model="search"
+      ></v-text-field>
+      <v-list class="primary">
+        <v-list-tile
+          v-for="attendee in filteredList"
           :key="attendee.attendeeId"
+          @click="clickAttendee(attendee)"
+          class="attendee-back py-2 my-2"
         >
-          <v-avatar size="100px" class="attendee-back elevation-5" @click="clickAttendee(attendee)">
-            <v-img contain :src="attendee.photo_link"></v-img>
-          </v-avatar>
-          <div class="caption">{{attendee.first_name}} {{attendee.last_name}}</div>
-        </v-flex>
-      </v-layout>
+          <v-list-tile-avatar size="50px" class="pr-3">
+            <v-img aspect-ratio="0.2" :src="attendee.photoLink"></v-img>
+          </v-list-tile-avatar>
+          <v-list-tile-content class="text-xs-right">
+            <div class="body-2 text-xs-right">{{attendee.firstName}} {{attendee.lastName}}</div>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
     </v-container>
   </div>
 </template>
@@ -29,6 +39,7 @@ import { attendeesService } from "../services";
 export default {
   data() {
     return {
+      search: "",
       attendeeList: []
     };
   },
@@ -41,7 +52,24 @@ export default {
   computed: {
     ...mapState({
       event: state => state.events.selectedEvent
-    })
+    }),
+    filteredList() {
+      if (!this.search) return this.attendeeList;
+      let al = [];
+      this.attendeeList.forEach(element => {
+        if (
+          (element !== undefined &&
+            element.firstName
+              .toLowerCase()
+              .indexOf(this.search.toLowerCase()) != -1) ||
+          element.lastName.toLowerCase().indexOf(this.search.toLowerCase()) !=
+            -1
+        ) {
+          al.push(element);
+        }
+      });
+      return al;
+    }
   },
   methods: {
     ...mapActions("common", [

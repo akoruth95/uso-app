@@ -7,7 +7,25 @@
       max-height="300"
       :src="selectedMaterial.photoLink"
     ></v-img>
-    <div class="title text-xs-center">{{selectedMaterial.name}}</div>
+    <v-layout row>
+      <v-flex>
+        <div class="title mt-2">
+          <span class="title">{{selectedMaterial.name}}</span>
+        </div>
+      </v-flex>
+      <v-flex>
+        <v-btn
+          small
+          :class="(selectedMaterial.hasBookmarked)?'secondary':'primary'"
+          class="elevation-5"
+          @click="fetchBookmarks()"
+          icon
+        >
+          <v-icon small color="white">fa-bookmark</v-icon>
+        </v-btn>
+      </v-flex>
+    </v-layout>
+
     <div class="body-1">{{selectedMaterial.description}}</div>
     <div>
       <a
@@ -22,12 +40,20 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import { materialsService } from "../services";
+import store from "../store";
 
 export default {
   created() {
-    this.setNewHeading(this.event.name);
+    let heading = this.selectedMaterial.name;
+    let backLink = "/bookmark";
+    if (this.event.name) {
+      heading = this.event.name;
+      backLink = "material";
+    }
+    this.setNewHeading(heading);
     this.setShowBackButton(true);
-    this.setNewBacklink("material");
+    this.setNewBacklink(backLink);
   },
 
   computed: {
@@ -42,7 +68,21 @@ export default {
       "setNewHeading",
       "setShowBackButton",
       "setNewBacklink"
-    ])
+    ]),
+    fetchBookmarks() {
+      let payload = {
+        eventId: this.event.eventId,
+        attendeeId: this.event.attendeeId,
+        activityType: "bookmark",
+        sourceTable: "material",
+        sourceId: this.selectedMaterial.materialId,
+        activityTime: Date.now()
+      };
+      materialsService.materialBookmarks(payload).then(res => {
+        console.log('Material response: ', res);
+        store.commit("materials/setSelectedMaterialByMaterial", res.data);
+      });
+    }
   }
 };
 </script>

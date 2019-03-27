@@ -25,12 +25,15 @@ import {
   VStepper,
   VSwitch,
   VTextField,
+  VTextarea,
   VToolbar,
   VChip,
   VSubheader,
+  VTabs,
   Vuetify
 } from "vuetify";
 import "vuetify/src/stylus/app.styl";
+
 Vue.use(Vuetify, {
   components: {
     transitions,
@@ -60,7 +63,9 @@ Vue.use(Vuetify, {
     VSubheader,
     VSwitch,
     VTextField,
-    VToolbar
+    VTextarea,
+    VToolbar,
+    VTabs
   },
   theme: {
     primary: "#002147",

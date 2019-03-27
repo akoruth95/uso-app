@@ -13,13 +13,25 @@
         </div>
       </v-flex>
       <v-flex>
-        <v-btn small color="secondary" class="elevation-5" @click="fetchLikes" icon>
+        <v-btn
+          small
+          :class="(hasLiked)?'secondary':'primary'"
+          class="elevation-5"
+          @click="fetchLikes"
+          icon
+        >
           <v-icon small color="white">fas fa-thumbs-up</v-icon>
         </v-btn>
         {{sessionInfo.likesCount}}
       </v-flex>
       <v-flex>
-        <v-btn small class="elevation-5" @click="fetchBookmarks()" icon>
+        <v-btn
+          small
+          :class="(hasBookmarked)?'secondary':'primary'"
+          class="elevation-5"
+          @click="fetchBookmarks()"
+          icon
+        >
           <v-icon small color="white">fas fa-bookmark</v-icon>
         </v-btn>
         {{sessionInfo.bookmarkCount}}
@@ -39,7 +51,7 @@
         <v-btn class="session-info-btn secondary" small to="/take-notes">Take Notes</v-btn>
       </v-flex>
       <v-flex xs4>
-        <v-btn class="session-info-btn secondary" small to="/ask-questions">Questions</v-btn>
+        <v-btn class="session-info-btn secondary" small @click="gotoQuestions()">Questions</v-btn>
       </v-flex>
     </v-layout>
     <br>
@@ -58,38 +70,34 @@ export default {
       tabs: null,
       fab: false,
       fling: false,
-      sessionInfo: {},
+      sessionInfo: this.$store.state.sessions.selectedSession,
       likeCount: 0,
       bookmarkCount: 0,
       activityState: { like: false, bookmark: false },
-      ACTIVITY_DETAILS: {}
+      ACTIVITY_DETAILS: {},
+      hasBookmarked: this.$store.state.sessions.selectedSession.hasBookmarked,
+      hasLiked: this.$store.state.sessions.selectedSession.hasLiked
     };
   },
 
   computed: {
     ...mapState("sessions", ["selectedSession"]),
     ...mapState("events", ["selectedEvent"]),
-    ...mapState("account", ["userId"]),
-    activeFab() {
-      switch (this.tabs) {
-        case "one":
-          return { class: "purple", icon: "account_circle" };
-        case "two":
-          return { class: "red", icon: "edit" };
-        case "three":
-          return { class: "green", icon: "keyboard_arrow_up" };
-        default:
-          return {};
-      }
-    }
+    ...mapState("account", ["userId", "userInfo"]),
+    ...mapState("bookmarks", ["bookmarks"]),
+    likeColor() {}
   },
 
   created() {
-    this.fetchSessionInfo();
-    this.setActivityDetails();
-    this.setNewHeading(this.selectedEvent.name);
+    let heading = this.sessionInfo.name;
+    let backLink = "/bookmark";
+    if (this.selectedEvent.name) {
+      heading = this.selectedEvent.name;
+      backLink = "/agenda";
+    }
+    this.setNewHeading(heading);
     this.setShowBackButton(true);
-    this.setNewBacklink("/agenda");
+    this.setNewBacklink(backLink);
   },
 
   methods: {
@@ -104,25 +112,8 @@ export default {
         sourceId: this.selectedSession.sessionId
       };
     },
-    fetchSessionInfo() {
-      sessionsService
-        .getSessionInfo(this.selectedSession.sessionId)
-        .then(res => {
-          this.sessionInfo = res["data"];
-        });
-    },
 
     fetchLikes() {
-      // let details = {
-      //   ...this.ACTIVITY_DETAILS,
-      //   type: "like"
-      // };
-      // activityService
-      //   .getActivity(this.userId, this.selectedEvent, details)
-      //   .then(res => {
-      //     //TODO: confirm with backend what field for number of likes is
-      //     this.likeCount = res["data"].likes;
-      //   });
       let payload = {
         eventId: this.selectedEvent.eventId,
         attendeeId: this.selectedEvent.attendeeId,
@@ -133,53 +124,53 @@ export default {
       };
       sessionsService.sessionLikes(payload).then(res => {
         this.sessionInfo.likesCount = res.data;
+        this.hasLiked = !this.hasLiked;
       });
     },
 
     fetchBookmarks() {
-      // let details = {
-      //   ...this.ACTIVITY_DETAILS,
-      //   type: "bookmark"
-      // };
-      // activityService
-      //   .getActivity(this.userId, this.selectedEvent, details)
-      //   .then(res => {
-      //     //TODO: confirm with backend what field for number of bookmarks is
-      //     this.bookmarkCount = res["data"].likes;
-      //   });
       let payload = {
         eventId: this.selectedEvent.eventId,
         attendeeId: this.selectedEvent.attendeeId,
         activityType: "bookmark",
-        sourceTable: "session_bookmarks",
+        sourceTable: "session",
         sourceId: this.selectedSession.sessionId,
         activityTime: Date.now(),
         insertUser: this.userId
       };
       sessionsService.sessionBookmarks(payload).then(res => {
         this.sessionInfo.bookmarkCount = res.data;
+        this.hasBookmarked = !this.hasBookmarked;
       });
     },
 
-    callActivity(activityType) {
-      let details = {
-        ...this.ACTIVITY_DETAILS,
-        type: activityType
-      };
-      if (this.activityState[activityType]) {
-        activityService
-          .undoActivity(this.userId, this.selectedEvent, details)
-          .then(this.toggleActivity(activityType));
+    gotoQuestions() {
+      if (this.userInfo.userRole.toLowerCase() === "Attendee".toLowerCase()) {
+        this.$router.push("/ask-questions");
       } else {
-        activityService
-          .updateActivity(this.userId, this.selectedEvent, details)
-          .then(this.toggleActivity(activityType));
+        this.$router.push("/view-questions");
       }
-    },
-
-    toggleActivity(activityType) {
-      this.activityState[activityType] = !this.activityState[activityType];
     }
+
+    // callActivity(activityType) {
+    //   let details = {
+    //     ...this.ACTIVITY_DETAILS,
+    //     type: activityType
+    //   };
+    //   if (this.activityState[activityType]) {
+    //     activityService
+    //       .undoActivity(this.userId, this.selectedEvent, details)
+    //       .then(this.toggleActivity(activityType));
+    //   } else {
+    //     activityService
+    //       .updateActivity(this.userId, this.selectedEvent, details)
+    //       .then(this.toggleActivity(activityType));
+    //   }
+    // },
+
+    // toggleActivity(activityType) {
+    //   this.activityState[activityType] = !this.activityState[activityType];
+    // }
   }
 };
 </script>

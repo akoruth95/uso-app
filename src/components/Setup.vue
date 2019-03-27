@@ -1,32 +1,43 @@
 <template>
   <v-stepper v-model="progress" class="elevation-0">
-    <div class="header pt-1">Change Password</div>
+    <div class="header pt-1" v-if="progress===1">Change Password</div>
+    <div class="header pt-1" v-else-if="progress===2">Update Profile</div>
+    <div class="header pt-1" v-else>Add Photo</div>
     <v-stepper-header class="header">
-      <v-stepper-step :complete="progress > 1" step="1">
-        <div>Change Password</div>
-      </v-stepper-step>
+      <v-stepper-step step="1"></v-stepper-step>
       <v-divider></v-divider>
-      <v-stepper-step :complete="progress > 2" step="2">Update Profile</v-stepper-step>
+      <v-stepper-step step="2"></v-stepper-step>
       <v-divider></v-divider>
-      <v-stepper-step step="3">Add Photo</v-stepper-step>
+      <v-stepper-step step="3"></v-stepper-step>
     </v-stepper-header>
     <v-stepper-items>
       <v-stepper-content class="px-0 primary" step="1">
-        <v-form ref="passwordForm" v-model="passwordFormValid">
-          <input
-            class="startup-text mb-2 elevation-5 pa-2"
-            type="password"
-            v-model="password"
-            placeholder="New Password"
-          >
-          <input
-            class="startup-text ma-3 pa-2 elevation-5"
-            type="password"
-            v-model="passwordCopy"
-            placeholder="Retype password"
-          >
-        </v-form>
-
+        <v-layout justify-center>
+        <v-flex xs10>
+          <v-form ref="passwordForm" v-model="passwordFormValid">
+            <v-text-field
+              color="none"
+              :type="fieldType[formIcons.passwordField]"
+              v-model="formParams.password"
+              placeholder="New Password"
+              :append-icon="formIcons.passwordField"
+              @click:append="togglePasswordVisibility('passwordField')"
+              :rules="[requiredRule]"
+              required
+            ></v-text-field>
+            <v-text-field
+              color="none"
+              :type="fieldType[formIcons.passwordCopyField]"
+              v-model="passwordCopy"
+              placeholder="Retype password"
+              :append-icon="formIcons.passwordCopyField"
+              @click:append="togglePasswordVisibility('passwordCopyField')"
+              :rules="copyPasswordRules"
+              required
+            ></v-text-field>
+          </v-form>
+        </v-flex>
+        </v-layout>
         <div class="text-xs-right px-3">
           <v-btn
             color="secondary"
@@ -36,60 +47,71 @@
         </div>
       </v-stepper-content>
       <v-stepper-content class="px-0 primary" step="2">
-        <v-form ref="passwordForm" v-model="passwordFormValid">
-          <input
-            class="startup-text mb-2 pa-2 elevation-5"
-            type="text"
-            v-model="firstName"
-            placeholder="First Name"
-          >
-          <input
-            class="startup-text mb-2 pa-2 elevation-5"
-            type="text"
-            v-model="lastName"
-            placeholder="Last Name"
-          >
-          <input
-            class="startup-text mb-2 pa-2 elevation-5"
-            type="text"
-            v-model="phone"
-            placeholder="Phone Number"
-          >
-          <input
-            class="startup-text mb-2 pa-2 elevation-5"
-            type="text"
-            v-model="streetAddress1"
-            placeholder="Street Address 1"
-          >
-          <input
-            class="startup-text mb-2 pa-2 elevation-5"
-            type="text"
-            v-model="streetAddress2"
-            placeholder="Street Address 2"
-          >
-          <input
-            class="startup-text mb-2 pa-2 elevation-5"
-            type="text"
-            v-model="city"
-            placeholder="City"
-          >
-          <select
-            id="select-statelist"
-            @click="loadStates"
-            class="startup-text mb-2 pa-2 elevation-5"
-          ></select>
-          <!-- <v-select color="white" v-model="state" :items="stateList" label="State" required></v-select> -->
-          <input
-            class="startup-text mb-2 pa-2 elevation-5"
-            type="text"
-            v-model="zip"
-            placeholder="Zip Code"
-          >
-        </v-form>
-        <div class="text-xs-right px-3">
-          <v-btn color="secondary" @click="progress = 1" :disabled="!passwordFormValid">Back</v-btn>
-          <v-btn color="secondary" @click="progress = 3" :disabled="!passwordFormValid">Next</v-btn>
-        </div>
+        <v-layout justify-center>
+          <v-flex xs10>
+            <v-form ref="passwordForm" v-model="profileFormValid">
+              <v-text-field
+                color="none"
+                type="text"
+                v-model="formParams.firstName"
+                placeholder="First Name - required"
+                :rules="[requiredRule]"
+                required
+              ></v-text-field>
+              <v-text-field
+                color="none"
+                type="text"
+                v-model="formParams.lastName"
+                placeholder="Last Name - required"
+                :rules="[requiredRule]"
+                required
+              ></v-text-field>
+              <v-text-field
+                color="none"
+                type="text"
+                v-model="phoneNumberMask"
+                @keydown="onPhoneKeydown($event)"
+                @keyup="formatPhoneNumber()"
+                placeholder="Phone Number"
+              ></v-text-field>
+              <v-text-field
+                type="text"
+                color="none"
+                v-model="formParams.address1"
+                placeholder="Street Address 1"
+              ></v-text-field>
+              <v-text-field
+                type="text"
+                color="none"
+                v-model="formParams.address2"
+                placeholder="Street Address 2"
+              ></v-text-field>
+              <v-text-field
+                type="text"
+                color="none"
+                v-model="formParams.city"
+                placeholder="City"
+              ></v-text-field>
+              <v-select
+                :items="stateList"
+                color="none"
+                label="State"
+                v-model="formParams.state"
+              ></v-select>
+              <!-- <v-select color="white" v-model="state" :items="stateList" label="State" required></v-select> -->
+              <v-text-field
+                type="text"
+                color="none"
+                v-model="formParams.zip"
+                placeholder="Zip Code"
+              ></v-text-field>
+            </v-form>
+            <div class="text-xs-right px-3">
+              <v-btn color="secondary" @click="progress = 1">Back</v-btn>
+              <v-btn color="secondary" @click="progress = 3" :disabled="!profileFormValid">Next</v-btn>
+            </div>
+          </v-flex>
+        </v-layout>
       </v-stepper-content>
       <v-stepper-content class="px-0 primary" step="3">
         <div class="text-xs-center">
@@ -130,8 +152,10 @@
     </v-stepper-items>
     <v-dialog v-model="dialog" width="85%" scrollable>
       <v-card>
-        <v-card-title class="headline primary">End-User License Agreement</v-card-title>
-        <v-card-text></v-card-text>
+        <v-card-title class="eula-header headline primary">End-User License Agreement</v-card-title>
+        <v-card-text>
+          {{eula}}
+        </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn @click="dialog = false">Cancel</v-btn>
@@ -143,41 +167,72 @@
   </v-stepper>
 </template>
 
-<style scoped>
-.header {
-  background-color: #1f4778;
-}
-</style>
-
 <script>
-import { STATELIST } from "../utils/constants.js";
 import { mapActions } from "vuex";
+import { AsYouType, parsePhoneNumberFromString } from 'libphonenumber-js'
+
+import { STATELIST, 
+        TEXT_VALIDATIONS, 
+        PASSWORD_SHOW, 
+        PASSWORD_HIDE, 
+        FIELD_TYPE 
+} from "../utils/constants.js";
+import { EULA } from "./Setup.const.js";
+import { userService } from "../services/user.service.js";
 
 export default {
   data() {
     return {
-      city: "",
+      formParams: {
+        "address1": "",
+        "address2": "",
+        "city": "",
+        "firstName": "",
+        "lastName": "",
+        "nickName": "",
+        "password": "",
+        "phoneNumber": "",
+        "state": "",
+        "zip": "",
+        "userRole": "Attendee"
+      },
+      formIcons: {
+        passwordField: PASSWORD_HIDE,
+        passwordCopyField: PASSWORD_HIDE
+      },
+      file: null,
+      phoneNumberMask: "",
       dialog: false,
       eulaAccepted: false,
       eulaText: "I have read and agree to the terms and conditions",
-      firstName: "",
-      lastName: "",
-      nickName: "",
-      password: "",
       passwordCopy: "",
       passwordFormValid: false,
-      phone: "",
       profileFormValid: false,
       profileImage: require("../assets/blank-profile.png"),
-      progress: 0,
-      state: "",
+      progress: 1,
       stateList: STATELIST,
-      streetAddress1: "",
-      streetAddress2: "",
-      zip: ""
+      copyPasswordRules: [
+        pwdCopy => pwdCopy === this.formParams.password || 'Passwords do not match',
+        TEXT_VALIDATIONS.REQUIRED
+      ],
     };
   },
-  created: {},
+  props: [
+    "user"
+    // need to get user object in here
+    // need emailAddress, userId
+  ],
+  computed: {
+    requiredRule() {
+      return TEXT_VALIDATIONS.REQUIRED
+    },
+    fieldType() {
+      return FIELD_TYPE
+    },
+    eula() {
+      return EULA
+    }
+  },
   methods: {
     ...mapActions({
       createProfile: "account/createProfile",
@@ -203,25 +258,60 @@ export default {
       this.$refs.file.click();
     },
     submitForm: function() {
-      // TODO
-      const data = {};
+      const data = Object.assign({}, this.formParams, 
+        {
+          userId: this.user.userId,
+          emailAddress: this.user.emailAddress
+        }
+      );
+      if (this.file) {
+        let formData = new FormData();
+        formData.append('file', this.file, this.file.fileName);
+        formData.append('userId', this.user.userId)
+        userService.uploadPhoto(formData);
+      }
       this.createProfile(data);
     },
     submitPasswordChange: function() {
-      if (this.password !== this.passwordCopy) {
-        this.error("Passwords do not match.");
-      } else {
-        this.progress = 2;
+      this.progress = 2;
+    },
+    passwordChangeValidate() {
+      return !this.password.length || !this.passwordCopy.length || this.password !== this.passwordCopy
+    },
+    togglePasswordVisibility(field) {
+      this.formIcons[field] = this.formIcons[field] === PASSWORD_SHOW ? PASSWORD_HIDE : PASSWORD_SHOW;
+    },
+    onPhoneKeydown($event) {
+      if ($event.key === 'Backspace') {
+        return;
+      }
+      if (isNaN($event.key) || this.formParams.phoneNumber.length === 10) {
+        $event.preventDefault();
+        $event.stopPropagation();
       }
     },
-    loadStates() {
-      let x = document.getElementById("select-statelist");
-      STATELIST.forEach(s => {
-        let option = document.createElement("option");
-        option.text = s;
-        x.add(option);
-      });
+    formatPhoneNumber() {
+      this.phoneNumberMask = new AsYouType('US').input(this.phoneNumberMask);
+      const realNumber = parsePhoneNumberFromString(this.phoneNumberMask, 'US');
+      this.formParams['phoneNumber'] = realNumber ? realNumber.nationalNumber : '';
     }
   }
 };
 </script>
+
+<style scoped>
+.header {
+  background-color: #1f4778;
+}
+
+.input-error {
+  outline:none;
+	box-shadow: 0 0 20px maroon !important;
+	border: 1px solid maroon;
+
+}
+
+.eula-header {
+  text-align: center;
+}
+</style>
